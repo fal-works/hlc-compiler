@@ -21,17 +21,17 @@ class Main {
 		final outDirStr = outDir.quote();
 		final mkOutDirCmd = 'if not exist $outDirStr ^\nmkdir $outDirStr';
 		final gccCommand = GccCommandBuilder.build(arguments).sanitize();
-		final verbose = arguments.verbose;
 
 		Sys.command(mkOutDirCmd);
-		gccCommand.run();
 
-		if (verbose) Sys.println("GCC command completed.");
+		Sys.println("Running GCC command...");
+		gccCommand.run();
+		Sys.println("Completed.");
 
 		if (arguments.saveCmdPath.isSome()) {
 			final savePath = arguments.saveCmdPath.unwrap();
 			saveBat(savePath, mkOutDirCmd, gccCommand);
-			if (verbose) Sys.println('Saved command: $savePath');
+			Sys.println('Saved command: $savePath');
 		}
 	}
 
@@ -108,8 +108,8 @@ class Main {
 		}
 
 		if (verbose) {
-			Sys.println('args: ${args.join(" | ")}\n');
-			Sys.println('validated args:');
+			Sys.println('Provided arguments:\n  ${args.join(" | ")}\n');
+			Sys.println('Validated arguments:');
 			Sys.println('  srcDir:    $srcDir');
 			Sys.println('  outFile:   $outFile');
 			Sys.println('  hlDir:     $hlDir');
