@@ -2,8 +2,6 @@ package hlc_compiler;
 
 import hlc_compiler.gcc.CommandBuilder as GccCommandBuilder;
 import hlc_compiler.gcc.SanitizedCommand as GccCommand;
-import hlc_compiler.general.MaybeCommand;
-import hlc_compiler.general.MaybeCommandTools.*;
 
 class Main {
 	public static function main() {
@@ -15,6 +13,9 @@ class Main {
 		}
 	}
 
+	/**
+		Compiles HL/C into executable according to `arguments`.
+	**/
 	static function run(arguments: Arguments): Void {
 		final outFile = arguments.outFile;
 		final outDirPath = outFile.getDirectoryPath();
@@ -44,6 +45,9 @@ class Main {
 		}
 	}
 
+	/**
+		Saves build command as a Windows batch file.
+	**/
 	static function saveBat(
 		savePath: FilePath,
 		outDir: DirectoryRef,
@@ -74,13 +78,9 @@ class Main {
 		sys.io.File.saveContent(savePath, contents.join("\n\n") + "\n");
 	}
 
-	static function createMkdirCommand(dirPath: DirectoryPath): MaybeCommand {
-		return switch (dirPath.exists()) {
-			case false: nullCommand;
-			case true: createCommand('mkdir ${dirPath.quote()}');
-		}
-	}
-
+	/**
+		Validates arguments that were passed in the command line
+	**/
 	static function validateArguments(): Arguments {
 		final args = Sys.args();
 		args.pop(); // The last argument should be the hlc-compiler directory

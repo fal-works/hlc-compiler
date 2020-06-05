@@ -2,9 +2,15 @@ package hlc_compiler.gcc;
 
 using locator.Statics;
 
+/**
+	Functions for static extension on `Command`.
+**/
 class CommandExtensions {
 	static final withValue = ~/([^=]+=)([ .]+)/i;
 
+	/**
+		Converts `command` so that it gets ready to run.
+	**/
 	@:access(hlc_compiler.gcc.SanitizedCommand)
 	public static function sanitize(command: Command): SanitizedCommand {
 		final argLines: Array<String> = [];

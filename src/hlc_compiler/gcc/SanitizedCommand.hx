@@ -7,6 +7,9 @@ abstract SanitizedCommand(Array<String>) to Array<String> {
 	extern inline function new(data: Array<String>)
 		this = data;
 
+	/**
+		Runs `gcc` command.
+	**/
 	public extern inline function run(): Void
 		Sys.command('gcc ${this.join(" ")}');
 }

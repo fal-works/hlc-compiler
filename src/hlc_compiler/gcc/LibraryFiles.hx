@@ -1,5 +1,8 @@
 package hlc_compiler.gcc;
 
+/**
+	List of library files, both for build and runtime.
+**/
 typedef LibraryFiles = {
 	/**
 		Files to be linked when compiling.

@@ -1,6 +1,9 @@
 package hlc_compiler.gcc;
 
 class CommandBuilder {
+	/**
+		Builds `gcc` command.
+	**/
 	public static function build(
 		arguments: Arguments
 	): { command: Command, libraryFiles: LibraryFiles } {
@@ -32,6 +35,9 @@ class CommandBuilder {
 		};
 	}
 
+	/**
+		@return Library files required by `srcDir/hlc.json`.
+	**/
 	static function getLibraryFiles(
 		srcDir: DirectoryRef,
 		hlDir: DirectoryRef
