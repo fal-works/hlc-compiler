@@ -3,7 +3,7 @@
 	"url": "https://github.com/fal-works/hlc-compiler/",
 	"license": "MIT",
 	"tags": ["utility"],
-	"description": "Helps compiling HashLink/C code to executable file.",
+	"description": "Helps you compile HashLink/C code into executable using GCC.",
 	"version": "0.1.0",
 	"classPath": "src/",
 	"releasenote": "Initial release. Everything may change in future.",
