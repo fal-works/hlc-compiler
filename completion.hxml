@@ -3,4 +3,6 @@
 --library hlc-compiler
 --main Run
 --macro nullSafety("Run", Strict)
+-D locator_debug
+
 --interp
