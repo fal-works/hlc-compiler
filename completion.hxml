@@ -1,8 +1,8 @@
+--class-path src
 --library sinker
 --library locator
---library hlc-compiler
---main Run
---macro nullSafety("Run", Strict)
+--main hlc_compiler.Main
+--macro nullSafety("hlc_compiler", Strict)
 -D locator_debug
 
 --interp
