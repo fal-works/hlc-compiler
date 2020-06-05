@@ -1,9 +1,9 @@
 {
-	"name": "locator",
-	"url": "https://github.com/fal-works/locator/",
+	"name": "hlc-compiler",
+	"url": "https://github.com/fal-works/hlc-compiler/",
 	"license": "MIT",
 	"tags": ["utility"],
-	"description": "File system utility.",
+	"description": "Helps compiling HashLink/C code to executable file.",
 	"version": "0.1.0",
 	"classPath": "src/",
 	"releasenote": "Initial release. Everything may change in future.",
