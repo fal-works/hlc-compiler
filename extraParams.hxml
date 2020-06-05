@@ -1,0 +1,4 @@
+# Default parameters for haxelib
+
+-lib sinker
+-lib locator

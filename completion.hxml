@@ -1,0 +1,6 @@
+--library sinker
+--library locator
+--library hlc-compiler
+--main Run
+--macro nullSafety("Run", Strict)
+--interp

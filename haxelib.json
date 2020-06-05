@@ -1,0 +1,17 @@
+{
+	"name": "locator",
+	"url": "https://github.com/fal-works/locator/",
+	"license": "MIT",
+	"tags": ["utility"],
+	"description": "File system utility.",
+	"version": "0.1.0",
+	"classPath": "src/",
+	"releasenote": "Initial release. Everything may change in future.",
+	"contributors": [
+		"fal-works"
+	],
+	"dependencies": {
+		"sinker": "",
+		"locator": ""
+	}
+}
