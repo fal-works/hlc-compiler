@@ -12,7 +12,12 @@ class CommandBuilder {
 		final libraryFiles = getLibraryFiles(srcDir, hlDir);
 
 		final includes = [hlDir.path.concat("include").find(), srcDir];
-		final files = [srcFile].concat(arguments.exFiles).concat(libraryFiles.build);
+		final files: Array<FileRef> = [
+			[srcFile],
+			arguments.exFiles,
+			arguments.exDlls,
+			libraryFiles.build
+		].flatten();
 
 		final command: Command = {
 			outFile: outFile,

@@ -26,8 +26,15 @@ typedef Arguments = {
 
 	/**
 		Additional files that should be passed to GCC.
+		These are not copied to the destination directory.
 	**/
 	final exFiles: Array<FileRef>;
+
+	/**
+		Additional files that should be passed to GCC.
+		Unlike `exFiles`, these are also copied if `copyDlls` is `true`.
+	**/
+	final exDlls: Array<FileRef>;
 
 	/**
 		Additional options that should be passed to GCC.

@@ -20,7 +20,8 @@ class Main {
 		final outDirPath = outFile.getDirectoryPath();
 		final gcc = GccCommandBuilder.build(arguments);
 		final gccCommand = gcc.command.sanitize();
-		final filesToCopy = if (arguments.copyDlls) gcc.libraryFiles.runtime else [];
+		final filesToCopy = if (!arguments.copyDlls) [] else
+			arguments.exDlls.concat(gcc.libraryFiles.runtime);
 
 		final outDir = if (outDirPath.exists()) outDirPath.find() else
 			outDirPath.createDirectory();
@@ -66,7 +67,7 @@ class Main {
 		if (0 < filesToCopy.length) {
 			contents.push("echo Copying DLL files...");
 			for (file in filesToCopy)
-				contents.push('copy ${file.path.quote()} $outDirStr');
+				contents.push('copy ${file.path.quote()} $outDirStr > nul');
 		}
 		contents.push("echo Completed.");
 
@@ -104,6 +105,7 @@ class Main {
 		var hlDir = currentDir;
 		var copyDlls = false;
 		var exFiles: Array<FileRef> = [];
+		var exDlls: Array<FileRef> = [];
 		var exOptions: Array<String> = [];
 		var saveCmdPath: Maybe<FilePath> = Maybe.none();
 		var verbose = false;
@@ -120,6 +122,9 @@ class Main {
 					copyDlls = true;
 				case "--exFiles":
 					exFiles = nextOption("--exFiles [comma-separated file paths]").split(",")
+						.map(FileRef.fromStringCallback);
+				case "--exDlls":
+					exDlls = nextOption("--exDlls [comma-separated file paths]").split(",")
 						.map(FileRef.fromStringCallback);
 				case "--saveCmd":
 					saveCmdPath = FilePath.from(nextOption("--saveCmd [file path]"));
@@ -138,6 +143,7 @@ class Main {
 			Sys.println('  hlDir:     $hlDir');
 			Sys.println('  copyDlls:  $copyDlls');
 			Sys.println('  exFiles:   $exFiles');
+			Sys.println('  exDlls:    $exDlls');
 			Sys.println('  exOptions: $exOptions');
 			Sys.println('  saveCmd:   ${saveCmdPath.toString()}');
 			Sys.println("");
@@ -149,6 +155,7 @@ class Main {
 			hlDir: hlDir,
 			copyDlls: copyDlls,
 			exFiles: exFiles,
+			exDlls: exDlls,
 			exOptions: exOptions,
 			saveCmdPath: saveCmdPath,
 			verbose: verbose
