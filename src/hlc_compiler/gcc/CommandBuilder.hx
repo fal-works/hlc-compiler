@@ -1,7 +1,9 @@
 package hlc_compiler.gcc;
 
 class CommandBuilder {
-	public static function build(arguments: Arguments): Command {
+	public static function build(
+		arguments: Arguments
+	): { command: Command, libraryFiles: LibraryFiles } {
 		final srcDir = arguments.srcDir;
 		final outFile = arguments.outFile;
 		final hlDir = arguments.hlDir;
@@ -12,15 +14,23 @@ class CommandBuilder {
 		final includes = [hlDir.path.concat("include").find(), srcDir];
 		final files = [srcFile].concat(arguments.exFiles).concat(libraryFiles.build);
 
-		return {
+		final command: Command = {
 			outFile: outFile,
 			includes: includes,
 			exOptions: arguments.exOptions,
 			files: files
 		};
+
+		return {
+			command: command,
+			libraryFiles: libraryFiles
+		};
 	}
 
-	static function getLibraryFiles(srcDir: DirectoryRef, hlDir: DirectoryRef) {
+	static function getLibraryFiles(
+		srcDir: DirectoryRef,
+		hlDir: DirectoryRef
+	): LibraryFiles {
 		final hlDirPath = hlDir.path;
 		final buildFiles: Array<FileRef> = [];
 		final runtimeFiles: Array<FileRef> = [];

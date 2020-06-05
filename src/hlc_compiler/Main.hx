@@ -17,35 +17,58 @@ class Main {
 
 	static function run(arguments: Arguments): Void {
 		final outFile = arguments.outFile;
-		final outDir = outFile.getDirectoryPath();
-		final outDirStr = outDir.quote();
-		final mkOutDirCmd = 'if not exist $outDirStr ^\nmkdir $outDirStr';
-		final gccCommand = GccCommandBuilder.build(arguments).sanitize();
+		final outDirPath = outFile.getDirectoryPath();
+		final gcc = GccCommandBuilder.build(arguments);
+		final gccCommand = gcc.command.sanitize();
+		final filesToCopy = if (arguments.copyDlls) gcc.libraryFiles.runtime else [];
 
-		Sys.command(mkOutDirCmd);
+		final outDir = if (outDirPath.exists()) outDirPath.find() else
+			outDirPath.createDirectory();
 
 		Sys.println("Running GCC command...");
 		gccCommand.run();
+
+		if (0 < filesToCopy.length) {
+			Sys.println("Copying DLL files...");
+			for (file in filesToCopy)
+				file.copy(outDirPath.makeFilePath(file.getName()));
+		}
+
 		Sys.println("Completed.");
 
 		if (arguments.saveCmdPath.isSome()) {
 			final savePath = arguments.saveCmdPath.unwrap();
-			saveBat(savePath, mkOutDirCmd, gccCommand);
+			saveBat(savePath, outDir, gccCommand, filesToCopy);
 			Sys.println('Saved command: $savePath');
 		}
 	}
 
 	static function saveBat(
 		savePath: FilePath,
-		mkOutDirCmd: String,
-		gccCommand: GccCommand
+		outDir: DirectoryRef,
+		gccCommand: GccCommand,
+		filesToCopy: Array<FileRef>
 	): Void {
 		final saveDirPath = savePath.getDirectoryPath();
 		if (!saveDirPath.exists()) saveDirPath.createDirectory();
 
+		final outDirStr = outDir.path.quote();
+		final mkOutDirCmd = 'if not exist $outDirStr ^\nmkdir $outDirStr';
+
 		final gccBlock = ["gcc"].concat(gccCommand).join(" ^\n");
 
-		var contents = ["@echo off", "echo Running GCC command...", mkOutDirCmd, gccBlock, "echo Completed."];
+		final contents = [
+			"@echo off",
+			mkOutDirCmd,
+			"echo Running GCC command...",
+			gccBlock
+		];
+		if (0 < filesToCopy.length) {
+			contents.push("echo Copying DLL files...");
+			for (file in filesToCopy)
+				contents.push('copy ${file.path.quote()} $outDirStr');
+		}
+		contents.push("echo Completed.");
 
 		sys.io.File.saveContent(savePath, contents.join("\n\n") + "\n");
 	}

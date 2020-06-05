@@ -1,2 +1,2 @@
 --library locator
---cmd haxelib run hlc-compiler --srcDir test/src-c --outFile test/out/main --hlDir %HASHLINKPATH% --exFiles C:\Windows\System32\dbghelp.dll --saveCmd test/out/compile.bat --verbose -w
+--cmd haxelib run hlc-compiler --srcDir test/src-c --outFile test/out/main --hlDir %HASHLINKPATH% --exFiles C:\Windows\System32\dbghelp.dll --copyDlls --saveCmd test/out/compile.bat --verbose -w
