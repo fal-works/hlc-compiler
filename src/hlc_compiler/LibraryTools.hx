@@ -1,44 +1,10 @@
-package hlc_compiler.gcc;
+package hlc_compiler;
 
-class CommandBuilder {
-	/**
-		Builds `gcc` command.
-	**/
-	public static function build(
-		arguments: Arguments
-	): { command: Command, libraryFiles: LibraryFiles } {
-		final srcDir = arguments.srcDir;
-		final outFile = arguments.outFile;
-		final hlDir = arguments.hlDir;
-
-		final srcFile = srcDir.path.makeFilePath("main.c").find();
-		final libraryFiles = getLibraryFiles(srcDir, hlDir);
-
-		final includes = [hlDir.path.concat("include").find(), srcDir];
-		final files: Array<FileRef> = [
-			[srcFile],
-			arguments.exFiles,
-			arguments.exDlls,
-			libraryFiles.build
-		].flatten();
-
-		final command: Command = {
-			outFile: outFile,
-			includes: includes,
-			exOptions: arguments.exOptions,
-			files: files
-		};
-
-		return {
-			command: command,
-			libraryFiles: libraryFiles
-		};
-	}
-
+class LibraryTools {
 	/**
 		@return Library files required by `srcDir/hlc.json`.
 	**/
-	static function getLibraryFiles(
+	public static function getRequiredLibraries(
 		srcDir: DirectoryRef,
 		hlDir: DirectoryRef
 	): LibraryFiles {
@@ -52,10 +18,10 @@ class CommandBuilder {
 		inline function addDll(fileName: String)
 			runtimeFiles.push(FileRef.from('$hlDirPath$fileName'));
 
-		final jsonFile = FileRef.from(srcDir + "hlc.json");
-		final jsonData: JsonData = haxe.Json.parse(jsonFile.getContent());
+		final hlcJsonFile = FileRef.from(srcDir + "hlc.json");
+		final hlcJsonData: HlcJson = haxe.Json.parse(hlcJsonFile.getContent());
 
-		for (lib in jsonData.libs) {
+		for (lib in hlcJsonData.libs) {
 			switch lib {
 				case "std":
 					addLink("libhl.lib");
@@ -83,3 +49,10 @@ class CommandBuilder {
 		};
 	}
 }
+
+/**
+	Content of `hlc.json`.
+**/
+typedef HlcJson = {
+	final libs: Array<String>;
+};

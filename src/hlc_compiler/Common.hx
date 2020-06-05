@@ -12,6 +12,7 @@ class Common {
 	/**
 		The version of this library.
 	**/
+	@:nullSafety(Off)
 	public static inline final version = haxe.macro.Compiler.getDefine("hlc-compiler");
 
 	/**

@@ -8,4 +8,3 @@ import locator.FileRef;
 
 using StringTools;
 using sinker.extensions.Index;
-using hlc_compiler.gcc.CommandExtensions;

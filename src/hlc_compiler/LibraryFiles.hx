@@ -1,4 +1,4 @@
-package hlc_compiler.gcc;
+package hlc_compiler;
 
 /**
 	List of library files, both for build and runtime.

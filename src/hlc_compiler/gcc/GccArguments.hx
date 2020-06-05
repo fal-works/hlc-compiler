@@ -1,9 +1,9 @@
 package hlc_compiler.gcc;
 
 /**
-	Data object representing a `gcc` command with specific arguments.
+	Arguments to be passed to `gcc` command.
 **/
-typedef Command = {
+typedef GccArguments = {
 	final outFile: FilePath;
 	final includes: Array<DirectoryRef>;
 	final exOptions: Array<String>;

@@ -1,7 +1,6 @@
 package hlc_compiler;
 
-import hlc_compiler.gcc.CommandBuilder as GccCommandBuilder;
-import hlc_compiler.gcc.SanitizedCommand as GccCommand;
+import hlc_compiler.gcc.GccCommand;
 
 class Main {
 	public static function main() {
@@ -22,12 +21,16 @@ class Main {
 		Compiles HL/C into executable according to `arguments`.
 	**/
 	static function run(arguments: Arguments): Void {
+		final requiredLibraries = LibraryTools.getRequiredLibraries(
+			arguments.srcDir,
+			arguments.hlDir
+		);
+
 		final outFile = arguments.outFile;
 		final outDirPath = outFile.getDirectoryPath();
-		final gcc = GccCommandBuilder.build(arguments);
-		final gccCommand = gcc.command.sanitize();
+		final gccCommand = GccCommand.from(arguments, requiredLibraries.build);
 		final filesToCopy = if (!arguments.copyDlls) [] else
-			arguments.exDlls.concat(gcc.libraryFiles.runtime);
+			arguments.exDlls.concat(requiredLibraries.runtime);
 
 		final outDir = if (outDirPath.exists()) outDirPath.find() else
 			outDirPath.createDirectory();
@@ -65,7 +68,7 @@ class Main {
 		final outDirStr = outDir.path.quote();
 		final mkOutDirCmd = 'if not exist $outDirStr ^\nmkdir $outDirStr';
 
-		final gccBlock = ["gcc"].concat(gccCommand).join(" ^\n");
+		final gccBlock = ["gcc"].concat(gccCommand.getArgumentLines()).join(" ^\n");
 
 		final contents = [
 			"@echo off",
