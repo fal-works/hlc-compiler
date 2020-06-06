@@ -117,3 +117,8 @@ It depends on your `hlc.json` which library files are required.
 
 See also:
 [FAL Haxe libraries](https://github.com/fal-works/fal-haxe-libraries)
+
+
+## Something other
+
+[hlc-compiler wiki](https://github.com/fal-works/hlc-compiler/wiki)
