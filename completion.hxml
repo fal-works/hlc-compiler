@@ -3,6 +3,5 @@
 --library locator
 --main hlc_compiler.Main
 --macro nullSafety("hlc_compiler", Strict)
--D locator_debug
 
 --interp
