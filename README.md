@@ -43,7 +43,8 @@ Defaults to `./` (current working directory).
 - `--outFile [path]` File path of the output executable.  
 Defaults to `./hlc_bin/main`.
 - `--hlDir [path]` HashLink installation directory, or any directory that contains required `.lib`/`.hdll`/`.dll` files and `include` directory (which has `hlc_main.c` etc).  
-Defaults to `./`.
+At default, hlc-compiler tries to find it from your environment variables (`HASHLINKPATH`, `HASHLINK` or `HASHLINK_BIN`).
+If not found, defaults to `./`.
 - `--copyDlls` Automatically copies required `.hdll`/`.dll` files to output directory.  
 Not set at default.
 - `--exFiles [paths]` Additional files (comma-separated without spaces) to be passed to `gcc`.  

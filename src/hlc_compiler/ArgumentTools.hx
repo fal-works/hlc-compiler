@@ -27,7 +27,7 @@ class ArgumentTools {
 
 		var srcDir = currentDirectory;
 		var outFile = currentDirectory.path.makeFilePath("hlc_bin/main");
-		var hlDir = currentDirectory;
+		var hlDir = findHashlinkDirectory().or(currentDirectory);
 		var copyDlls = false;
 		var exFiles: Array<FileRef> = [];
 		var exDlls: Array<FileRef> = [];
@@ -88,6 +88,29 @@ class ArgumentTools {
 			saveCmdPath: saveCmdPath,
 			verbose: verbose
 		};
+	}
+
+	/**
+		Tries to find HashLink installation directory from environment variables:
+		- `HASHLINKPATH`
+		- `HASHLINK`
+		- `HASHLINK_BIN`
+	**/
+	static function findHashlinkDirectory(): Maybe<DirectoryRef> {
+		var hlDir: Maybe<DirectoryRef> = Maybe.none();
+
+		["HASHLINKPATH", "HASHLINK", "HASHLINK_BIN"].forFirst(s -> {
+			final envVarValue = Maybe.from(Sys.getEnv(s));
+			if (envVarValue.isNone()) return false;
+
+			final dir = DirectoryPath.from(envVarValue.unwrap()).tryFind();
+			if (dir.isNone()) return false;
+
+			hlDir = dir;
+			return true;
+		}, s -> {});
+
+		return hlDir;
 	}
 
 	/**
