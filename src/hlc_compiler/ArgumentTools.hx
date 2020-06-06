@@ -86,4 +86,16 @@ class ArgumentTools {
 			verbose: verbose
 		};
 	}
+
+	/**
+		Finds or creates the output directory according to `arguments`.
+	**/
+	public static function getOutDir(arguments: Arguments): DirectoryRef {
+		final outDirPath = arguments.outFile.getParentPath();
+
+		final maybeOutDir = outDirPath.tryFind();
+		if (maybeOutDir.isSome()) return maybeOutDir.unwrap();
+
+		return outDirPath.createDirectory();
+	}
 }

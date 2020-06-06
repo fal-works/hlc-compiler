@@ -3,6 +3,9 @@ package hlc_compiler;
 import hlc_compiler.gcc.GccCommand;
 
 class Main {
+	/**
+		Entry point of `hlc_compiler` package.
+	**/
 	public static function main() {
 		final rawArguments = Sys.args();
 		if (showInstruction(rawArguments)) return;
@@ -18,20 +21,15 @@ class Main {
 	}
 
 	/**
+		The main process of hlc-compiler.
 		Compiles HL/C into executable according to `arguments`.
 	**/
 	static function run(arguments: Arguments): Void {
-		final hlcJsonFile = FileRef.from(arguments.srcDir + "hlc.json");
-		final requiredLibraries = LibraryTools.getRequiredLibraries(
-			hlcJsonFile,
-			arguments.hlDir
-		);
+		final prepared = prepareRun(arguments);
+		final gccCommand = prepared.gccCommand;
+		final filesToCopy = prepared.filesToCopy;
 
-		final gccCommand = GccCommand.from(arguments, requiredLibraries.build);
-		final filesToCopy = if (arguments.copyDlls)
-			FileList.from(arguments.exDlls.concat(requiredLibraries.runtime)) else [];
-
-		final outDir = getOutDir(arguments);
+		final outDir = ArgumentTools.getOutDir(arguments);
 
 		Sys.println("Running GCC command...");
 		gccCommand.run();
@@ -43,49 +41,32 @@ class Main {
 
 		Sys.println("Completed.");
 
-		if (arguments.saveCmdPath.isSome()) {
-			final savePath = arguments.saveCmdPath.unwrap();
-			saveBat(savePath, outDir, gccCommand, filesToCopy);
-			Sys.println('Saved command: $savePath');
+		final saveCmdPath = arguments.saveCmdPath;
+		if (saveCmdPath.isSome()) {
+			final path = saveCmdPath.unwrap();
+			SaveCommandTools.saveGccBat(path, outDir, gccCommand, filesToCopy);
+			Sys.println('Saved command: $path');
 		}
-	}
-
-	static function getOutDir(arguments: Arguments): DirectoryRef {
-		final outDirPath = arguments.outFile.getParentPath();
-		return if (outDirPath.exists()) outDirPath.find() else outDirPath.createDirectory();
 	}
 
 	/**
-		Saves build command as a Windows batch file.
+		Prepares for `run()`.
 	**/
-	static function saveBat(
-		savePath: FilePath,
-		outDir: DirectoryRef,
-		gccCommand: GccCommand,
-		filesToCopy: Array<FileRef>
-	): Void {
-		final saveDirPath = savePath.getParentPath();
-		if (!saveDirPath.exists()) saveDirPath.createDirectory();
+	static function prepareRun(arguments: Arguments) {
+		final hlcJsonFile = FileRef.from(arguments.srcDir + "hlc.json");
+		final requiredLibraries = LibraryTools.getRequiredLibraries(
+			hlcJsonFile,
+			arguments.hlDir
+		);
 
-		final outDirStr = outDir.path.quote();
-		final mkOutDirCmd = 'if not exist $outDirStr ^\nmkdir $outDirStr';
+		final gccCommand = GccCommand.from(arguments, requiredLibraries.build);
+		final filesToCopy = if (arguments.copyDlls)
+			FileList.from(arguments.exDlls.concat(requiredLibraries.runtime)) else [];
 
-		final gccBlock = ["gcc"].concat(gccCommand.getArgumentLines()).join(" ^\n");
-
-		final contents = [
-			"@echo off",
-			mkOutDirCmd,
-			"echo Running GCC command...",
-			gccBlock
-		];
-		if (0 < filesToCopy.length) {
-			contents.push("echo Copying DLL files...");
-			for (file in filesToCopy)
-				contents.push('copy ${file.path.quote()} $outDirStr > nul');
+		return {
+			gccCommand: gccCommand,
+			filesToCopy: filesToCopy
 		}
-		contents.push("echo Completed.");
-
-		sys.io.File.saveContent(savePath, contents.join("\n\n") + "\n");
 	}
 
 	/**
