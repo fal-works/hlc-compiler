@@ -55,8 +55,8 @@ Copied if `--copyDlls` is set.
 - `--saveCmd [path]` File path where the `gcc` command should be saved as a Windows batch file (`.bat`).  
 Not set (= does not save `.bat`) at default.
 - `--verbose` Prints verbose logs.
-- `(other)` Additionally you can pass any `gcc` options.
-For example `-O3` for highest optimization, or `-w` to suppress warnings.
+- `(other)` Additionally you can pass any `gcc` options.  
+For example `-O3` for highest optimization, `-w` to suppress warnings, or `-mwindows` for making a Windows GUI app.
 
 File/directory paths can be either absolute or relative from the current working directory  
 (internally all of them are converted to absolute).
