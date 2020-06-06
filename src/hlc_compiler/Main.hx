@@ -28,8 +28,8 @@ class Main {
 		);
 
 		final gccCommand = GccCommand.from(arguments, requiredLibraries.build);
-		final filesToCopy = if (!arguments.copyDlls) [] else
-			arguments.exDlls.concat(requiredLibraries.runtime);
+		final filesToCopy = if (arguments.copyDlls)
+			FileList.from(arguments.exDlls.concat(requiredLibraries.runtime)) else [];
 
 		final outDir = getOutDir(arguments);
 
@@ -38,8 +38,7 @@ class Main {
 
 		if (0 < filesToCopy.length) {
 			Sys.println("Copying DLL files...");
-			for (file in filesToCopy)
-				file.copy(outDir.path.makeFilePath(file.getName()));
+			filesToCopy.copyTo(outDir.path);
 		}
 
 		Sys.println("Completed.");
@@ -51,22 +50,9 @@ class Main {
 		}
 	}
 
-	static function getDllCopyCallback(arguments: Arguments, outDir: DirectoryRef, dlls: Array<FileRef>) {
-		if (!arguments.copyDlls) return Maybe.none();
-
-		final filesToCopy = arguments.exDlls.concat(dlls);
-		final callback = () -> {
-			for (file in filesToCopy)
-				file.copy(outDir.path.makeFilePath(file.getName()));
-		};
-
-		return Maybe.from(callback);
-	}
-
 	static function getOutDir(arguments: Arguments): DirectoryRef {
 		final outDirPath = arguments.outFile.getParentPath();
-		return if (outDirPath.exists()) outDirPath.find() else
-			outDirPath.createDirectory();
+		return if (outDirPath.exists()) outDirPath.find() else outDirPath.createDirectory();
 	}
 
 	/**
