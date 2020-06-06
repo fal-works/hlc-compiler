@@ -1,1 +1,5 @@
+# Prerequisites for this test:
+# - HL/C code should be located in ./test/src-c/
+# - Environment variable HASHLINKPATH should be set to HashLink installation directory
+
 --cmd haxelib run hlc-compiler --srcDir test/src-c --outFile test/out/main --hlDir %HASHLINKPATH% --exFiles C:\Windows\System32\dbghelp.dll --copyDlls --saveCmd test/out/compile.bat --verbose -w
