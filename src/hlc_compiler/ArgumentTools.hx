@@ -9,7 +9,7 @@ class ArgumentTools {
 		rawArguments = rawArguments.copy();
 		final lastArgument = rawArguments.pop().unwrap();
 		final currentDirectory = DirectoryRef.from(lastArgument);
-		Sys.setCwd(currentDirectory.path);
+		currentDirectory.setAsCurrent();
 		final rawArgumentsLength = rawArguments.length;
 		var index = 0;
 
