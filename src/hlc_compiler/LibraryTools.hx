@@ -34,11 +34,12 @@ class LibraryTools {
 					addDll("sdl.hdll");
 					addDll("SDL2.dll");
 				default:
-					final libPath = hlDirPath.makeFilePath('$lib.lib');
+					// final libPath = hlDirPath.makeFilePath('$lib.lib'); // Don't know why but *.lib files don't work
 					final hdllPath = hlDirPath.makeFilePath('$lib.hdll');
 					final dllPath = hlDirPath.makeFilePath('$lib.dll');
-					buildFiles.push(libPath.or(hdllPath).or(dllPath));
-					runtimeFiles.push(hdllPath.or(dllPath));
+					final file = FileRef.from(hdllPath.or(dllPath));
+					buildFiles.push(file);
+					runtimeFiles.push(file);
 			};
 		}
 
