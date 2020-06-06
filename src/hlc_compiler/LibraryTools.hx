@@ -5,7 +5,7 @@ class LibraryTools {
 		@return Library files required by `srcDir/hlc.json`.
 	**/
 	public static function getRequiredLibraries(
-		srcDir: DirectoryRef,
+		hlcJsonFile: FileRef,
 		hlDir: DirectoryRef
 	): LibraryFiles {
 		final hlDirPath = hlDir.path;
@@ -18,7 +18,6 @@ class LibraryTools {
 		inline function addDll(fileName: String)
 			runtimeFiles.push(FileRef.from('$hlDirPath$fileName'));
 
-		final hlcJsonFile = FileRef.from(srcDir + "hlc.json");
 		final hlcJsonData: HlcJson = haxe.Json.parse(hlcJsonFile.getContent());
 
 		for (lib in hlcJsonData.libs) {

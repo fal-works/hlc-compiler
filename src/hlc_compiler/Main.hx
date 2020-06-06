@@ -21,19 +21,17 @@ class Main {
 		Compiles HL/C into executable according to `arguments`.
 	**/
 	static function run(arguments: Arguments): Void {
+		final hlcJsonFile = FileRef.from(arguments.srcDir + "hlc.json");
 		final requiredLibraries = LibraryTools.getRequiredLibraries(
-			arguments.srcDir,
+			hlcJsonFile,
 			arguments.hlDir
 		);
 
-		final outFile = arguments.outFile;
-		final outDirPath = outFile.getDirectoryPath();
 		final gccCommand = GccCommand.from(arguments, requiredLibraries.build);
 		final filesToCopy = if (!arguments.copyDlls) [] else
 			arguments.exDlls.concat(requiredLibraries.runtime);
 
-		final outDir = if (outDirPath.exists()) outDirPath.find() else
-			outDirPath.createDirectory();
+		final outDir = getOutDir(arguments);
 
 		Sys.println("Running GCC command...");
 		gccCommand.run();
@@ -41,7 +39,7 @@ class Main {
 		if (0 < filesToCopy.length) {
 			Sys.println("Copying DLL files...");
 			for (file in filesToCopy)
-				file.copy(outDirPath.makeFilePath(file.getName()));
+				file.copy(outDir.path.makeFilePath(file.getName()));
 		}
 
 		Sys.println("Completed.");
@@ -53,6 +51,24 @@ class Main {
 		}
 	}
 
+	static function getDllCopyCallback(arguments: Arguments, outDir: DirectoryRef, dlls: Array<FileRef>) {
+		if (!arguments.copyDlls) return Maybe.none();
+
+		final filesToCopy = arguments.exDlls.concat(dlls);
+		final callback = () -> {
+			for (file in filesToCopy)
+				file.copy(outDir.path.makeFilePath(file.getName()));
+		};
+
+		return Maybe.from(callback);
+	}
+
+	static function getOutDir(arguments: Arguments): DirectoryRef {
+		final outDirPath = arguments.outFile.getParentPath();
+		return if (outDirPath.exists()) outDirPath.find() else
+			outDirPath.createDirectory();
+	}
+
 	/**
 		Saves build command as a Windows batch file.
 	**/
@@ -62,7 +78,7 @@ class Main {
 		gccCommand: GccCommand,
 		filesToCopy: Array<FileRef>
 	): Void {
-		final saveDirPath = savePath.getDirectoryPath();
+		final saveDirPath = savePath.getParentPath();
 		if (!saveDirPath.exists()) saveDirPath.createDirectory();
 
 		final outDirStr = outDir.path.quote();

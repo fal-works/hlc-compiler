@@ -1,6 +1,6 @@
 package hlc_compiler.gcc;
 
-using locator.Statics;
+import hlc_compiler.Tools.quoteCommandArgument;
 
 /**
 	Static functions for creating/formatting gcc arguments.
@@ -51,21 +51,11 @@ class GccArgumentTools {
 			argLines.push('-I ${dir.path.quote()}');
 
 		for (option in arguments.exOptions)
-			argLines.push(formatExOption(option));
+			argLines.push(quoteCommandArgument(option));
 
 		for (file in arguments.files)
 			argLines.push(file.path.quote());
 
 		return argLines;
-	}
-
-	/**
-		Formats any gcc option.
-	**/
-	static function formatExOption(option: String) {
-		if (!option.startsWith("-")) return option.quote();
-		if (withValue.match(option)) return withValue.matched(1)
-			+ withValue.matched(2).quote();
-		return option;
 	}
 }
