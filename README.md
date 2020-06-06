@@ -69,7 +69,7 @@ Assuming that you:
 - have compiled your Haxe code with `haxe --main Main --hl out\c\main.c`
 - installed HashLink in `C:\hashlink\1.11.0\`
 
-Then run hlc-compiler, e.g.:
+Then an example would be:
 
 ```
 haxelib run hlc-compiler --srcDir out\c --outFile bin\main --hlDir c:\hashlink\1.11.0\ --copyDlls --exFiles c:\Windows\System32\dbghelp.dll --saveCmd out\c\run_gcc.bat -w
@@ -113,7 +113,7 @@ It depends on your `hlc.json` which library files are required.
 ## Library Dependencies
 
 - [sinker](https://github.com/fal-works/sinker) v0.2.0 or compatible
-- [locator](https://github.com/fal-works/banker) v0.2.0 or compatible
+- [locator](https://github.com/fal-works/banker) v0.3.0 or compatible
 
 See also:
 [FAL Haxe libraries](https://github.com/fal-works/fal-haxe-libraries)
