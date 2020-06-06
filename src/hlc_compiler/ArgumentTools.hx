@@ -5,9 +5,12 @@ class ArgumentTools {
 		Validates arguments that were passed in the command line
 	**/
 	public static function validateRaw(rawArguments: Array<String>): Arguments {
-		// The last argument should be the hlc-compiler directory
-		final rawArgumentsLength = rawArguments.length - 1;
-		rawArguments = rawArguments.slice(0, rawArgumentsLength);
+		// The last argument should be the location where haxelib was called
+		rawArguments = rawArguments.copy();
+		final lastArgument = rawArguments.pop().unwrap();
+		final currentDirectory = DirectoryRef.from(lastArgument);
+		Sys.setCwd(currentDirectory.path);
+		final rawArgumentsLength = rawArguments.length;
 		var index = 0;
 
 		inline function hasNext()
@@ -22,10 +25,9 @@ class ArgumentTools {
 			return next();
 		}
 
-		final currentDir = DirectoryRef.current();
-		var srcDir = currentDir;
-		var outFile = currentDir.path.makeFilePath("hlc_bin/main");
-		var hlDir = currentDir;
+		var srcDir = currentDirectory;
+		var outFile = currentDirectory.path.makeFilePath("hlc_bin/main");
+		var hlDir = currentDirectory;
 		var copyDlls = false;
 		var exFiles: Array<FileRef> = [];
 		var exDlls: Array<FileRef> = [];
@@ -62,6 +64,7 @@ class ArgumentTools {
 
 		if (verbose) {
 			Sys.println('Provided arguments:\n  ${rawArguments.join(" | ")}\n');
+			Sys.println('Set $currentDirectory as current directory.\n');
 			Sys.println('Validated arguments:');
 			Sys.println('  srcDir:    $srcDir');
 			Sys.println('  outFile:   $outFile');
