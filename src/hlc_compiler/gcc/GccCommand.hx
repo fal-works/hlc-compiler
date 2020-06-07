@@ -19,9 +19,13 @@ abstract GccCommand(Array<String>) {
 
 	/**
 		Runs `gcc` command.
+		@return The exit code.
 	**/
-	public extern inline function run(): Void
-		Sys.command('gcc ${this.join(" ")}');
+	public extern inline function run(print: Bool = false): Int {
+		final cmdString = 'gcc ${this.join(" ")}';
+		if (print) Sys.println(cmdString);
+		return Sys.command(cmdString);
+	}
 
 	/**
 		@return Arguments for `gcc` command as string lines which can be used in command line

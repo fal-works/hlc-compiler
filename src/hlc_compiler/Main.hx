@@ -32,7 +32,7 @@ class Main {
 		final outDir = ArgumentTools.getOutDir(arguments);
 
 		Sys.println("Running GCC command...");
-		gccCommand.run();
+		gccCommand.run(arguments.verbose);
 
 		if (0 < filesToCopy.length) {
 			Sys.println("Copying DLL files...");
