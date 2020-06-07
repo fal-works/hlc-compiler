@@ -71,7 +71,7 @@ This will be passed to `gcc` as an `-I` option.
 
 #### `--copyRuntimeFiles`
 
-Copies library files (`*.hdll` etc, only the ones that are required at runtime) to output directory.
+Copies files that are required at runtime (such as dynamic linked libraries) to output directory.
 Not set at default.
 
 #### `--exFiles [paths]`
