@@ -9,7 +9,7 @@ class LibraryTools {
 	public static function getRequiredLibraries(
 		hlcJsonFile: FileRef,
 		libDir: DirectoryRef
-	): LibraryFiles {
+	): LibraryList {
 		final libDirPath = libDir.path;
 		final buildtimeLibs: Array<Library> = [];
 		final runtimeFiles: Array<FileRef> = [];

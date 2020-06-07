@@ -3,7 +3,7 @@ package hlc_compiler;
 /**
 	List of library files, both for build and runtime.
 **/
-typedef LibraryFiles = {
+typedef LibraryList = {
 	/**
 		Files to be linked when compiling.
 	**/

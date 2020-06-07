@@ -2,9 +2,15 @@ package hlc_compiler;
 
 /**
 	Library specifier.
-	Either just a name (can be linked by *-l* option) or a specific file path.
 **/
 enum Library {
+	/**
+		Library specified by a name and can be linked by `-l` option of `gcc`.
+	**/
 	Name(s: String);
+
+	/**
+		Library specified by a file path.
+	**/
 	File(file: FileRef);
 }
