@@ -56,7 +56,8 @@ Copied if `--copyDlls` is set.
 Not set (= does not save `.bat`) at default.
 - `--verbose` Prints verbose logs.
 - `(other)` Additionally you can pass any `gcc` options.  
-For example `-O3` for highest optimization, `-w` to suppress warnings, or `-mwindows` for making a Windows GUI app.
+For example `-O3` for highest optimization, `-w` to suppress warnings, or `-mwindows` for making a Windows GUI app.  
+If no `-std` option is provided, `-std=c11` is automatically added.
 
 File/directory paths can be either absolute or relative from the current working directory  
 (internally all of them are converted to absolute).
@@ -96,6 +97,7 @@ gcc ^
 -I c:\hashlink\1.11.0\include\ ^
 -I c:\yourDir\out\c\ ^
 -w ^
+-std=c11 ^
 c:\yourDir\out\c\main.c ^
 c:\Windows\System32\dbghelp.dll ^
 c:\hashlink\1.11.0\libhl.lib
