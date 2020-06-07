@@ -26,9 +26,9 @@ typedef Arguments = {
 	final includeDir: Maybe<DirectoryRef>;
 
 	/**
-		`true` if DLL files should be copied to the output directory.
+		`true` if files that are required at runtime should be copied to the output directory.
 	**/
-	final copyDlls: Bool;
+	final copyRuntimeFiles: Bool;
 
 	/**
 		Additional files that should be passed to GCC.
@@ -38,7 +38,7 @@ typedef Arguments = {
 
 	/**
 		Additional files that should be passed to GCC.
-		Unlike `exFiles`, these are also copied if `copyDlls` is `true`.
+		Unlike `exFiles`, these are also copied if `copyRuntimeFiles` is `true`.
 	**/
 	final exDlls: Array<FileRef>;
 

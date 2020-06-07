@@ -2,7 +2,7 @@
 
 # Windows
 # (Environment variable HASHLINKPATH or similar should be set for omitting --libDir)
---cmd haxelib run hlc-compiler --srcDir test\src-c --outFile test\out\main --exFiles C:\Windows\System32\dbghelp.dll --copyDlls --saveCmd test\out\compile.bat --verbose -w
+--cmd haxelib run hlc-compiler --srcDir test\src-c --outFile test\out\main --exFiles C:\Windows\System32\dbghelp.dll --copyRuntimeFiles --saveCmd test\out\compile.bat --verbose -w
 
 # Mac
-# --cmd haxelib run hlc-compiler --srcDir test/src-c --outFile test/out/main --copyDlls --verbose
+# --cmd haxelib run hlc-compiler --srcDir test/src-c --outFile test/out/main --copyRuntimeFiles --verbose

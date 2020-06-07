@@ -69,21 +69,21 @@ This will be passed to `gcc` as an `-I` option.
 - Alternatively you can set an environment variable `C_INCLUDE_PATH` to the path of this `include` directory so that it is automatically searched by `gcc` as well.
 - If something goes wrong, try passing `-v` option and see which directories are searched by `gcc`.
 
-#### `--copyDlls`
+#### `--copyRuntimeFiles`
 
-Automatically copies required library files (`*.hdll` etc) to output directory.
+Copies library files (`*.hdll` etc, only the ones that are required at runtime) to output directory.
 Not set at default.
 
 #### `--exFiles [paths]`
 
 Additional files (comma-separated without spaces) to be passed to `gcc`.
 For instance you might have to pass `dbghelp.dll`.
-Not copied even if `--copyDlls` is set.
+Not copied even if `--copyRuntimeFiles` is set.
 
 #### `--exDlls [paths]`
 
 Additional files (comma-separated without spaces) to be passed to `gcc`.
-Copied if `--copyDlls` is set.
+Copied if `--copyRuntimeFiles` is set.
 
 #### `--saveCmd [path]`
 
@@ -121,7 +121,7 @@ Assuming that you:
 Then an example would be:
 
 ```
-haxelib run hlc-compiler --srcDir out\c --outFile bin\main --libDir c:\hashlink\1.11.0\ --copyDlls --exFiles c:\Windows\System32\dbghelp.dll --saveCmd out\c\run_gcc.bat -w
+haxelib run hlc-compiler --srcDir out\c --outFile bin\main --libDir c:\hashlink\1.11.0\ --copyRuntimeFiles --exFiles c:\Windows\System32\dbghelp.dll --saveCmd out\c\run_gcc.bat -w
 ```
 
 This will:

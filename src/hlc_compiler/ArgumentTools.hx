@@ -35,7 +35,7 @@ class ArgumentTools {
 			case Mac: DirectoryPath.from('/usr/local/lib/').tryFind().or(currentDirectory);
 		};
 		var includeDir: Maybe<DirectoryRef> = Maybe.none();
-		var copyDlls = false;
+		var copyRuntimeFiles = false;
 		var exFiles: Array<FileRef> = [];
 		var exDlls: Array<FileRef> = [];
 		var exOptions: Array<String> = [];
@@ -52,8 +52,8 @@ class ArgumentTools {
 					libDir = DirectoryRef.from(nextOption("--libDir [directory path]"));
 				case "--includeDir":
 					includeDir = Maybe.from(DirectoryRef.from(nextOption("--includeDir [directory path]")));
-				case "--copyDlls":
-					copyDlls = true;
+				case "--copyRuntimeFiles":
+					copyRuntimeFiles = true;
 				case "--exFiles":
 					exFiles = nextOption("--exFiles [comma-separated file paths]").split(",")
 						.map(FileRef.fromStringCallback);
@@ -81,15 +81,15 @@ class ArgumentTools {
 			Sys.println('Provided arguments:\n  ${rawArguments.join(" | ")}\n');
 			Sys.println('Set $currentDirectory as current directory.\n');
 			Sys.println('Validated arguments:');
-			Sys.println('  srcDir:     $srcDir');
-			Sys.println('  outFile:    $outFile');
-			Sys.println('  libDir:     $libDir');
-			Sys.println('  includeDir: $includeDir');
-			Sys.println('  copyDlls:   $copyDlls');
-			Sys.println('  exFiles:    $exFiles');
-			Sys.println('  exDlls:     $exDlls');
-			Sys.println('  exOptions:  $exOptions');
-			Sys.println('  saveCmd:    ${saveCmdPath.toString()}');
+			Sys.println('  srcDir:           $srcDir');
+			Sys.println('  outFile:          $outFile');
+			Sys.println('  libDir:           $libDir');
+			Sys.println('  includeDir:       $includeDir');
+			Sys.println('  copyRuntimeFiles: $copyRuntimeFiles');
+			Sys.println('  exFiles:          $exFiles');
+			Sys.println('  exDlls:           $exDlls');
+			Sys.println('  exOptions:        $exOptions');
+			Sys.println('  saveCmd:          ${saveCmdPath.toString()}');
 			Sys.println("");
 		}
 
@@ -98,7 +98,7 @@ class ArgumentTools {
 			outFile: outFile,
 			libDir: libDir,
 			includeDir: includeDir,
-			copyDlls: copyDlls,
+			copyRuntimeFiles: copyRuntimeFiles,
 			exFiles: exFiles,
 			exDlls: exDlls,
 			exOptions: exOptions,

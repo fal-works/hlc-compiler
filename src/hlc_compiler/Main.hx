@@ -60,7 +60,7 @@ class Main {
 		);
 
 		final gccCommand = GccCommand.from(arguments, requiredLibraries.build);
-		final filesToCopy = if (arguments.copyDlls)
+		final filesToCopy = if (arguments.copyRuntimeFiles)
 			FileList.from(arguments.exDlls.concat(requiredLibraries.runtime)) else [];
 
 		return {
