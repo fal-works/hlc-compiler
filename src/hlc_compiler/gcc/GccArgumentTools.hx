@@ -31,10 +31,14 @@ class GccArgumentTools {
 			libraries
 		].flatten();
 
+		final exOptions = commonArguments.exOptions.copy();
+		if (!exOptions.hasAny(s -> s.startsWith("-std=")))
+			exOptions.push("-std=c11");
+
 		return {
 			outFile: commonArguments.outFile,
 			includes: includes,
-			exOptions: commonArguments.exOptions,
+			exOptions: exOptions,
 			files: files
 		};
 	}
