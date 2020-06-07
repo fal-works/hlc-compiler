@@ -32,7 +32,12 @@ class Main {
 		final outDir = ArgumentTools.getOutDir(arguments);
 
 		Sys.println("Running GCC command...");
-		gccCommand.run(arguments.verbose);
+		final errorLevel = gccCommand.run(arguments.verbose);
+
+		if (errorLevel != 0) {
+			Sys.println("GCC command failed.");
+			return;
+		}
 
 		if (0 < filesToCopy.length) {
 			Sys.println("Copying runtime files...");
