@@ -32,38 +32,82 @@ hlc-compiler is inspired by [HLCC](https://github.com/Yanrishatum/HLCC). Differe
 
 ## Usage
 
-First you have to output HashLink/C code, e.g. `haxe --main Main --hl out\c\main.c`.
+First you have to output HashLink/C code, e.g. `haxe --main Main --hl out/c/main.c`.
 
 Then call `haxelib run hlc-compiler` with some options described below.
-
-### hlc-compiler Options
-
-- `--srcDir [path]` Directory where your HashLink/C code (including `main.c` and `hlc.json`) are located.  
-Defaults to `./` (current working directory).
-- `--outFile [path]` File path of the output executable.  
-Defaults to `./hlc_bin/main`.
-- `--hlDir [path]` HashLink installation directory, or any directory that contains required `.lib`/`.hdll`/`.dll` files and `include` directory (which has `hlc_main.c` etc).  
-At default, hlc-compiler tries to find it from your environment variables (`HASHLINKPATH`, `HASHLINK` or `HASHLINK_BIN`).
-If not found, defaults to `./`.
-- `--copyDlls` Automatically copies required `.hdll`/`.dll` files to output directory.  
-Not set at default.
-- `--exFiles [paths]` Additional files (comma-separated without spaces) to be passed to `gcc`.  
-For instance you might have to pass `dbghelp.dll`.  
-Not copied even if `--copyDlls` is set.
-- `--exDlls [paths]`  Additional files (comma-separated without spaces) to be passed to `gcc`.  
-Copied if `--copyDlls` is set.
-- `--saveCmd [path]` File path where the `gcc` command should be saved as a Windows batch file (`.bat`).  
-Not set (= does not save `.bat`) at default.
-- `--verbose` Prints verbose logs.
-- `(other)` Additionally you can pass any `gcc` options.  
-For example `-O3` for highest optimization, `-w` to suppress warnings, or `-mwindows` for making a Windows GUI app.  
-If no `-std` option is provided, `-std=c11` is automatically added.
 
 File/directory paths can be either absolute or relative from the current working directory  
 (internally all of them are converted to absolute).
 
+### hlc-compiler Options
+
+#### `--srcDir [path]`
+
+Directory where your HashLink/C code (including `main.c` and `hlc.json`) are located.  
+Defaults to `./` (current working directory).
+
+#### `--outFile [path]`
+
+File path of the output executable.  
+Defaults to `./hlc_bin/main`.
+
+#### `--hlDir [path]`
+
+HashLink installation directory, or any directory that contains required library files (`*.hdll` etc).
+
+At default, hlc-compiler tries to find it from your environment variables (`HASHLINKPATH`, `HASHLINK` or `HASHLINK_BIN`).  
+If not found, defaults to `./`.
+
+Regarding HL files to be included (`.h`/`.c` files, such as `hlc.h`):  
+
+- On Windows, if a directory named `include` exists in the `--hlDir` directory (it should exist in the HashLink directory), it will be passed to `gcc` as an `-I` option.  
+Alternatively you can set an environment variable `C_INCLUDE_PATH` to the path of this `include` directory so that it will be automatically searched by `gcc`.
+- On Mac, the files in question are typically located at `/usr/local/include/`, which can be automaticaly searched by `gcc`.
+- If something is wrong, try passing `-v` option and see the `gcc` log messages.
+
+#### `--copyDlls`
+
+Automatically copies required library files (`*.hdll` etc) to output directory.  
+Not set at default.
+
+#### `--exFiles [paths]`
+
+Additional files (comma-separated without spaces) to be passed to `gcc`.  
+For instance you might have to pass `dbghelp.dll`.  
+Not copied even if `--copyDlls` is set.
+
+#### `--exDlls [paths]`
+
+Additional files (comma-separated without spaces) to be passed to `gcc`.  
+Copied if `--copyDlls` is set.
+
+#### `--saveCmd [path]`
+
+(For Windows)  
+File path where the `gcc` command should be saved as a Windows batch file (`.bat`).  
+Not set (= does not save `.bat`) at default.
+
+#### `--verbose`
+
+Prints verbose logs of hlc-compiler.
+
+#### `(other)`
+
+You can pass any [gcc option](https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html).
+
+If no `-std` option is provided, `-std=c11` is automatically added.
+
+Other examples:
+
+- `-O3` for highest optimization
+- `-w` to suppress warnings
+- `-v` to see more detailed logs of `gcc`
+- `-mwindows` for making a Windows GUI app
+
 
 ## Usage Example
+
+### Windows
 
 Assuming that you:
 
