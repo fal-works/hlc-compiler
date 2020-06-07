@@ -72,9 +72,9 @@ class ArgumentTools {
 		}
 
 		// Suggestion for `includeDir` if not provided
-		if (includeDir.isNone()) includeDir = switch system {
-			case Windows: libDir.path.concat("include").tryFind();
-			case Mac: DirectoryPath.from('/usr/local/include/').tryFind();
+		if (includeDir.isNone()) switch system {
+			case Windows: includeDir = libDir.path.concat("include").tryFind();
+			default:
 		}
 
 		if (verbose) {

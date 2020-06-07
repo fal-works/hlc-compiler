@@ -36,59 +36,59 @@ First you have to output HashLink/C code, e.g. `haxe --main Main --hl out/c/main
 
 Then call `haxelib run hlc-compiler` with some options described below.
 
-File/directory paths can be either absolute or relative from the current working directory  
+File/directory paths can be either absolute or relative from the current working directory
 (internally all of them are converted to absolute).
 
 ### hlc-compiler Options
 
 #### `--srcDir [path]`
 
-Directory where your HashLink/C code (including `main.c` and `hlc.json`) are located.  
+Directory where your HashLink/C code (including `main.c` and `hlc.json`) are located.
 Defaults to `./` (current working directory).
 
 #### `--outFile [path]`
 
-File path of the output executable.  
+File path of the output executable.
 Defaults to `./hlc_bin/main`.
 
 #### `--libDir [path]`
 
 Directory that contains required library files (`*.hdll` etc).
 
-- On windows, hlc-compiler tries to find the HashLink installation directory from your environment variables (`HASHLINKPATH`, `HASHLINK` or `HASHLINK_BIN`) as it should contain the files in question.  
+- On windows, hlc-compiler tries to find the HashLink installation directory from your environment variables (`HASHLINKPATH`, `HASHLINK` or `HASHLINK_BIN`) as it should contain the files in question.
 - On Mac, defaults to `/usr/local/lib/` if it exists, as the library files are typically located here.
 - If nothing found, defaults to `./` (current working directory).
 
 #### `--includeDir [path]`
 
-Directory that contains HashLink built-in files to be included (`.h`/`.c` files, such as `hlc.h`).  
+Directory that contains HashLink built-in files to be included (`.h`/`.c` files, such as `hlc.h`).
 This will be passed to `gcc` as an `-I` option.
 
-- On Windows, defaults to directory named `include` in the `--libDir` directory (because it should exist in the HashLink directory, to which `--libDir` is typically set).  
-- On Mac, defaults to `/usr/local/include/`, which is the path where the files in question are typically located and also automaticaly searched by `gcc` at default.
+- On Windows: Defaults to directory named `include` in the `--libDir` directory (because it should exist in the HashLink directory, to which `--libDir` is typically set). `null` (will not be passed) if not found.
+- On Mac: Defaults to `null`, as the files in question are typically located in `/usr/local/include/`, which is automaticaly searched by `gcc` at default.
 - Alternatively you can set an environment variable `C_INCLUDE_PATH` to the path of this `include` directory so that it is automatically searched by `gcc` as well.
 - If something goes wrong, try passing `-v` option and see which directories are searched by `gcc`.
 
 #### `--copyDlls`
 
-Automatically copies required library files (`*.hdll` etc) to output directory.  
+Automatically copies required library files (`*.hdll` etc) to output directory.
 Not set at default.
 
 #### `--exFiles [paths]`
 
-Additional files (comma-separated without spaces) to be passed to `gcc`.  
-For instance you might have to pass `dbghelp.dll`.  
+Additional files (comma-separated without spaces) to be passed to `gcc`.
+For instance you might have to pass `dbghelp.dll`.
 Not copied even if `--copyDlls` is set.
 
 #### `--exDlls [paths]`
 
-Additional files (comma-separated without spaces) to be passed to `gcc`.  
+Additional files (comma-separated without spaces) to be passed to `gcc`.
 Copied if `--copyDlls` is set.
 
 #### `--saveCmd [path]`
 
-(For Windows)  
-File path where the `gcc` command should be saved as a Windows batch file (`.bat`).  
+(For Windows)
+File path where the `gcc` command should be saved as a Windows batch file (`.bat`).
 Not set (= does not save `.bat`) at default.
 
 #### `--verbose`
