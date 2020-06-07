@@ -40,6 +40,7 @@ class GccArgumentTools {
 		return {
 			outFile: commonArguments.outFile,
 			includes: includes,
+			libDir: commonArguments.libDir,
 			exOptions: exOptions,
 			files: files
 		};
@@ -55,6 +56,8 @@ class GccArgumentTools {
 
 		for (dir in arguments.includes)
 			argLines.push('-I ${dir.path.quote()}');
+
+		argLines.push('-L ${arguments.libDir.path.quote()}');
 
 		for (option in arguments.exOptions)
 			argLines.push(quoteCommandArgument(option));

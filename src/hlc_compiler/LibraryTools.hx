@@ -27,7 +27,7 @@ class LibraryTools {
 				case "std":
 					switch system {
 						case Windows:
-							addLink("libhl.lib");
+							buildFiles.push(cast "-llibhl"); // "-lhl" seems to hit another file
 							addDll("libhl.dll");
 						case Mac:
 							buildFiles.push(cast "-lhl");

@@ -6,6 +6,7 @@ package hlc_compiler.gcc;
 typedef GccArguments = {
 	final outFile: FilePath;
 	final includes: Array<DirectoryRef>;
+	final libDir: DirectoryRef;
 	final exOptions: Array<String>;
 	final files: Array<FileRef>;
 }
