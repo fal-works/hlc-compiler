@@ -1,5 +1,7 @@
 package hlc_compiler;
 
+import hlc_compiler.Environment.system;
+
 class ArgumentTools {
 	/**
 		Validates arguments that were passed in the command line
@@ -28,7 +30,11 @@ class ArgumentTools {
 
 		var srcDir = currentDirectory;
 		var outFile = currentDirectory.path.makeFilePath("hlc_bin/main");
-		var hlDir = findHashlinkDirectory().or(currentDirectory);
+		var libDir = switch system {
+			case Windows: findHashlinkDirectory().or(currentDirectory);
+			case Mac: DirectoryPath.from('/usr/local/lib/').tryFind().or(currentDirectory);
+		};
+		var includeDir: Maybe<DirectoryRef> = Maybe.none();
 		var copyDlls = false;
 		var exFiles: Array<FileRef> = [];
 		var exDlls: Array<FileRef> = [];
@@ -42,8 +48,10 @@ class ArgumentTools {
 					srcDir = DirectoryRef.from(nextOption("--srcDir [directory path]"));
 				case "--outFile":
 					outFile = FilePath.from(nextOption("--outFile [file path]"));
-				case "--hlDir":
-					hlDir = DirectoryRef.from(nextOption("--hlDir [directory path]"));
+				case "--libDir":
+					libDir = DirectoryRef.from(nextOption("--libDir [directory path]"));
+				case "--includeDir":
+					includeDir = Maybe.from(DirectoryRef.from(nextOption("--includeDir [directory path]")));
 				case "--copyDlls":
 					copyDlls = true;
 				case "--exFiles":
@@ -63,25 +71,33 @@ class ArgumentTools {
 			}
 		}
 
+		// Suggestion for `includeDir` if not provided
+		if (includeDir.isNone()) includeDir = switch system {
+			case Windows: libDir.path.concat("include").tryFind();
+			case Mac: DirectoryPath.from('/usr/local/include/').tryFind();
+		}
+
 		if (verbose) {
 			Sys.println('Provided arguments:\n  ${rawArguments.join(" | ")}\n');
 			Sys.println('Set $currentDirectory as current directory.\n');
 			Sys.println('Validated arguments:');
-			Sys.println('  srcDir:    $srcDir');
-			Sys.println('  outFile:   $outFile');
-			Sys.println('  hlDir:     $hlDir');
-			Sys.println('  copyDlls:  $copyDlls');
-			Sys.println('  exFiles:   $exFiles');
-			Sys.println('  exDlls:    $exDlls');
-			Sys.println('  exOptions: $exOptions');
-			Sys.println('  saveCmd:   ${saveCmdPath.toString()}');
+			Sys.println('  srcDir:     $srcDir');
+			Sys.println('  outFile:    $outFile');
+			Sys.println('  libDir:     $libDir');
+			Sys.println('  includeDir: $includeDir');
+			Sys.println('  copyDlls:   $copyDlls');
+			Sys.println('  exFiles:    $exFiles');
+			Sys.println('  exDlls:     $exDlls');
+			Sys.println('  exOptions:  $exOptions');
+			Sys.println('  saveCmd:    ${saveCmdPath.toString()}');
 			Sys.println("");
 		}
 
 		return {
 			srcDir: srcDir,
 			outFile: outFile,
-			hlDir: hlDir,
+			libDir: libDir,
+			includeDir: includeDir,
 			copyDlls: copyDlls,
 			exFiles: exFiles,
 			exDlls: exDlls,
@@ -98,20 +114,24 @@ class ArgumentTools {
 		- `HASHLINK_BIN`
 	**/
 	static function findHashlinkDirectory(): Maybe<DirectoryRef> {
-		var hlDir: Maybe<DirectoryRef> = Maybe.none();
+		var libDir: Maybe<DirectoryRef> = Maybe.none();
 
-		["HASHLINKPATH", "HASHLINK", "HASHLINK_BIN"].forFirst(s -> {
+		[
+			"HASHLINKPATH",
+			"HASHLINK",
+			"HASHLINK_BIN"
+		].forFirst(s -> {
 			final envVarValue = Maybe.from(Sys.getEnv(s));
 			if (envVarValue.isNone()) return false;
 
 			final dir = DirectoryPath.from(envVarValue.unwrap()).tryFind();
 			if (dir.isNone()) return false;
 
-			hlDir = dir;
+			libDir = dir;
 			return true;
 		}, s -> {});
 
-		return hlDir;
+		return libDir;
 	}
 
 	/**

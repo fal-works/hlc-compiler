@@ -8,17 +8,17 @@ class LibraryTools {
 	**/
 	public static function getRequiredLibraries(
 		hlcJsonFile: FileRef,
-		hlDir: DirectoryRef
+		libDir: DirectoryRef
 	): LibraryFiles {
-		final hlDirPath = hlDir.path;
+		final libDirPath = libDir.path;
 		final buildFiles: Array<FileRef> = [];
 		final runtimeFiles: Array<FileRef> = [];
 
 		inline function addLink(fileName: String)
-			buildFiles.push(FileRef.from('$hlDirPath$fileName'));
+			buildFiles.push(FileRef.from('$libDirPath$fileName'));
 
 		inline function addDll(fileName: String)
-			runtimeFiles.push(FileRef.from('$hlDirPath$fileName'));
+			runtimeFiles.push(FileRef.from('$libDirPath$fileName'));
 
 		final hlcJsonData: HlcJson = haxe.Json.parse(hlcJsonFile.getContent());
 
@@ -56,18 +56,18 @@ class LibraryTools {
 							addDll("sdl.hdll");
 					}
 				default:
-					final hdllPath = hlDirPath.makeFilePath('$lib.hdll');
+					final hdllPath = libDirPath.makeFilePath('$lib.hdll');
 					switch system {
 						case Windows:
-							// final libPath = hlDirPath.makeFilePath('$lib.lib'); // Don't know why but *.lib files don't work
-							final dllPath = hlDirPath.makeFilePath('$lib.dll');
+							// final libPath = libDirPath.makeFilePath('$lib.lib'); // Don't know why but *.lib files don't work
+							final dllPath = libDirPath.makeFilePath('$lib.dll');
 							final file = FileRef.from(hdllPath.or(dllPath));
 							buildFiles.push(file);
 							runtimeFiles.push(file);
 						case Mac:
 							// TODO: test
-							final aPath = hlDirPath.makeFilePath('$lib.a').or(hlDirPath.makeFilePath('lib$lib.a'));
-							final dylibPath = hlDirPath.makeFilePath('$lib.dylib').or(hlDirPath.makeFilePath('lib$lib.dylib'));
+							final aPath = libDirPath.makeFilePath('$lib.a').or(libDirPath.makeFilePath('lib$lib.a'));
+							final dylibPath = libDirPath.makeFilePath('$lib.dylib').or(libDirPath.makeFilePath('lib$lib.dylib'));
 							buildFiles.push(FileRef.from(aPath.or(hdllPath).or(dylibPath)));
 							runtimeFiles.push(FileRef.from(hdllPath.or(dylibPath)));
 					}

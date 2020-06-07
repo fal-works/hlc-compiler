@@ -15,9 +15,15 @@ typedef Arguments = {
 	final outFile: FilePath;
 
 	/**
-		HashLink installation directory containing HDLL and other library files.
+		Directory containing `*.hdll` and other library files.
 	**/
-	final hlDir: DirectoryRef;
+	final libDir: DirectoryRef;
+
+	/**
+		Directory containing HL files to be included (such as `hlc.h`).
+		Is not mandatory because the directory may be automatically searched by `gcc` (especially if not Windows).
+	**/
+	final includeDir: Maybe<DirectoryRef>;
 
 	/**
 		`true` if DLL files should be copied to the output directory.

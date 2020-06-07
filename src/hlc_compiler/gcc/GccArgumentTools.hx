@@ -1,7 +1,6 @@
 package hlc_compiler.gcc;
 
 import hlc_compiler.Tools.quoteCommandArgument;
-import hlc_compiler.Environment.system;
 
 /**
 	Static functions for creating/formatting gcc arguments.
@@ -20,17 +19,12 @@ class GccArgumentTools {
 		libraries: Array<FileRef>
 	): GccArguments {
 		final srcDir = commonArguments.srcDir;
-		final hlDir = commonArguments.hlDir;
+		final includeDir = commonArguments.includeDir;
 
 		final srcFile = srcDir.path.makeFilePath("main.c").find();
 
 		final includes = [srcDir];
-		switch system {
-			case Windows:
-				final hlIncludeDir = hlDir.path.concat("include").tryFind();
-				if (hlIncludeDir.isSome()) includes.push(hlIncludeDir.unwrap());
-			default:
-		}
+		if (includeDir.isSome()) includes.push(includeDir.unwrap());
 
 		final files: Array<FileRef> = [
 			[srcFile],

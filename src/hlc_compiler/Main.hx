@@ -56,7 +56,7 @@ class Main {
 		final hlcJsonFile = FileRef.from(arguments.srcDir + "hlc.json");
 		final requiredLibraries = LibraryTools.getRequiredLibraries(
 			hlcJsonFile,
-			arguments.hlDir
+			arguments.libDir
 		);
 
 		final gccCommand = GccCommand.from(arguments, requiredLibraries.build);

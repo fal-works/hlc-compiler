@@ -51,19 +51,23 @@ Defaults to `./` (current working directory).
 File path of the output executable.  
 Defaults to `./hlc_bin/main`.
 
-#### `--hlDir [path]`
+#### `--libDir [path]`
 
-HashLink installation directory, or any directory that contains required library files (`*.hdll` etc).
+Directory that contains required library files (`*.hdll` etc).
 
-At default, hlc-compiler tries to find it from your environment variables (`HASHLINKPATH`, `HASHLINK` or `HASHLINK_BIN`).  
-If not found, defaults to `./`.
+- On windows, hlc-compiler tries to find the HashLink installation directory from your environment variables (`HASHLINKPATH`, `HASHLINK` or `HASHLINK_BIN`) as it should contain the files in question.  
+- On Mac, defaults to `/usr/local/lib/` if it exists, as the library files are typically located here.
+- If nothing found, defaults to `./` (current working directory).
 
-Regarding HL files to be included (`.h`/`.c` files, such as `hlc.h`):  
+#### `--includeDir [path]`
 
-- On Windows, if a directory named `include` exists in the `--hlDir` directory (it should exist in the HashLink directory), it will be passed to `gcc` as an `-I` option.  
-Alternatively you can set an environment variable `C_INCLUDE_PATH` to the path of this `include` directory so that it will be automatically searched by `gcc`.
-- On Mac, the files in question are typically located at `/usr/local/include/`, which can be automaticaly searched by `gcc`.
-- If something is wrong, try passing `-v` option and see the `gcc` log messages.
+Directory that contains HashLink built-in files to be included (`.h`/`.c` files, such as `hlc.h`).  
+This will be passed to `gcc` as an `-I` option.
+
+- On Windows, defaults to directory named `include` in the `--libDir` directory (because it should exist in the HashLink directory, to which `--libDir` is typically set).  
+- On Mac, defaults to `/usr/local/include/`, which is the path where the files in question are typically located and also automaticaly searched by `gcc` at default.
+- Alternatively you can set an environment variable `C_INCLUDE_PATH` to the path of this `include` directory so that it is automatically searched by `gcc` as well.
+- If something goes wrong, try passing `-v` option and see which directories are searched by `gcc`.
 
 #### `--copyDlls`
 
@@ -117,7 +121,7 @@ Assuming that you:
 Then an example would be:
 
 ```
-haxelib run hlc-compiler --srcDir out\c --outFile bin\main --hlDir c:\hashlink\1.11.0\ --copyDlls --exFiles c:\Windows\System32\dbghelp.dll --saveCmd out\c\run_gcc.bat -w
+haxelib run hlc-compiler --srcDir out\c --outFile bin\main --libDir c:\hashlink\1.11.0\ --copyDlls --exFiles c:\Windows\System32\dbghelp.dll --saveCmd out\c\run_gcc.bat -w
 ```
 
 This will:
