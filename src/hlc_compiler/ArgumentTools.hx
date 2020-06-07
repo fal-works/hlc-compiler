@@ -7,8 +7,9 @@ class ArgumentTools {
 	public static function validateRaw(rawArguments: Array<String>): Arguments {
 		// The last argument should be the location where haxelib was called
 		rawArguments = rawArguments.copy();
-		final lastArgument = rawArguments.pop().unwrap();
-		final currentDirectory = DirectoryRef.from(lastArgument);
+		final lastArgument = rawArguments.pop();
+		if (lastArgument.isNone()) throw "Passed no arguments."; // should not be reached
+		final currentDirectory = DirectoryRef.from(lastArgument.unwrap());
 		currentDirectory.setAsCurrent();
 		final rawArgumentsLength = rawArguments.length;
 		var index = 0;
