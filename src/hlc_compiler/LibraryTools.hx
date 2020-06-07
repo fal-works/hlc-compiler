@@ -30,7 +30,7 @@ class LibraryTools {
 							addLink("libhl.lib");
 							addDll("libhl.dll");
 						case Mac:
-							addLink("libhl.dylib");
+							buildFiles.push(cast "-lhl");
 							// Seems it's not required at runtime
 					}
 				case "openal":
