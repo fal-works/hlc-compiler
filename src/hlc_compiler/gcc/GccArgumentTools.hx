@@ -38,9 +38,9 @@ class GccArgumentTools {
 			exOptions.push("-std=c11");
 
 		return {
-			outFile: commonArguments.outFile,
-			includes: includes,
-			libDir: commonArguments.libDir,
+			outFilePath: commonArguments.outFile,
+			includeDirectories: includes,
+			libraryDirectory: commonArguments.libDir,
 			exOptions: exOptions,
 			files: files
 		};
@@ -52,12 +52,12 @@ class GccArgumentTools {
 	public static function format(arguments: GccArguments): Array<String> {
 		final argLines: Array<String> = [];
 
-		argLines.push('-o ${arguments.outFile.quote()}');
+		argLines.push('-o ${arguments.outFilePath.quote()}');
 
-		for (dir in arguments.includes)
+		for (dir in arguments.includeDirectories)
 			argLines.push('-I ${dir.path.quote()}');
 
-		argLines.push('-L ${arguments.libDir.path.quote()}');
+		argLines.push('-L ${arguments.libraryDirectory.path.quote()}');
 
 		for (option in arguments.exOptions)
 			argLines.push(quoteCommandArgument(option));
