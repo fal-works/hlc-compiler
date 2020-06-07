@@ -8,12 +8,13 @@ import hlc_compiler.gcc.GccArgumentTools.*;
 abstract GccCommand(Array<String>) {
 	/**
 		Creates a new `gcc` command.
+		@param basicLibraries Libraries specified in `hlc.json`.
 	**/
 	public static extern inline function from(
 		commonArguments: Arguments,
-		libraries: Array<FileRef>
+		basicLibraries: Array<Library>
 	): GccCommand {
-		final arguments = createGccArguments(commonArguments, libraries);
+		final arguments = createGccArguments(commonArguments, basicLibraries);
 		return new GccCommand(format(arguments));
 	}
 

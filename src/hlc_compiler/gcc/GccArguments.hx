@@ -9,4 +9,5 @@ typedef GccArguments = {
 	final libraryDirectory: DirectoryRef;
 	final exOptions: Array<String>;
 	final files: Array<FileRef>;
+	final libraries: Array<Library>;
 }

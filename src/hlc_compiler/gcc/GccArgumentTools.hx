@@ -16,7 +16,7 @@ class GccArgumentTools {
 	**/
 	public static function createGccArguments(
 		commonArguments: Arguments,
-		libraries: Array<FileRef>
+		basicLibraries: Array<Library>
 	): GccArguments {
 		final srcDir = commonArguments.srcDir;
 		final includeDir = commonArguments.includeDir;
@@ -26,23 +26,23 @@ class GccArgumentTools {
 		final includes = [srcDir];
 		if (includeDir.isSome()) includes.push(includeDir.unwrap());
 
-		final files: Array<FileRef> = [
-			[srcFile],
-			commonArguments.exFiles,
-			commonArguments.exLibs,
-			libraries
-		].flatten();
-
 		final exOptions = commonArguments.exOptions.copy();
 		if (!exOptions.hasAny(s -> s.startsWith("-std=")))
 			exOptions.push("-std=c11");
+
+		final files = [srcFile];
+		files.pushFromArray(commonArguments.exFiles);
+
+		final exLibs = commonArguments.exLibs.map(file -> Library.File(file));
+		final libs = exLibs.concat(basicLibraries);
 
 		return {
 			outFilePath: commonArguments.outFile,
 			includeDirectories: includes,
 			libraryDirectory: commonArguments.libDir,
 			exOptions: exOptions,
-			files: files
+			files: files,
+			libraries: libs
 		};
 	}
 
@@ -64,6 +64,12 @@ class GccArgumentTools {
 
 		for (file in arguments.files)
 			argLines.push(file.path.quote());
+
+		for (lib in arguments.libraries)
+			argLines.push(switch lib {
+				case Name(name): '-l$name';
+				case File(file): file.path.quote();
+			});
 
 		return argLines;
 	}

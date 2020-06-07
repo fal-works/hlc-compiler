@@ -7,7 +7,7 @@ typedef LibraryFiles = {
 	/**
 		Files to be linked when compiling.
 	**/
-	final build: Array<FileRef>;
+	final buildtime: Array<Library>;
 
 	/**
 		Files to be linked when run.
