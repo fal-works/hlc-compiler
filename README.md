@@ -127,7 +127,7 @@ haxelib run hlc-compiler --srcDir out\c --outFile bin\main --libDir c:\hashlink\
 This will:
 
 - run `gcc` command so that your code is compiled into `bin\main.exe`
-- copy required DLL files into `bin\`.
+- copy files that are required at runtime into `bin\`.
 - save commands as `out\c\run_gcc.bat`.
 
 The batch file looks like:
@@ -150,7 +150,7 @@ c:\yourDir\out\c\main.c ^
 c:\Windows\System32\dbghelp.dll ^
 c:\hashlink\1.11.0\libhl.lib
 
-echo Copying DLL files...
+echo Copying runtime files...
 
 copy c:\hashlink\1.11.0\libhl.dll c:\yourDir\bin\ > nul
 

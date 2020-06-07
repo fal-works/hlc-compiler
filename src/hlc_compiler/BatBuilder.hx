@@ -20,7 +20,7 @@ class BatBuilder {
 		];
 
 		if (0 < filesToCopy.length) {
-			contents.push("echo Copying DLL files...");
+			contents.push("echo Copying runtime files...");
 			for (file in filesToCopy)
 				contents.push('copy ${file.path.quote()} $outDirStr > nul');
 		}

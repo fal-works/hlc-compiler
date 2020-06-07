@@ -35,7 +35,7 @@ class Main {
 		gccCommand.run(arguments.verbose);
 
 		if (0 < filesToCopy.length) {
-			Sys.println("Copying DLL files...");
+			Sys.println("Copying runtime files...");
 			filesToCopy.copyTo(outDir.path);
 		}
 
