@@ -29,7 +29,7 @@ class GccArgumentTools {
 		final files: Array<FileRef> = [
 			[srcFile],
 			commonArguments.exFiles,
-			commonArguments.exDlls,
+			commonArguments.exLibs,
 			libraries
 		].flatten();
 

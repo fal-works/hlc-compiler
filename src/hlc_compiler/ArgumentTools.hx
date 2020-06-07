@@ -37,7 +37,7 @@ class ArgumentTools {
 		var includeDir: Maybe<DirectoryRef> = Maybe.none();
 		var copyRuntimeFiles = false;
 		var exFiles: Array<FileRef> = [];
-		var exDlls: Array<FileRef> = [];
+		var exLibs: Array<FileRef> = [];
 		var exOptions: Array<String> = [];
 		var saveCmdPath: Maybe<FilePath> = Maybe.none();
 		var verbose = false;
@@ -57,8 +57,8 @@ class ArgumentTools {
 				case "--exFiles":
 					exFiles = nextOption("--exFiles [comma-separated file paths]").split(",")
 						.map(FileRef.fromStringCallback);
-				case "--exDlls":
-					exDlls = nextOption("--exDlls [comma-separated file paths]").split(",")
+				case "--exLibs":
+					exLibs = nextOption("--exLibs [comma-separated file paths]").split(",")
 						.map(FileRef.fromStringCallback);
 				case "--saveCmd":
 					saveCmdPath = FilePath.from(nextOption("--saveCmd [file path]"));
@@ -87,7 +87,7 @@ class ArgumentTools {
 			Sys.println('  includeDir:       $includeDir');
 			Sys.println('  copyRuntimeFiles: $copyRuntimeFiles');
 			Sys.println('  exFiles:          $exFiles');
-			Sys.println('  exDlls:           $exDlls');
+			Sys.println('  exLibs:           $exLibs');
 			Sys.println('  exOptions:        $exOptions');
 			Sys.println('  saveCmd:          ${saveCmdPath.toString()}');
 			Sys.println("");
@@ -100,7 +100,7 @@ class ArgumentTools {
 			includeDir: includeDir,
 			copyRuntimeFiles: copyRuntimeFiles,
 			exFiles: exFiles,
-			exDlls: exDlls,
+			exLibs: exLibs,
 			exOptions: exOptions,
 			saveCmdPath: saveCmdPath,
 			verbose: verbose

@@ -40,7 +40,7 @@ typedef Arguments = {
 		Additional files that should be passed to GCC.
 		Unlike `exFiles`, these are also copied if `copyRuntimeFiles` is `true`.
 	**/
-	final exDlls: Array<FileRef>;
+	final exLibs: Array<FileRef>;
 
 	/**
 		Additional options that should be passed to GCC.

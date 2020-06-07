@@ -80,7 +80,7 @@ Additional files (comma-separated without spaces) to be passed to `gcc`.
 For instance you might have to pass `dbghelp.dll`.
 Not copied even if `--copyRuntimeFiles` is set.
 
-#### `--exDlls [paths]`
+#### `--exLibs [paths]`
 
 Additional files (comma-separated without spaces) to be passed to `gcc`.
 Copied if `--copyRuntimeFiles` is set.
