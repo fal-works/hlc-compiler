@@ -11,11 +11,7 @@ class LibraryTools {
 		libDir: DirectoryRef
 	): LibraryList {
 		final libDirPath = libDir.path;
-		final buildtimeLibs: Array<Library> = [];
-		final runtimeFiles: Array<FileRef> = [];
-
-		inline function addDll(fileName: String)
-			runtimeFiles.push(FileRef.from('$libDirPath$fileName'));
+		final libs: Array<Library> = [];
 
 		final hlcJsonData: HlcJson = haxe.Json.parse(hlcJsonFile.getContent());
 
@@ -24,33 +20,33 @@ class LibraryTools {
 				case "std":
 					switch system {
 						case Windows:
-							buildtimeLibs.push(Name("libhl")); // "-lhl" seems to hit another file
-							addDll("libhl.dll");
+							libs.push(Static(Name("libhl"))); // "-lhl" seems to hit another file
+							libs.push(Shared(libDir.findFile("libhl.dll")));
 						case Mac:
-							buildtimeLibs.push(Name("hl"));
+							libs.push(Static(Name("hl")));
 							// Seems it's not required at runtime
 					}
 				case "openal":
 					switch system {
 						case Windows:
-							buildtimeLibs.push(Name("openal"));
-							addDll("openal.hdll");
-							addDll("OpenAL32.dll");
+							libs.push(Static(Name("openal")));
+							libs.push(Shared(libDir.findFile("openal.hdll")));
+							libs.push(Shared(libDir.findFile("OpenAL32.dll")));
 						case Mac:
 							// TODO: test
-							buildtimeLibs.push(Name("openal"));
-							addDll("openal.hdll");
+							libs.push(Static(Name("openal")));
+							libs.push(Shared(libDir.findFile("openal.hdll")));
 					}
 				case "sdl":
 					switch system {
 						case Windows:
-							buildtimeLibs.push(Name("sdl2"));
-							addDll("sdl.hdll");
-							addDll("SDL2.dll");
+							libs.push(Static(Name("sdl2")));
+							libs.push(Shared(libDir.findFile("sdl.hdll")));
+							libs.push(Shared(libDir.findFile("SDL2.dll")));
 						case Mac:
 							// TODO: test
-							buildtimeLibs.push(Name("sdl2"));
-							addDll("sdl.hdll");
+							libs.push(Static(Name("sdl2")));
+							libs.push(Shared(libDir.findFile("sdl.hdll")));
 					}
 				default:
 					final hdllPath = libDirPath.makeFilePath('$lib.hdll');
@@ -59,22 +55,19 @@ class LibraryTools {
 							// final libPath = libDirPath.makeFilePath('$lib.lib'); // Don't know why but *.lib files don't work
 							final dllPath = libDirPath.makeFilePath('$lib.dll');
 							final file = FileRef.from(hdllPath.or(dllPath));
-							buildtimeLibs.push(File(file)); // not -l
-							runtimeFiles.push(file);
+							libs.push(Static(File(file)));
+							libs.push(Shared(file));
 						case Mac:
 							// TODO: test
-							final aPath = libDirPath.makeFilePath('$lib.a').or(libDirPath.makeFilePath('lib$lib.a'));
+							// final aPath = libDirPath.makeFilePath('$lib.a').or(libDirPath.makeFilePath('lib$lib.a'));
 							final dylibPath = libDirPath.makeFilePath('$lib.dylib').or(libDirPath.makeFilePath('lib$lib.dylib'));
-							buildtimeLibs.push(Name(lib));
-							runtimeFiles.push(FileRef.from(hdllPath.or(dylibPath)));
+							libs.push(Static(Name(lib)));
+							libs.push(Shared(FileRef.from(hdllPath.or(dylibPath))));
 					}
 			};
 		}
 
-		return {
-			buildtime: buildtimeLibs,
-			runtime: runtimeFiles
-		};
+		return libs;
 	}
 }
 

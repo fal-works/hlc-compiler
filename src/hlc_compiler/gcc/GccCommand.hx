@@ -3,16 +3,21 @@ package hlc_compiler.gcc;
 import hlc_compiler.gcc.GccArgumentTools.*;
 
 /**
-	`gcc` command that is ready to be run on the current OS.
+	`gcc` command that is ready to be run in commandline on the current OS.
 **/
-abstract GccCommand(Array<String>) {
+class GccCommand {
+	final lines: Array<String>;
+
+	public function new(lines: Array<String>)
+		this.lines = lines;
+
 	/**
 		Creates a new `gcc` command.
 		@param basicLibraries Libraries specified in `hlc.json`.
 	**/
 	public static extern inline function from(
 		commonArguments: Arguments,
-		basicLibraries: Array<Library>
+		basicLibraries: Array<LibrarySpecifier>
 	): GccCommand {
 		final arguments = createGccArguments(commonArguments, basicLibraries);
 		return new GccCommand(format(arguments));
@@ -23,7 +28,7 @@ abstract GccCommand(Array<String>) {
 		@return The exit code.
 	**/
 	public extern inline function run(print: Bool = false): Int {
-		final cmdString = 'gcc ${this.join(" ")}';
+		final cmdString = 'gcc ${this.lines.join(" ")}';
 		if (print) Sys.println(cmdString);
 		return Sys.command(cmdString);
 	}
@@ -33,8 +38,5 @@ abstract GccCommand(Array<String>) {
 		(actually this is the internal representation of `GccCommand`).
 	**/
 	public extern inline function getArgumentLines(): Array<String>
-		return this;
-
-	extern inline function new(data: Array<String>)
-		this = data;
+		return this.lines;
 }

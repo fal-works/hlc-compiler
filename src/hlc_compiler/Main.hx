@@ -57,20 +57,17 @@ class Main {
 	/**
 		Prepares for `run()`.
 	**/
-	static function prepareRun(arguments: Arguments) {
+	static function prepareRun(arguments: Arguments): PreparedData {
 		final hlcJsonFile = FileRef.from(arguments.srcDir + "hlc.json");
 		final requiredLibraries = LibraryTools.getRequiredLibraries(
 			hlcJsonFile,
 			arguments.libDir
 		);
 
-		final gccCommand = GccCommand.from(arguments, requiredLibraries.buildtime);
-		final filesToCopy = if (arguments.copyRuntimeFiles)
-			FileList.from(arguments.exLibs.concat(requiredLibraries.runtime)) else [];
-
 		return {
-			gccCommand: gccCommand,
-			filesToCopy: filesToCopy
+			gccCommand: GccCommand.from(arguments, requiredLibraries.filterStatic()),
+			filesToCopy: if (!arguments.copyRuntimeFiles) [] else
+				arguments.exLibs.concat(requiredLibraries.filterShared())
 		}
 	}
 
@@ -92,3 +89,8 @@ class Main {
 		}
 	}
 }
+
+private typedef PreparedData = {
+	final gccCommand: GccCommand;
+	final filesToCopy: FileList;
+};

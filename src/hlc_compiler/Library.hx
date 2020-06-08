@@ -1,16 +1,21 @@
 package hlc_compiler;
 
 /**
-	Library specifier.
+	Library to be linked with executable.
 **/
 enum Library {
 	/**
-		Library specified by a name and can be linked by `-l` option of `gcc`.
+		Library to be linked statically in buildtime.
 	**/
-	Name(s: String);
+	Static(nameOrFile: LibrarySpecifier);
 
 	/**
-		Library specified by a file path.
+		Library to be linked in runtime.
 	**/
-	File(file: FileRef);
+	Shared(file: FileRef);
+
+	/**
+		Library required both in buildtime and runtime.
+	**/
+	StaticShared(file: FileRef, name: Maybe<String>);
 }

@@ -16,7 +16,7 @@ class GccArgumentTools {
 	**/
 	public static function createGccArguments(
 		commonArguments: Arguments,
-		basicLibraries: Array<Library>
+		basicLibraries: Array<LibrarySpecifier>
 	): GccArguments {
 		final srcDir = commonArguments.srcDir;
 		final includeDir = commonArguments.includeDir;
@@ -33,7 +33,7 @@ class GccArgumentTools {
 		final files = [srcFile];
 		files.pushFromArray(commonArguments.exFiles);
 
-		final exLibs = commonArguments.exLibs.map(file -> Library.File(file));
+		final exLibs = commonArguments.exLibs.map(file -> LibrarySpecifier.File(file));
 		final libs = exLibs.concat(basicLibraries);
 
 		return {

@@ -1,16 +1,38 @@
 package hlc_compiler;
 
 /**
-	List of library files, both for build and runtime.
+	List of libraries to be linked.
 **/
-typedef LibraryList = {
+@:notNull @:forward
+abstract LibraryList(Array<Library>) from Array<Library> {
 	/**
-		Files to be linked when compiling.
+		Function that returns a specifier if `library` should be statically linked.
 	**/
-	final buildtime: Array<Library>;
+	static final getStatic = (library: Library) -> Maybe.from(switch library {
+		case Static(nameOrFile): nameOrFile;
+		case Shared(_): null;
+		case StaticShared(file, name):
+			(if (name.isSome()) Name(name.unwrap()) else File(file) : LibrarySpecifier);
+	});
 
 	/**
-		Files to be linked when run.
+		Function that returns a file if `library` is required in runtime.
 	**/
-	final runtime: Array<FileRef>;
-};
+	static final getShared = (library: Library) -> Maybe.from(switch library {
+		case Static(_): null;
+		case Shared(file): file;
+		case StaticShared(file, _): file;
+	});
+
+	/**
+		@return List of libraries required in buildtime.
+	**/
+	public inline function filterStatic()
+		return this.filterMap(getStatic);
+
+	/**
+		@return List of libraries required in runtime.
+	**/
+	public inline function filterShared()
+		return this.filterMap(getShared);
+}
