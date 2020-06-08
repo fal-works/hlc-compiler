@@ -1,7 +1,5 @@
 package hlc_compiler.gcc;
 
-import hlc_compiler.Tools.quoteCommandArgument;
-
 /**
 	Static functions for creating/formatting gcc arguments.
 **/
@@ -60,7 +58,7 @@ class GccArgumentTools {
 		argLines.push('-L ${arguments.libraryDirectory.path.quote()}');
 
 		for (option in arguments.exOptions)
-			argLines.push(quoteCommandArgument(option));
+			argLines.push(Environment.system.quoteCommandArgument(option));
 
 		for (file in arguments.files)
 			argLines.push(file.path.quote());

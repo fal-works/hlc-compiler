@@ -1,7 +1,5 @@
 package hlc_compiler;
 
-import hlc_compiler.Environment.system;
-
 class ArgumentTools {
 	/**
 		Validates arguments that were passed in the command line
@@ -30,10 +28,7 @@ class ArgumentTools {
 
 		var srcDir = currentDirectory;
 		var outFile = currentDirectory.path.makeFilePath("hlc_bin/main");
-		var libDir = switch system {
-			case Windows: findHashlinkDirectory().or(currentDirectory);
-			case Mac: DirectoryPath.from('/usr/local/lib/').tryFind().or(currentDirectory);
-		};
+		var libDir = Environment.system.getDefaultLibDir(currentDirectory);
 		var includeDir: Maybe<DirectoryRef> = Maybe.none();
 		var copyRuntimeFiles = false;
 		var exFiles: Array<FileRef> = [];
@@ -71,11 +66,8 @@ class ArgumentTools {
 			}
 		}
 
-		// Suggestion for `includeDir` if not provided
-		if (includeDir.isNone()) switch system {
-			case Windows: includeDir = libDir.path.concat("include").tryFind();
-			default:
-		}
+		if (includeDir.isNone())
+			includeDir = Environment.system.suggestIncludeDir(libDir);
 
 		if (verbose) {
 			Sys.println('Provided arguments:\n  ${rawArguments.join(" | ")}\n');
@@ -105,33 +97,6 @@ class ArgumentTools {
 			saveCmdPath: saveCmdPath,
 			verbose: verbose
 		};
-	}
-
-	/**
-		Tries to find HashLink installation directory from environment variables:
-		- `HASHLINKPATH`
-		- `HASHLINK`
-		- `HASHLINK_BIN`
-	**/
-	static function findHashlinkDirectory(): Maybe<DirectoryRef> {
-		var libDir: Maybe<DirectoryRef> = Maybe.none();
-
-		[
-			"HASHLINKPATH",
-			"HASHLINK",
-			"HASHLINK_BIN"
-		].forFirst(s -> {
-			final envVarValue = Maybe.from(Sys.getEnv(s));
-			if (envVarValue.isNone()) return false;
-
-			final dir = DirectoryPath.from(envVarValue.unwrap()).tryFind();
-			if (dir.isNone()) return false;
-
-			libDir = dir;
-			return true;
-		}, s -> {});
-
-		return libDir;
 	}
 
 	/**

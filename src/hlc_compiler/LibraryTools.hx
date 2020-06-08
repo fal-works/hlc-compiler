@@ -1,7 +1,5 @@
 package hlc_compiler;
 
-import hlc_compiler.Environment.system;
-
 class LibraryTools {
 	/**
 		@return Library files required by `srcDir/hlc.json`.
@@ -14,11 +12,12 @@ class LibraryTools {
 		final libs: Array<Library> = [];
 
 		final hlcJsonData: HlcJson = haxe.Json.parse(hlcJsonFile.getContent());
+		final systemType = Environment.system.type;
 
 		for (lib in hlcJsonData.libs) {
 			switch lib {
 				case "std":
-					switch system {
+					switch systemType {
 						case Windows:
 							libs.push(Static(Name("libhl"))); // "-lhl" seems to hit another file
 							libs.push(Shared(libDir.findFile("libhl.dll")));
@@ -27,7 +26,7 @@ class LibraryTools {
 							// Seems it's not required at runtime
 					}
 				case "openal":
-					switch system {
+					switch systemType {
 						case Windows:
 							libs.push(Static(Name("openal")));
 							libs.push(Shared(libDir.findFile("openal.hdll")));
@@ -38,7 +37,7 @@ class LibraryTools {
 							libs.push(Shared(libDir.findFile("openal.hdll")));
 					}
 				case "sdl":
-					switch system {
+					switch systemType {
 						case Windows:
 							libs.push(Static(Name("sdl2")));
 							libs.push(Shared(libDir.findFile("sdl.hdll")));
@@ -50,7 +49,7 @@ class LibraryTools {
 					}
 				default:
 					final hdllPath = libDirPath.makeFilePath('$lib.hdll');
-					switch system {
+					switch systemType {
 						case Windows:
 							// final libPath = libDirPath.makeFilePath('$lib.lib'); // Don't know why but *.lib files don't work
 							final dllPath = libDirPath.makeFilePath('$lib.dll');
