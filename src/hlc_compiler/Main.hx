@@ -1,5 +1,6 @@
 package hlc_compiler;
 
+import greeter.*;
 import hlc_compiler.gcc.GccCommand;
 
 class Main {
@@ -7,11 +8,27 @@ class Main {
 		Entry point of `hlc_compiler` package.
 	**/
 	public static function main() {
-		final rawArguments = Sys.args();
-		if (showInstruction(rawArguments)) return;
+		final optionRules = OptionParseRules.from([
+			"--version" => [],
+			"--srcDir" => [Space],
+			"--outFile" => [Space],
+			"--libDir" => [Space],
+			"--includeDir" => [Space],
+			"--copyRuntimeFiles" => [],
+			"--exFiles" => [Space],
+			"--exLibs" => [Space],
+			"--saveCmd" => [Space],
+			"--verbose" => [],
+		]);
+		final argList = CommandLineInterface.current.parseArguments(optionRules);
+		final args = argList.summary();
+
+		if (showInstruction(argList, args)) return;
+
+		Sys.println(args.toString());
 
 		try {
-			final arguments = ArgumentTools.validateRaw(rawArguments);
+			final arguments = ArgumentTools.validateRaw(args);
 			run(arguments);
 		} catch (e:Dynamic) {
 			Sys.println("Caught exception:");
@@ -75,13 +92,13 @@ class Main {
 		Shows instruction info under some conditions.
 		@return `true` if anything is shown.
 	**/
-	static function showInstruction(rawArguments: Array<String>): Bool {
-		switch rawArguments.length {
+	static function showInstruction(argList: CommandArgumentList, argsSummary: CommandArgumentSummary): Bool {
+		switch argList.length {
 			case 0 | 1:
 				Common.showVersion(true, true);
 				Common.showHint(false, true);
 				return true;
-			case 2 if (rawArguments[0] == "--version"):
+			case 2 if (argsSummary.optionValuesMap.exists("--version")):
 				Common.showVersion(true, true);
 				return true;
 			default:

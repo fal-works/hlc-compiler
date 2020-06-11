@@ -12,6 +12,7 @@
 	],
 	"dependencies": {
 		"sinker": "",
+		"greeter": "",
 		"locator": ""
 	}
 }

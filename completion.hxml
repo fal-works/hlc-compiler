@@ -1,5 +1,6 @@
 --class-path src
 --library sinker
+--library greeter
 --library locator
 --main hlc_compiler.Main
 --macro nullSafety("hlc_compiler", Strict)

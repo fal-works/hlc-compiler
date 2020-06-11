@@ -1,78 +1,70 @@
 package hlc_compiler;
 
+import greeter.*;
+import locator.FileRef.fromStringCallback as toFile;
+import locator.FilePath.fromStringCallback as toFilePath;
+import locator.DirectoryRef.fromStringCallback as toDir;
+
 class ArgumentTools {
 	/**
 		Validates arguments that were passed in the command line
 	**/
-	public static function validateRaw(rawArguments: Array<String>): Arguments {
-		// The last argument should be the location where haxelib was called
-		rawArguments = rawArguments.copy();
-		final lastArgument = rawArguments.pop();
-		if (lastArgument.isNone()) throw "Passed no arguments."; // should not be reached
-		final currentDirectory = DirectoryRef.from(lastArgument.unwrap());
+	public static function validateRaw(args: CommandArgumentSummary): Arguments {
+		final commandValues = args.commandValues.copy();
+		final options = args.optionValuesMap;
+
+		final lastCommandValue = commandValues.pop();
+
+		// The last value should be the location where haxelib was called
+		if (lastCommandValue.isNone())
+			throw 'Cannot get current working directory. Provided arguments: ${Sys.args()}';
+		final currentDirectory = DirectoryRef.from(lastCommandValue.unwrap());
 		currentDirectory.setAsCurrent();
-		final rawArgumentsLength = rawArguments.length;
-		var index = 0;
 
-		inline function hasNext()
-			return index < rawArgumentsLength;
+		if (options.exists("--version"))
+			Common.showVersion(false, true);
 
-		inline function next()
-			return rawArguments[index++];
+		final srcDir = options.one("--srcDir").map(toDir).or(currentDirectory);
 
-		inline function nextOption(option: String) {
-			if (!hasNext())
-				throw 'Missing argument for option: $option';
-			return next();
-		}
+		final outFile = options.one("--outFile")
+			.map(toFilePath)
+			.orElse(() -> currentDirectory.makeFilePath("hlc_bin/main"));
 
-		var srcDir = currentDirectory;
-		var outFile = currentDirectory.path.makeFilePath("hlc_bin/main");
-		var libDir = Environment.system.getDefaultLibDir(currentDirectory);
-		var includeDir: Maybe<DirectoryRef> = Maybe.none();
-		var copyRuntimeFiles = false;
-		var exFiles: Array<FileRef> = [];
-		var exLibs: Array<FileRef> = [];
-		var exOptions: Array<String> = [];
-		var saveCmdPath: Maybe<FilePath> = Maybe.none();
-		var verbose = false;
+		final libDir = options.one("--libDir")
+			.map(toDir)
+			.orElse(() -> Environment.system.getDefaultLibDir(currentDirectory));
 
-		while (hasNext()) {
-			switch (next()) {
-				case "--srcDir":
-					srcDir = DirectoryRef.from(nextOption("--srcDir [directory path]"));
-				case "--outFile":
-					outFile = FilePath.from(nextOption("--outFile [file path]"));
-				case "--libDir":
-					libDir = DirectoryRef.from(nextOption("--libDir [directory path]"));
-				case "--includeDir":
-					includeDir = Maybe.from(DirectoryRef.from(nextOption("--includeDir [directory path]")));
-				case "--copyRuntimeFiles":
-					copyRuntimeFiles = true;
-				case "--exFiles":
-					exFiles = nextOption("--exFiles [comma-separated file paths]").split(",")
-						.map(FileRef.fromStringCallback);
-				case "--exLibs":
-					exLibs = nextOption("--exLibs [comma-separated file paths]").split(",")
-						.map(FileRef.fromStringCallback);
-				case "--saveCmd":
-					saveCmdPath = FilePath.from(nextOption("--saveCmd [file path]"));
-				case "--verbose":
-					verbose = true;
-				case "--version":
-					Common.showVersion(false, true);
-				case otherValue:
-					exOptions.push(otherValue);
-			}
-		}
+		final includeDir = options.one("--includeDir")
+			.map(toDir)
+			.coalesceWith(() -> Environment.system.suggestIncludeDir(libDir));
 
-		if (includeDir.isNone())
-			includeDir = Environment.system.suggestIncludeDir(libDir);
+		final copyRuntimeFiles = options.exists("--copyRuntimeFiles");
+		final exFiles = options.oneOrMore("--exFiles").or([]).map(toFile);
+		final exLibs = options.oneOrMore("--exLibs").or([]).map(toFile);
+		final saveCmdPath = options.one("--saveCmd").map(toFilePath); // TODO: make optional
+		final verbose = options.exists("--verbose");
+
+		final exOptions: Array<String> = [];
+
+		final hlcCompilerOptionSet: Array<CommandOption> = [
+			"--version",
+			"--srcDir",
+			"--outFile",
+			"--libDir",
+			"--includeDir",
+			"--copyRuntimeFiles",
+			"--exFiles",
+			"--exLibs",
+			"--saveCmd",
+			"--verbose"
+		];
+
+		for (option in options.keys())
+			if (!hlcCompilerOptionSet.has(option)) exOptions.push(option.toString());
 
 		if (verbose) {
-			Sys.println('Provided arguments:\n  ${rawArguments.join(" | ")}\n');
 			Sys.println('Set $currentDirectory as current directory.\n');
-			Sys.println('Validated arguments:');
+			Sys.println('Arguments:');
 			Sys.println('  srcDir:           $srcDir');
 			Sys.println('  outFile:          $outFile');
 			Sys.println('  libDir:           $libDir');
