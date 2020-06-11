@@ -1,7 +1,5 @@
 package hlc_compiler;
 
-import hlc_compiler.gcc.GccCommand;
-
 class SaveCommandTools {
 	/**
 		Saves commands (including `gcc`) as a Windows batch file (`.bat`).
@@ -9,11 +7,14 @@ class SaveCommandTools {
 	public static function saveGccBat(
 		savePath: FilePath,
 		outDir: DirectoryRef,
-		gccCommand: GccCommand,
+		gccCommand: CommandLine,
 		filesToCopy: Array<FileRef>
 	): Void {
-		final gccCommandBlock = ["gcc"].concat(gccCommand.getArgumentLines()).join(" ^\n");
-		final content = BatBuilder.build(outDir, gccCommandBlock, filesToCopy);
+		final content = BatBuilder.build(
+			outDir,
+			gccCommand.format(Cli.dos),
+			filesToCopy
+		);
 
 		saveFile(savePath, content, "bat");
 	}

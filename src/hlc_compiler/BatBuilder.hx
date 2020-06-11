@@ -9,7 +9,7 @@ class BatBuilder {
 		compileCommandBlock: String,
 		filesToCopy: FileList
 	): String {
-		final outDirStr = outDir.path.quote();
+		final outDirStr = outDir.path.quote(Cli.dos);
 		final mkOutDirCmd = 'if not exist $outDirStr ^\nmkdir $outDirStr';
 		final mkDirCatcher = exitIfError("Failed to prepare output directory. Aborting.");
 
@@ -24,7 +24,7 @@ class BatBuilder {
 		if (0 < filesToCopy.length) {
 			contents.push("echo Copying runtime files...");
 			for (file in filesToCopy) {
-				final copyCommand = 'copy /y ${file.path.quote()} $outDirStr > nul';
+				final copyCommand = 'copy /y ${file.path.quote(Cli.dos)} $outDirStr > nul';
 				final catcher = exitIfError("Copy failed. Aborting.");
 				contents.push('$copyCommand\n$catcher');
 			}

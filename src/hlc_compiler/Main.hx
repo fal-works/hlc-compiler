@@ -1,8 +1,5 @@
 package hlc_compiler;
 
-import greeter.*;
-import hlc_compiler.gcc.GccCommand;
-
 class Main {
 	/**
 		Entry point of `hlc_compiler` package.
@@ -20,7 +17,7 @@ class Main {
 			"--saveCmd" => [Space],
 			"--verbose" => [],
 		]);
-		final argList = CommandLineInterface.current.parseArguments(optionRules);
+		final argList = Cli.current.parseArguments(optionRules);
 		final args = argList.summary();
 
 		if (showInstruction(argList, args)) return;
@@ -82,7 +79,7 @@ class Main {
 		);
 
 		return {
-			gccCommand: GccCommand.from(arguments, requiredLibraries.filterStatic()),
+			gccCommand: GccCommandBuilder.build(arguments, requiredLibraries.filterStatic(), Cli.current),
 			filesToCopy: if (!arguments.copyRuntimeFiles) [] else
 				arguments.exLibs.concat(requiredLibraries.filterShared())
 		}
@@ -108,6 +105,6 @@ class Main {
 }
 
 private typedef PreparedData = {
-	final gccCommand: GccCommand;
+	final gccCommand: CommandLine;
 	final filesToCopy: FileList;
 };
