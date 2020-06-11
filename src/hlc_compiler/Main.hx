@@ -79,7 +79,11 @@ class Main {
 		);
 
 		return {
-			gccCommand: GccCommandBuilder.build(arguments, requiredLibraries.filterStatic(), Cli.current),
+			gccCommand: GccCommandBuilder.build(
+				arguments,
+				requiredLibraries.filterStatic(),
+				Cli.current
+			),
 			filesToCopy: if (!arguments.copyRuntimeFiles) [] else
 				arguments.exLibs.concat(requiredLibraries.filterShared())
 		}
@@ -89,7 +93,10 @@ class Main {
 		Shows instruction info under some conditions.
 		@return `true` if anything is shown.
 	**/
-	static function showInstruction(argList: CommandArgumentList, argsSummary: CommandArgumentSummary): Bool {
+	static function showInstruction(
+		argList: CommandArgumentList,
+		argsSummary: CommandArgumentSummary
+	): Bool {
 		switch argList.length {
 			case 0 | 1:
 				Common.showVersion(true, true);

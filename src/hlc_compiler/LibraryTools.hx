@@ -59,7 +59,8 @@ class LibraryTools {
 						case Mac:
 							// TODO: test
 							// final aPath = libDirPath.makeFilePath('$lib.a').or(libDirPath.makeFilePath('lib$lib.a'));
-							final dylibPath = libDirPath.makeFilePath('$lib.dylib').or(libDirPath.makeFilePath('lib$lib.dylib'));
+							final dylibPath = libDirPath.makeFilePath('$lib.dylib')
+								.or(libDirPath.makeFilePath('lib$lib.dylib'));
 							libs.push(Static(Name(lib)));
 							libs.push(Shared(FileRef.from(hdllPath.or(dylibPath))));
 					}
