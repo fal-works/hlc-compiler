@@ -25,7 +25,7 @@ class Main {
 		Sys.println(args.toString());
 
 		try {
-			final arguments = ArgumentTools.validateRaw(args);
+			final arguments = ArgumentTools.validateRaw(args, optionRules);
 			run(arguments);
 		} catch (e:Dynamic) {
 			Sys.println("Caught exception:");

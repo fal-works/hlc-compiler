@@ -9,7 +9,10 @@ class ArgumentTools {
 	/**
 		Validates arguments that were passed in the command line
 	**/
-	public static function validateRaw(args: CommandArgumentSummary): Arguments {
+	public static function validateRaw(
+		args: CommandArgumentSummary,
+		optionParseRules: OptionParseRules
+	): Arguments {
 		final commandValues = args.commandValues.copy();
 		final options = args.optionValuesMap;
 
@@ -46,19 +49,7 @@ class ArgumentTools {
 
 		final exOptions: Array<String> = [];
 
-		final hlcCompilerOptionSet: Array<CommandOption> = [
-			"--version",
-			"--srcDir",
-			"--outFile",
-			"--libDir",
-			"--includeDir",
-			"--copyRuntimeFiles",
-			"--exFiles",
-			"--exLibs",
-			"--saveCmd",
-			"--verbose"
-		];
-
+		final hlcCompilerOptionSet = optionParseRules.getAllOptions();
 		for (option in options.keys())
 			if (!hlcCompilerOptionSet.has(option)) exOptions.push(option.toString());
 
