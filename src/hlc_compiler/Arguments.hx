@@ -3,7 +3,22 @@ package hlc_compiler;
 /**
 	Half-validated arguments that have been passed to hlc-compiler.
 **/
-typedef Arguments = {
+@:notNull @:forward
+abstract Arguments(Data) from Data {
+	public inline function print(indent = "") {
+		Sys.println('${indent}srcDir:           ${this.srcDir}');
+		Sys.println('${indent}outFile:          ${this.outFile}');
+		Sys.println('${indent}libDir:           ${this.libDir}');
+		Sys.println('${indent}includeDir:       ${this.includeDir}');
+		Sys.println('${indent}copyRuntimeFiles: ${this.copyRuntimeFiles}');
+		Sys.println('${indent}exFiles:          ${this.exFiles}');
+		Sys.println('${indent}exLibs:           ${this.exLibs}');
+		Sys.println('${indent}exOptions:        ${this.exOptions}');
+		Sys.println('${indent}saveCmd:          ${this.saveCmdPath.toString()}');
+	}
+}
+
+private typedef Data = {
 	/**
 		Directory containing `main.c` and `hlc.json`.
 	**/

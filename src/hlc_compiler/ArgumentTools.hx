@@ -62,22 +62,7 @@ class ArgumentTools {
 		for (option in options.keys())
 			if (!hlcCompilerOptionSet.has(option)) exOptions.push(option.toString());
 
-		if (verbose) {
-			Sys.println('Set $currentDirectory as current directory.\n');
-			Sys.println('Arguments:');
-			Sys.println('  srcDir:           $srcDir');
-			Sys.println('  outFile:          $outFile');
-			Sys.println('  libDir:           $libDir');
-			Sys.println('  includeDir:       $includeDir');
-			Sys.println('  copyRuntimeFiles: $copyRuntimeFiles');
-			Sys.println('  exFiles:          $exFiles');
-			Sys.println('  exLibs:           $exLibs');
-			Sys.println('  exOptions:        $exOptions');
-			Sys.println('  saveCmd:          ${saveCmdPath.toString()}');
-			Sys.println("");
-		}
-
-		return {
+		final arguments: Arguments = {
 			srcDir: srcDir,
 			outFile: outFile,
 			libDir: libDir,
@@ -89,6 +74,15 @@ class ArgumentTools {
 			saveCmdPath: saveCmdPath,
 			verbose: verbose
 		};
+
+		if (verbose) {
+			Sys.println('Set $currentDirectory as current directory.\n');
+			Sys.println('Arguments:');
+			arguments.print("  ");
+			Sys.println("");
+		}
+
+		return arguments;
 	}
 
 	/**
