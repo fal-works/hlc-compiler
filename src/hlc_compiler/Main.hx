@@ -9,6 +9,7 @@ class Main {
 			"--version" => [],
 			"--srcDir" => [Space],
 			"--outFile" => [Space],
+			"-o" => [Space],
 			"--libDir" => [Space],
 			"--includeDir" => [Space],
 			"--copyRuntimeFiles" => [],
@@ -18,7 +19,7 @@ class Main {
 			"--verbose" => [],
 		]);
 		final argList = Cli.current.parseArguments(optionRules);
-		final args = argList.summary();
+		final args = argList.summary([ "-o" => "--outFile"]);
 
 		if (showInstruction(argList, args)) return;
 
