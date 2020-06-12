@@ -1,7 +1,5 @@
 package hlc_compiler;
 
-import haxe.SysTools;
-
 class Environment {
 	/**
 		The system on which the program is running.
@@ -18,8 +16,6 @@ class Systems {
 	**/
 	public static final windows: System = {
 		type: Windows,
-		lineSeparator: "^".code,
-		quoteCommandArgument: s -> SysTools.quoteWinArg(s.replace("/", "\\"), true),
 		getDefaultLibDir: curDir -> searchHashLinkDirectory().or(curDir),
 		suggestIncludeDir: libDir -> libDir.path.concat("include").tryFind()
 	};
@@ -29,8 +25,6 @@ class Systems {
 	**/
 	public static final mac: System = {
 		type: Mac,
-		lineSeparator: "\\".code,
-		quoteCommandArgument: SysTools.quoteUnixArg,
 		getDefaultLibDir: curDir -> DirectoryPath.from('/usr/local/lib/')
 			.tryFind()
 			.or(curDir),
@@ -45,7 +39,10 @@ class Systems {
 		return switch name {
 			case "Windows": Systems.windows;
 			case "Mac": Systems.mac;
-			default: throw 'Unsupported system: $name';
+			default:
+				Sys.println('[WARNING] $name system is not yet supported.');
+				Sys.println('[WARNING] Running in Mac mode, but this is not tested on $name.');
+				Systems.mac;
 		}
 	}
 
@@ -80,17 +77,6 @@ typedef System = {
 	final type: SystemType;
 
 	/**
-		Character code for separating one command line into multiple lines.
-	**/
-	final lineSeparator: Int;
-
-	/**
-		@return String that can be used as a single command line argument.
-		On Windows, slash is replaced with backslash.
-	**/
-	final quoteCommandArgument: (s: String) -> String;
-
-	/**
 		@return Default direcotry path of libraries.
 	**/
 	final getDefaultLibDir: (curDir: DirectoryRef) -> DirectoryRef;
@@ -102,7 +88,7 @@ typedef System = {
 }
 
 /**
-	System types that are supported by hlc-compiler.
+	System types that are currently supported by hlc-compiler.
 **/
 enum abstract SystemType(String) {
 	final Windows;
