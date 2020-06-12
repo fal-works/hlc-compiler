@@ -8,19 +8,19 @@ class GccCommandBuilder {
 		Converts provided data to `CommandLine`.
 	**/
 	public static function build(
-		commonArguments: Arguments,
+		arguments: Arguments,
 		basicLibraries: Array<LibrarySpecifier>,
 		cli: Cli
 	): CommandLine {
-		final srcDir = commonArguments.srcDir;
-		final outFile = commonArguments.outFile;
-		final libDir = commonArguments.libDir;
-		final includeDir = commonArguments.includeDir;
-		final exOptions = commonArguments.exOptions;
+		final srcDir = arguments.srcDir;
+		final outFile = arguments.outFile;
+		final libDir = arguments.libDir;
+		final includeDir = arguments.includeDir;
+		final exOptions = arguments.exOptions;
 
 		final srcFile = srcDir.path.makeFilePath("main.c").find();
-		final files = [srcFile].concat(commonArguments.exFiles);
-		final libs = commonArguments.exLibs.map(LibrarySpecifier.File).concat(basicLibraries);
+		final files = [srcFile].concat(arguments.exFiles);
+		final libs = arguments.exLibs.map(LibrarySpecifier.File).concat(basicLibraries);
 
 		final args: CommandArgumentList = [];
 
