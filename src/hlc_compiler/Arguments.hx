@@ -14,9 +14,7 @@ abstract Arguments(Data) from Data {
 		Validates file/directory paths and completes them with default values.
 		@return Arguments in `Arguments` representation.
 	**/
-	public static function from(
-		args: CommandArgumentSummary
-	): Arguments {
+	public static function from(args: CommandArgumentSummary): Arguments {
 		final commandValues = args.commandValues.copy();
 		final options = args.optionValuesMap;
 
@@ -34,13 +32,30 @@ abstract Arguments(Data) from Data {
 		final srcDir = options.one("--srcDir").map(toDir).or(currentDirectory);
 		final srcFile = srcDir.findFile(options.one("--srcFile").or("main.c"));
 
-		final outFile = options.one("--outFile")
-			.map(toFilePath)
-			.orElse(() -> currentDirectory.makeFilePath("hlc_bin/main"));
+		final outDirOption = options.one("--outDir");
+		final outFileOption = options.one("--outFile");
+		final defaultOutFileName = srcFile.getNameWithoutExtension();
+		var outDir: DirectoryPath;
+		var outFile: FilePath;
+		switch outDirOption.toOption() {
+			case Some(outDirStr):
+				outDir = DirectoryPath.from(outDirStr);
+				outFile = outDir.makeFilePath(outFileOption.or(defaultOutFileName));
+			case None:
+				switch outFileOption.toOption() {
+					case Some(outFileStr):
+						outFile = FilePath.from(outFileStr);
+						outDir = outFile.getParentPath();
+					case None:
+						outDir = currentDirectory.path;
+						outFile = outDir.makeFilePath(defaultOutFileName);
+				}
+		}
 
 		final libDir = options.one("--libDir")
 			.map(toDir)
-			.orElse(() -> CommandOptions.suggestHashLinkLibraryDirectory().or(currentDirectory));
+			.orElse(() -> CommandOptions.suggestHashLinkLibraryDirectory()
+				.or(currentDirectory));
 
 		final includeDir = options.one("--includeDir")
 			.map(toDir)
@@ -61,6 +76,7 @@ abstract Arguments(Data) from Data {
 		final arguments: Arguments = {
 			srcDir: srcDir,
 			srcFile: srcFile,
+			outDir: outDir,
 			outFile: outFile,
 			libDir: libDir,
 			includeDir: includeDir,
@@ -86,6 +102,8 @@ abstract Arguments(Data) from Data {
 	public inline function format(indent = ""): String {
 		var s = "";
 		s += '${indent}srcDir:           ${this.srcDir}\n';
+		s += '${indent}srcFile:          ${this.srcFile}\n';
+		s += '${indent}outDir:           ${this.outDir}\n';
 		s += '${indent}outFile:          ${this.outFile}\n';
 		s += '${indent}libDir:           ${this.libDir}\n';
 		s += '${indent}includeDir:       ${this.includeDir}\n';
@@ -119,6 +137,11 @@ private typedef Data = {
 		Output file path.
 	**/
 	final outFile: FilePath;
+
+	/**
+		Output directory path.
+	**/
+	final outDir: DirectoryPath;
 
 	/**
 		Directory containing `*.hdll` and other library files.

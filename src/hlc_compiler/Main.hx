@@ -47,7 +47,7 @@ class Main {
 		final compileCommand = prepared.compileCommand;
 		final filesToCopy = prepared.filesToCopy;
 
-		final outDir = arguments.outFile.getParentPath().findOrCreate(); // Prepare dir before compiling
+		final outDir = arguments.outDir.findOrCreate(); // Prepare dir before compiling
 
 		Sys.println("Compiling...");
 		final errorLevel = compileCommand.run(verbose);
@@ -61,6 +61,7 @@ class Main {
 
 		if (0 < filesToCopy.length) {
 			Sys.println("Copying runtime files...");
+			if (verbose) Sys.println('${filesToCopy.toString()} => ${outDir.path}');
 			filesToCopy.copyTo(outDir.path);
 		}
 
