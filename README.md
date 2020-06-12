@@ -41,25 +41,37 @@ File/directory paths can be either absolute or relative from the current working
 
 ### hlc-compiler Options
 
+Basically there is no "mandatory" options, however sometimes you might have to specify some options explicitly depending
+ on your environment.
+
 #### `--srcDir [path]`
 
-Directory where your HashLink/C code (including `main.c` and `hlc.json`) are located.
+Directory where your HashLink/C code (including `main.c` and `hlc.json`) are located.  
 Defaults to `./` (current working directory).
 
 #### `--srcFile [path]`
 
-File path to the `*.c` file to be compiled.
+File path to the `*.c` file to be compiled.  
 If `--srcDir` is specified, `--srcFile` path should be either absolute or relative from `--srcDir` directory.  
 Defaults to `main.c`.
 
-#### `--outFile [path]`
+#### `--outDir [path]`
 
-File path of the output executable.
-Defaults to `./hlc_bin/main`.
+Directory path of the output executable.  
+- If not specified and `--outFile` is specified, `--outDir` defaults to the parent directory of `--outFile`.  
+- If both not specified, defaults to the current working directory.
+
+#### `--outFile [path]` / `-o [path]`
+
+File path of the output executable.  
+If `--outDir` is sepcified as well, `--outFile` should be either absolute or relative from `--outDir` directory.  
+Defaults to `./main`.
 
 #### `--libDir [path]`
 
 Directory that contains required library files (`*.hdll` etc).
+
+If not specified:
 
 - On windows, hlc-compiler tries to find the HashLink installation directory from your environment variables (`HASHLINKPATH`, `HASHLINK` or `HASHLINK_BIN`) as it should contain the files in question.
 - On Mac, defaults to `/usr/local/lib/` if it exists, as the library files are typically located here.
