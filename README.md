@@ -92,15 +92,18 @@ This will be passed to `gcc` as an `-I` option.
 Copies files that are required at runtime (such as dynamic linked libraries) to output directory.  
 Not set at default.
 
-#### `--exFile [paths]`
+#### `--exFile [path]`
 
 Additional file to be passed to `gcc` (for instance you might have to pass `dbghelp.dll`).  
 Can be multiple. Not copied even if `--copyRuntimeFiles` is set.
 
-#### `--exLib [paths]`
+#### `--exLib [path]`
 
-Additional files to be passed to `gcc`.  
+Additional library file to be passed to `gcc`.  
 Can be multiple. Copied if `--copyRuntimeFiles` is set.
+
+As well as other options the path should be either absolute or relative from the current working directory.  
+If you want the file to be automatically searched by `gcc`, use the original `-l` option instead (however files specified with `-l` will not be copied even if `--copyRuntimeFiles` is set).
 
 #### `--saveCmd [path]`
 
