@@ -10,9 +10,10 @@ class BatchBuilder {
 		filesToCopy: FileList,
 		relative: Bool
 	): String {
+		final cli = Cli.dos;
 		final outDirStr = switch relative {
-			case false: outDir.path.quote(Cli.dos);
-			case true: Cli.dos.quoteArgument(outDir.path.toRelative());
+			case false: outDir.path.quote(cli);
+			case true: cli.quoteArgument(outDir.path.toRelative());
 		};
 		final mkOutDirCmd = 'if not exist $outDirStr ^\nmkdir $outDirStr';
 		final mkDirCatcher = exitIfError("Failed to prepare output directory. Aborting.");
@@ -29,8 +30,8 @@ class BatchBuilder {
 			contents.push("echo Copying runtime files...");
 			for (file in filesToCopy) {
 				final filePath = switch relative {
-					case false: file.path.quote(Cli.dos);
-					case true: Cli.dos.quoteArgument(file.path.toRelative());
+					case false: file.path.quote(cli);
+					case true: cli.quoteArgument(file.path.toRelative());
 				};
 				final copyCommand = 'copy /y $filePath $outDirStr > nul';
 				final catcher = exitIfError("Copy failed. Aborting.");
