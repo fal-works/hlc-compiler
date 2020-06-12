@@ -12,7 +12,7 @@ class LibraryTools {
 		final libs: Array<Library> = [];
 
 		final hlcJsonData: HlcJson = haxe.Json.parse(hlcJsonFile.getContent());
-		final systemType = Environment.system.type;
+		final systemType = Environment.systemType;
 
 		for (lib in hlcJsonData.libs) {
 			switch lib {

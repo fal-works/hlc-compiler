@@ -39,11 +39,11 @@ abstract Arguments(Data) from Data {
 
 		final libDir = options.one("--libDir")
 			.map(toDir)
-			.orElse(() -> Environment.system.getDefaultLibDir(currentDirectory));
+			.orElse(() -> CommandOptions.suggestHashLinkLibraryDirectory().or(currentDirectory));
 
 		final includeDir = options.one("--includeDir")
 			.map(toDir)
-			.coalesceWith(() -> Environment.system.suggestIncludeDir(libDir));
+			.coalesceWith(() -> CommandOptions.suggestHashLinkIncludeDirectory(libDir));
 
 		final copyRuntimeFiles = options.exists("--copyRuntimeFiles");
 		final exFiles = options.oneOrMore("--exFiles").or([]).map(toFile);

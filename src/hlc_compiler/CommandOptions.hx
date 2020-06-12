@@ -32,4 +32,45 @@ class CommandOptions {
 	**/
 	public static final aliases: Map<CommandOption, CommandOption> = ["-o" => "--outFile"];
 
+	/**
+		@return Default direcotry path of HashLink-bundled libraries (`*.hdll` etc).
+	**/
+	public static function suggestHashLinkLibraryDirectory(): Maybe<DirectoryRef> {
+		return switch Environment.systemType {
+			case Windows: searchHashLinkDirectory();
+			case Mac: Maybe.none();
+		}
+	}
+
+	/**
+		@return Default directory path of HashLink files to be included (`*.h`/`*.c`).
+	**/
+	public static function suggestHashLinkIncludeDirectory(
+		libDir: DirectoryRef
+	): Maybe<DirectoryRef> {
+		return switch Environment.systemType {
+			case Windows: libDir.tryFindDirectory("./include");
+			case Mac: Maybe.none();
+		}
+	}
+
+	/**
+		List of environment variable names for searching HashLink installation directory.
+	**/
+	static final hlPathEnvVarCandidates = [
+		"HASHLINKPATH",
+		"HASHLINK",
+		"HASHLINK_BIN"
+	];
+
+	/**
+		Tries to find HashLink installation directory from environment variables.
+	**/
+	static function searchHashLinkDirectory(): Maybe<DirectoryRef> {
+		return hlPathEnvVarCandidates.mapFirst(varName -> {
+			final envVarValue = Maybe.from(Sys.getEnv(varName));
+			if (envVarValue.isNone()) return Maybe.none();
+			return DirectoryPath.from(envVarValue.unwrap()).tryFind();
+		});
+	}
 }
