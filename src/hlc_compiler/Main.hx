@@ -1,5 +1,7 @@
 package hlc_compiler;
 
+import hlc_compiler.save.SaveCommandTools;
+
 class Main {
 	/**
 		Entry point of this package.
