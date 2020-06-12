@@ -8,12 +8,14 @@ class SaveCommandTools {
 		savePath: FilePath,
 		outDir: DirectoryRef,
 		compileCommand: CommandLine,
-		filesToCopy: Array<FileRef>
+		filesToCopy: Array<FileRef>,
+		relative: Bool
 	): Void {
 		final content = BatBuilder.build(
 			outDir,
 			compileCommand.format(Cli.dos),
-			filesToCopy
+			filesToCopy,
+			relative
 		);
 
 		saveFile(savePath, content, "bat");

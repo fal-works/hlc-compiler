@@ -22,17 +22,26 @@ class GccCommandBuilder {
 		final files = [srcFile].concat(arguments.exFiles);
 		final libs = arguments.exLibs.map(LibrarySpecifier.File).concat(basicLibraries);
 
+		final filePath = switch arguments.relative {
+			case false: (path: FilePath) -> path.validate(cli).toString();
+			case true: (path: FilePath) -> path.validate(cli).toRelative();
+		};
+		final dirPath = switch arguments.relative {
+			case false: (path: DirectoryPath) -> path.validate(cli).toString();
+			case true: (path: DirectoryPath) -> path.validate(cli).toRelative();
+		};
+
 		final args: CommandArgumentList = [];
 
-		args.push(OptionParameter("-o", Space, outFile.validate(cli)));
+		args.push(OptionParameter("-o", Space, filePath(outFile)));
 
-		args.push(OptionParameter("-I", Space, srcDir.path.validate(cli)));
+		args.push(OptionParameter("-I", Space, dirPath(srcDir.path)));
 		if (hlIncludeDir.isSome()) {
-			final path = hlIncludeDir.unwrap().path.validate(cli);
+			final path = dirPath(hlIncludeDir.unwrap().path);
 			args.push(OptionParameter("-I", Space, path));
 		}
 
-		args.push(OptionParameter("-L", Space, hlLibDir.path.validate(cli)));
+		args.push(OptionParameter("-L", Space, dirPath(hlLibDir.path)));
 
 		for (exOption in exOptions)
 			args.push(Parameter(exOption));
@@ -40,10 +49,13 @@ class GccCommandBuilder {
 			args.push(Parameter("-std=c11"));
 
 		for (file in files)
-			args.push(Parameter(file.path.validate(cli)));
+			args.push(Parameter(filePath(file.path)));
 
 		for (lib in libs)
-			args.push(OptionParameter("-l", None, lib.quote(cli)));
+			args.push(OptionParameter("-l", None, switch lib {
+				case Name(s): cli.quoteArgument(s);
+				case File(file): filePath(file.path);
+			}));
 
 		return new CommandLine("gcc", args);
 	}

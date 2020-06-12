@@ -21,6 +21,7 @@ class CommandOptions {
 		"--exFile" => [Space],
 		"--exLib" => [Space],
 		"--saveCmd" => [Space],
+		"--relative" => [],
 		"--verbose" => [],
 	]);
 

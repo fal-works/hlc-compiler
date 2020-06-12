@@ -66,6 +66,7 @@ abstract Arguments(Data) from Data {
 		final exFiles = options.oneOrMore("--exFile").or([]).map(toFile);
 		final exLibs = options.oneOrMore("--exLib").or([]).map(toFile);
 		final saveCmdPath = options.one("--saveCmd").map(toFilePath); // TODO: make optional
+		final relative = options.exists("--relative");
 		final verbose = options.exists("--verbose");
 
 		final exOptions: Array<String> = [];
@@ -87,6 +88,7 @@ abstract Arguments(Data) from Data {
 			exLibs: exLibs,
 			exOptions: exOptions,
 			saveCmdPath: saveCmdPath,
+			relative: relative,
 			verbose: verbose
 		};
 
@@ -189,6 +191,11 @@ private typedef Data = {
 		Does not emit file if `null`.
 	**/
 	final saveCmdPath: Maybe<FilePath>;
+
+	/**
+		`true` if file/directory paths should be converted to relative paths when creating commands lines.
+	**/
+	final relative: Bool;
 
 	/**
 		`true` if verbose logging should be enabled.

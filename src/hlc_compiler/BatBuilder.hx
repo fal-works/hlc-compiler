@@ -7,9 +7,13 @@ class BatBuilder {
 	public static function build(
 		outDir: DirectoryRef,
 		compileCommandBlock: String,
-		filesToCopy: FileList
+		filesToCopy: FileList,
+		relative: Bool
 	): String {
-		final outDirStr = outDir.path.quote(Cli.dos);
+		final outDirStr = switch relative {
+			case false: outDir.path.quote(Cli.dos);
+			case true: Cli.dos.quoteArgument(outDir.path.toRelative());
+		};
 		final mkOutDirCmd = 'if not exist $outDirStr ^\nmkdir $outDirStr';
 		final mkDirCatcher = exitIfError("Failed to prepare output directory. Aborting.");
 
@@ -24,7 +28,11 @@ class BatBuilder {
 		if (0 < filesToCopy.length) {
 			contents.push("echo Copying runtime files...");
 			for (file in filesToCopy) {
-				final copyCommand = 'copy /y ${file.path.quote(Cli.dos)} $outDirStr > nul';
+				final filePath = switch relative {
+					case false: file.path.quote(Cli.dos);
+					case true: Cli.dos.quoteArgument(file.path.toRelative());
+				};
+				final copyCommand = 'copy /y $filePath $outDirStr > nul';
 				final catcher = exitIfError("Copy failed. Aborting.");
 				contents.push('$copyCommand\n$catcher');
 			}

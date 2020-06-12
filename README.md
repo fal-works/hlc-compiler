@@ -116,6 +116,10 @@ If you want the file to be automatically searched by `gcc`, use the original `-l
 File path where the `gcc` command should be saved as a Windows batch file (`.bat`).  
 Not set (= does not save `.bat`) at default.
 
+#### `--relative`
+
+Tries to convert all file/directory paths to relative paths from the current working directory when building command lines.
+
 #### `--verbose`
 
 Prints verbose logs of hlc-compiler.

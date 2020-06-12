@@ -69,9 +69,15 @@ class Main {
 
 		final saveCmdPath = arguments.saveCmdPath;
 		if (saveCmdPath.isSome()) {
-			final path = saveCmdPath.unwrap();
-			SaveCommandTools.saveCommandBat(path, outDir, compileCommand, filesToCopy);
-			Sys.println('Saved command: $path');
+			final savePath = saveCmdPath.unwrap();
+			SaveCommandTools.saveCommandBat(
+				savePath,
+				outDir,
+				compileCommand,
+				filesToCopy,
+				arguments.relative
+			);
+			Sys.println('Saved command: $savePath');
 		}
 	}
 
