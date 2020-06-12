@@ -72,13 +72,24 @@ class Main {
 		final saveCmdPath = arguments.saveCmdPath;
 		if (saveCmdPath.isSome()) {
 			final savePath = saveCmdPath.unwrap();
-			SaveCommandTools.saveCommandBat(
-				savePath,
-				outDir,
-				compileCommand,
-				filesToCopy,
-				arguments.relative
-			);
+			switch Environment.systemType {
+				case Windows:
+					SaveCommandTools.saveCommandBat(
+						savePath,
+						outDir,
+						compileCommand,
+						filesToCopy,
+						arguments.relative
+					);
+				case Mac:
+					SaveCommandTools.saveCommandShell(
+						savePath,
+						outDir,
+						compileCommand,
+						filesToCopy,
+						arguments.relative
+					);
+			}
 			Sys.println('Saved command: $savePath');
 		}
 	}

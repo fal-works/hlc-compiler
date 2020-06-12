@@ -4,6 +4,26 @@ class SaveCommandTools {
 	/**
 		Saves commands (including `gcc`) as a Windows batch file (`.bat`).
 	**/
+	public static function saveCommandShell(
+		savePath: FilePath,
+		outDir: DirectoryRef,
+		compileCommand: CommandLine,
+		filesToCopy: Array<FileRef>,
+		relative: Bool
+	): Void {
+		final content = ShellCommandBuilder.build(
+			outDir,
+			compileCommand.format(Cli.unix),
+			filesToCopy,
+			relative
+		);
+
+		saveFile(savePath, content, "command");
+	}
+
+	/**
+		Saves commands (including `gcc`) as a Windows batch file (`.bat`).
+	**/
 	public static function saveCommandBat(
 		savePath: FilePath,
 		outDir: DirectoryRef,
