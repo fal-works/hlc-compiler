@@ -77,7 +77,7 @@ If not specified:
 - On Mac, defaults to `/usr/local/lib/` if it exists, as the library files are typically located here.
 - If nothing found, defaults to `./` (current working directory).
 
-#### `--includeDir [path]`
+#### `--hlIncludeDir [path]`
 
 Directory that contains HashLink built-in files to be included (`.h`/`.c` files, such as `hlc.h`).
 This will be passed to `gcc` as an `-I` option.

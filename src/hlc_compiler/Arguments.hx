@@ -57,7 +57,7 @@ abstract Arguments(Data) from Data {
 			.orElse(() -> CommandOptions.suggestHashLinkLibraryDirectory()
 				.or(currentDirectory));
 
-		final includeDir = options.one("--includeDir")
+		final hlIncludeDir = options.one("--hlIncludeDir")
 			.map(toDir)
 			.coalesceWith(() -> CommandOptions.suggestHashLinkIncludeDirectory(hlLibDir));
 
@@ -79,7 +79,7 @@ abstract Arguments(Data) from Data {
 			outDir: outDir,
 			outFile: outFile,
 			hlLibDir: hlLibDir,
-			includeDir: includeDir,
+			hlIncludeDir: hlIncludeDir,
 			copyRuntimeFiles: copyRuntimeFiles,
 			exFiles: exFiles,
 			exLibs: exLibs,
@@ -106,7 +106,7 @@ abstract Arguments(Data) from Data {
 		s += '${indent}outDir:           ${this.outDir}\n';
 		s += '${indent}outFile:          ${this.outFile}\n';
 		s += '${indent}hlLibDir:         ${this.hlLibDir}\n';
-		s += '${indent}includeDir:       ${this.includeDir}\n';
+		s += '${indent}hlIncludeDir:     ${this.hlIncludeDir}\n';
 		s += '${indent}copyRuntimeFiles: ${this.copyRuntimeFiles}\n';
 		s += '${indent}exFiles:          ${this.exFiles}\n';
 		s += '${indent}exLibs:           ${this.exLibs}\n';
@@ -152,7 +152,7 @@ private typedef Data = {
 		Directory containing HL files to be included (such as `hlc.h`).
 		Is not mandatory because the directory may be automatically searched by `gcc` (especially if not Windows).
 	**/
-	final includeDir: Maybe<DirectoryRef>;
+	final hlIncludeDir: Maybe<DirectoryRef>;
 
 	/**
 		`true` if files that are required at runtime should be copied to the output directory.

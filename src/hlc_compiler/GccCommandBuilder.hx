@@ -16,7 +16,7 @@ class GccCommandBuilder {
 		final srcFile = arguments.srcFile;
 		final outFile = arguments.outFile;
 		final hlLibDir = arguments.hlLibDir;
-		final includeDir = arguments.includeDir;
+		final hlIncludeDir = arguments.hlIncludeDir;
 		final exOptions = arguments.exOptions;
 
 		final files = [srcFile].concat(arguments.exFiles);
@@ -27,8 +27,8 @@ class GccCommandBuilder {
 		args.push(OptionParameter("-o", Space, outFile.validate(cli)));
 
 		args.push(OptionParameter("-I", Space, srcDir.path.validate(cli)));
-		if (includeDir.isSome()) {
-			final path = includeDir.unwrap().path.validate(cli);
+		if (hlIncludeDir.isSome()) {
+			final path = hlIncludeDir.unwrap().path.validate(cli);
 			args.push(OptionParameter("-I", Space, path));
 		}
 
