@@ -52,14 +52,14 @@ abstract Arguments(Data) from Data {
 				}
 		}
 
-		final libDir = options.one("--libDir")
+		final hlLibDir = options.one("--hlLibDir")
 			.map(toDir)
 			.orElse(() -> CommandOptions.suggestHashLinkLibraryDirectory()
 				.or(currentDirectory));
 
 		final includeDir = options.one("--includeDir")
 			.map(toDir)
-			.coalesceWith(() -> CommandOptions.suggestHashLinkIncludeDirectory(libDir));
+			.coalesceWith(() -> CommandOptions.suggestHashLinkIncludeDirectory(hlLibDir));
 
 		final copyRuntimeFiles = options.exists("--copyRuntimeFiles");
 		final exFiles = options.oneOrMore("--exFiles").or([]).map(toFile);
@@ -78,7 +78,7 @@ abstract Arguments(Data) from Data {
 			srcFile: srcFile,
 			outDir: outDir,
 			outFile: outFile,
-			libDir: libDir,
+			hlLibDir: hlLibDir,
 			includeDir: includeDir,
 			copyRuntimeFiles: copyRuntimeFiles,
 			exFiles: exFiles,
@@ -105,7 +105,7 @@ abstract Arguments(Data) from Data {
 		s += '${indent}srcFile:          ${this.srcFile}\n';
 		s += '${indent}outDir:           ${this.outDir}\n';
 		s += '${indent}outFile:          ${this.outFile}\n';
-		s += '${indent}libDir:           ${this.libDir}\n';
+		s += '${indent}hlLibDir:         ${this.hlLibDir}\n';
 		s += '${indent}includeDir:       ${this.includeDir}\n';
 		s += '${indent}copyRuntimeFiles: ${this.copyRuntimeFiles}\n';
 		s += '${indent}exFiles:          ${this.exFiles}\n';
@@ -144,9 +144,9 @@ private typedef Data = {
 	final outDir: DirectoryPath;
 
 	/**
-		Directory containing `*.hdll` and other library files.
+		Directory containing `*.hdll` and other library files bundled with HashLink.
 	**/
-	final libDir: DirectoryRef;
+	final hlLibDir: DirectoryRef;
 
 	/**
 		Directory containing HL files to be included (such as `hlc.h`).

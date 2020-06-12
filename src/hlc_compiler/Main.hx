@@ -82,7 +82,7 @@ class Main {
 		final hlcJsonFile = FileRef.from(arguments.srcDir + "hlc.json");
 		final requiredLibraries = LibraryTools.getRequiredLibraries(
 			hlcJsonFile,
-			arguments.libDir
+			arguments.hlLibDir
 		);
 
 		return {

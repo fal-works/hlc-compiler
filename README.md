@@ -67,7 +67,7 @@ File path of the output executable.
 If `--outDir` is sepcified as well, `--outFile` should be either absolute or relative from `--outDir` directory.  
 Defaults to `./main`.
 
-#### `--libDir [path]`
+#### `--hlLibDir [path]`
 
 Directory that contains required library files (`*.hdll` etc).
 
@@ -82,7 +82,7 @@ If not specified:
 Directory that contains HashLink built-in files to be included (`.h`/`.c` files, such as `hlc.h`).
 This will be passed to `gcc` as an `-I` option.
 
-- On Windows: Defaults to directory named `include` in the `--libDir` directory (because it should exist in the HashLink directory, to which `--libDir` is typically set). `null` (will not be passed) if not found.
+- On Windows: Defaults to directory named `include` in the `--hlLibDir` directory (because it should exist in the HashLink directory, to which `--hlLibDir` is typically set). `null` (will not be passed) if not found.
 - On Mac: Defaults to `null`, as the files in question are typically located in `/usr/local/include/`, which is automaticaly searched by `gcc` at default.
 - Alternatively you can set an environment variable `C_INCLUDE_PATH` to the path of this `include` directory so that it is automatically searched by `gcc` as well.
 - If something goes wrong, try passing `-v` option and see which directories are searched by `gcc`.
@@ -139,7 +139,7 @@ Assuming that you:
 Then an example would be:
 
 ```
-haxelib run hlc-compiler --srcDir out\c --outFile bin\main --libDir c:\hashlink\1.11.0\ --copyRuntimeFiles --exFiles c:\Windows\System32\dbghelp.dll --saveCmd out\c\run_gcc.bat -w
+haxelib run hlc-compiler --srcDir out\c --outFile bin\main --hlLibDir c:\hashlink\1.11.0\ --copyRuntimeFiles --exFiles c:\Windows\System32\dbghelp.dll --saveCmd out\c\run_gcc.bat -w
 ```
 
 This will:

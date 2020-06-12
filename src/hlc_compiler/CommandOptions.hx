@@ -14,7 +14,7 @@ class CommandOptions {
 		"--outDir" => [Space],
 		"--outFile" => [Space],
 		"-o" => [Space],
-		"--libDir" => [Space],
+		"--hlLibDir" => [Space],
 		"--includeDir" => [Space],
 		"--copyRuntimeFiles" => [],
 		"--exFiles" => [Space],
@@ -48,10 +48,10 @@ class CommandOptions {
 		@return Default directory path of HashLink files to be included (`*.h`/`*.c`).
 	**/
 	public static function suggestHashLinkIncludeDirectory(
-		libDir: DirectoryRef
+		hlLibDir: DirectoryRef
 	): Maybe<DirectoryRef> {
 		return switch Environment.systemType {
-			case Windows: libDir.tryFindDirectory("./include");
+			case Windows: hlLibDir.tryFindDirectory("./include");
 			case Mac: Maybe.none();
 		}
 	}

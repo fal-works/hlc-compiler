@@ -1,7 +1,7 @@
 # Prerequisites: HL/C code should be located in ./test/src-c/
 
 # Windows
-# (Environment variable HASHLINKPATH or similar should be set for omitting --libDir)
+# (Environment variable HASHLINKPATH or similar should be set for omitting --hlLibDir)
 --cmd haxelib run hlc-compiler --srcDir test\src-c --outDir test\out --exFiles C:\Windows\System32\dbghelp.dll --copyRuntimeFiles --saveCmd test\out\compile.bat --verbose -w
 
 # Mac
