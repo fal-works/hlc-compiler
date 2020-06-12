@@ -10,6 +10,7 @@ class CommandOptions {
 	public static final rules = OptionParseRules.from([
 		"--version" => [],
 		"--srcDir" => [Space],
+		"--srcFile" => [Space],
 		"--outFile" => [Space],
 		"-o" => [Space],
 		"--libDir" => [Space],

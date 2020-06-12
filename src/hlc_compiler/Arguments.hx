@@ -32,6 +32,7 @@ abstract Arguments(Data) from Data {
 			Common.showVersion(false, true);
 
 		final srcDir = options.one("--srcDir").map(toDir).or(currentDirectory);
+		final srcFile = srcDir.findFile(options.one("--srcFile").or("main.c"));
 
 		final outFile = options.one("--outFile")
 			.map(toFilePath)
@@ -59,6 +60,7 @@ abstract Arguments(Data) from Data {
 
 		final arguments: Arguments = {
 			srcDir: srcDir,
+			srcFile: srcFile,
 			outFile: outFile,
 			libDir: libDir,
 			includeDir: includeDir,
@@ -107,6 +109,11 @@ private typedef Data = {
 		Directory containing `main.c` and `hlc.json`.
 	**/
 	final srcDir: DirectoryRef;
+
+	/**
+		Source `*.c` file.
+	**/
+	final srcFile: FileRef;
 
 	/**
 		Output file path.

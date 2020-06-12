@@ -46,6 +46,12 @@ File/directory paths can be either absolute or relative from the current working
 Directory where your HashLink/C code (including `main.c` and `hlc.json`) are located.
 Defaults to `./` (current working directory).
 
+#### `--srcFile [path]`
+
+File path to the `*.c` file to be compiled.
+If `--srcDir` is specified, `--srcFile` path should be either absolute or relative from `--srcDir` directory.  
+Defaults to `main.c`.
+
 #### `--outFile [path]`
 
 File path of the output executable.

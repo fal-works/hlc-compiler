@@ -13,12 +13,12 @@ class GccCommandBuilder {
 		cli: Cli
 	): CommandLine {
 		final srcDir = arguments.srcDir;
+		final srcFile = arguments.srcFile;
 		final outFile = arguments.outFile;
 		final libDir = arguments.libDir;
 		final includeDir = arguments.includeDir;
 		final exOptions = arguments.exOptions;
 
-		final srcFile = srcDir.path.makeFilePath("main.c").find();
 		final files = [srcFile].concat(arguments.exFiles);
 		final libs = arguments.exLibs.map(LibrarySpecifier.File).concat(basicLibraries);
 
