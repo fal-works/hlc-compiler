@@ -39,7 +39,7 @@ class CommandOptions {
 	public static function suggestHashLinkLibraryDirectory(): Maybe<DirectoryRef> {
 		return switch Environment.systemType {
 			case Windows: searchHashLinkDirectory();
-			case Mac: Maybe.none();
+			case Mac: Maybe.from(DirectoryRef.from("/usr/local/lib/"));
 		}
 	}
 
