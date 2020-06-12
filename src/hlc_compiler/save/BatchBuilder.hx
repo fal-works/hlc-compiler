@@ -20,9 +20,9 @@ class BatchBuilder {
 		final contents = [
 			"@echo off",
 			'$mkOutDirCmd\n$mkDirCatcher',
-			"echo Running GCC command...",
+			"echo Compiling...",
 			compileCommandBlock.trim(),
-			exitIfError("GCC command failed. Aborting.")
+			exitIfError("Compilation command failed. Aborting.")
 		];
 
 		if (0 < filesToCopy.length) {
