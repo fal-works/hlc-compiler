@@ -62,8 +62,8 @@ abstract Arguments(Data) from Data {
 			.coalesceWith(() -> CommandOptions.suggestHashLinkIncludeDirectory(hlLibDir));
 
 		final copyRuntimeFiles = options.exists("--copyRuntimeFiles");
-		final exFiles = options.oneOrMore("--exFiles").or([]).map(toFile);
-		final exLibs = options.oneOrMore("--exLibs").or([]).map(toFile);
+		final exFiles = options.oneOrMore("--exFile").or([]).map(toFile);
+		final exLibs = options.oneOrMore("--exLib").or([]).map(toFile);
 		final saveCmdPath = options.one("--saveCmd").map(toFilePath); // TODO: make optional
 		final verbose = options.exists("--verbose");
 
@@ -167,7 +167,7 @@ private typedef Data = {
 
 	/**
 		Additional files that should be passed to GCC.
-		Unlike `exFiles`, these are also copied if `copyRuntimeFiles` is `true`.
+		Unlike `exFile`, these are also copied if `copyRuntimeFiles` is `true`.
 	**/
 	final exLibs: Array<FileRef>;
 

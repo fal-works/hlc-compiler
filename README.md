@@ -79,7 +79,7 @@ If not specified:
 
 #### `--hlIncludeDir [path]`
 
-Directory that contains HashLink built-in files to be included (`.h`/`.c` files, such as `hlc.h`).
+Directory that contains HashLink built-in files to be included (`.h`/`.c` files, such as `hlc.h`).  
 This will be passed to `gcc` as an `-I` option.
 
 - On Windows: Defaults to directory named `include` in the `--hlLibDir` directory (because it should exist in the HashLink directory, to which `--hlLibDir` is typically set). `null` (will not be passed) if not found.
@@ -89,24 +89,23 @@ This will be passed to `gcc` as an `-I` option.
 
 #### `--copyRuntimeFiles`
 
-Copies files that are required at runtime (such as dynamic linked libraries) to output directory.
+Copies files that are required at runtime (such as dynamic linked libraries) to output directory.  
 Not set at default.
 
-#### `--exFiles [paths]`
+#### `--exFile [paths]`
 
-Additional files (comma-separated without spaces) to be passed to `gcc`.
-For instance you might have to pass `dbghelp.dll`.
-Not copied even if `--copyRuntimeFiles` is set.
+Additional file to be passed to `gcc` (for instance you might have to pass `dbghelp.dll`).  
+Can be multiple. Not copied even if `--copyRuntimeFiles` is set.
 
-#### `--exLibs [paths]`
+#### `--exLib [paths]`
 
-Additional files (comma-separated without spaces) to be passed to `gcc`.
-Copied if `--copyRuntimeFiles` is set.
+Additional files to be passed to `gcc`.  
+Can be multiple. Copied if `--copyRuntimeFiles` is set.
 
 #### `--saveCmd [path]`
 
-(For Windows)
-File path where the `gcc` command should be saved as a Windows batch file (`.bat`).
+(For Windows)  
+File path where the `gcc` command should be saved as a Windows batch file (`.bat`).  
 Not set (= does not save `.bat`) at default.
 
 #### `--verbose`
@@ -139,7 +138,7 @@ Assuming that you:
 Then an example would be:
 
 ```
-haxelib run hlc-compiler --srcDir out\c --outFile bin\main --hlLibDir c:\hashlink\1.11.0\ --copyRuntimeFiles --exFiles c:\Windows\System32\dbghelp.dll --saveCmd out\c\run_gcc.bat -w
+haxelib run hlc-compiler --srcDir out\c --outFile bin\main --hlLibDir c:\hashlink\1.11.0\ --copyRuntimeFiles --exFile c:\Windows\System32\dbghelp.dll --saveCmd out\c\run_gcc.bat -w
 ```
 
 This will:

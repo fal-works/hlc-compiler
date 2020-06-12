@@ -17,8 +17,8 @@ class CommandOptions {
 		"--hlLibDir" => [Space],
 		"--hlIncludeDir" => [Space],
 		"--copyRuntimeFiles" => [],
-		"--exFiles" => [Space],
-		"--exLibs" => [Space],
+		"--exFile" => [Space],
+		"--exLib" => [Space],
 		"--saveCmd" => [Space],
 		"--verbose" => [],
 	]);
