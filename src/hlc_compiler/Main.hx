@@ -2,60 +2,61 @@ package hlc_compiler;
 
 class Main {
 	/**
-		Entry point of `hlc_compiler` package.
+		Entry point of this package.
+		Processes all the arguments passed to hlc-compiler.
 	**/
-	public static function main() {
-		parse(Sys.args());
-	}
-
-	public static function parse(args: Array<RawArgument>) {
-		final optionRules = OptionParseRules.from([
-			"--version" => [],
-			"--srcDir" => [Space],
-			"--outFile" => [Space],
-			"-o" => [Space],
-			"--libDir" => [Space],
-			"--includeDir" => [Space],
-			"--copyRuntimeFiles" => [],
-			"--exFiles" => [Space],
-			"--exLibs" => [Space],
-			"--saveCmd" => [Space],
-			"--verbose" => [],
-		]);
-		final argList = Cli.current.parseArguments(args, optionRules);
-		final args = argList.summary([ "-o" => "--outFile"]);
-
-		if (showInstruction(argList, args)) return;
-
-		Sys.println(args.toString());
-
+	public static function main(): Void {
 		try {
-			final arguments = ArgumentTools.validateRaw(args, optionRules);
-			run(arguments);
+			processArguments(Sys.args());
 		} catch (e:Dynamic) {
-			Sys.println("Caught exception:");
-			Sys.println(e);
+			Sys.println('Caught exception:\n$e');
 			Common.showHint(true, true);
+			Sys.exit(1);
 		}
 	}
 
 	/**
-		The main process of hlc-compiler.
-		Compiles HL/C into executable according to `arguments`.
+		Processes `args`, and runs compilation or shows instruction depending on `args`.
+		@param args Typically the result of `Sys.args()`.
 	**/
-	static function run(arguments: Arguments): Void {
+	public static function processArguments(args: Array<RawArgument>): Void {
+		final argList = Cli.current.parseArguments(args, CommandOptions.rules);
+		final argSummary = argList.summary(CommandOptions.aliases);
+
+		if (argSummary.optionValuesMap.exists("--verbose")) {
+			Sys.println("Passed options:");
+			Sys.println(argSummary.formatOptions("  "));
+		}
+
+		if (showInstruction(argList, argSummary)) return;
+
+		final sanitizedArguments = Arguments.from(argSummary);
+		run(sanitizedArguments);
+	}
+
+	/**
+		Runs the main process of hlc-compiler according to `arguments`.
+		- Compiles HL/C into executable.
+		- (If specified) Copies runtime files.
+		- (If specified) Saves the command.
+	**/
+	public static function run(arguments: Arguments): Void {
+		final verbose = arguments.verbose;
+
 		final prepared = prepareRun(arguments);
-		final gccCommand = prepared.gccCommand;
+		final compileCommand = prepared.compileCommand;
 		final filesToCopy = prepared.filesToCopy;
 
-		final outDir = ArgumentTools.getOutDir(arguments);
+		final outDir = arguments.outFile.getParentPath().findOrCreate(); // Prepare dir before compiling
 
-		Sys.println("Running GCC command...");
-		final errorLevel = gccCommand.run(arguments.verbose);
+		Sys.println("Compiling...");
+		final errorLevel = compileCommand.run(verbose);
 
 		if (errorLevel != 0) {
-			Sys.println("GCC command failed.");
-			return;
+			if (verbose)
+				throw "Compilation command failed."; // Command already printed if verbose
+			else
+				throw 'Compilation command failed:\n${compileCommand.quote(Cli.current)}';
 		}
 
 		if (0 < filesToCopy.length) {
@@ -68,7 +69,7 @@ class Main {
 		final saveCmdPath = arguments.saveCmdPath;
 		if (saveCmdPath.isSome()) {
 			final path = saveCmdPath.unwrap();
-			SaveCommandTools.saveGccBat(path, outDir, gccCommand, filesToCopy);
+			SaveCommandTools.saveCommandBat(path, outDir, compileCommand, filesToCopy);
 			Sys.println('Saved command: $path');
 		}
 	}
@@ -84,7 +85,7 @@ class Main {
 		);
 
 		return {
-			gccCommand: GccCommandBuilder.build(
+			compileCommand: GccCommandBuilder.build(
 				arguments,
 				requiredLibraries.filterStatic(),
 				Cli.current
@@ -117,6 +118,6 @@ class Main {
 }
 
 private typedef PreparedData = {
-	final gccCommand: CommandLine;
+	final compileCommand: CommandLine;
 	final filesToCopy: FileList;
 };

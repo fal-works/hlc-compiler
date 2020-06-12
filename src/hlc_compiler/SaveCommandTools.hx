@@ -4,15 +4,15 @@ class SaveCommandTools {
 	/**
 		Saves commands (including `gcc`) as a Windows batch file (`.bat`).
 	**/
-	public static function saveGccBat(
+	public static function saveCommandBat(
 		savePath: FilePath,
 		outDir: DirectoryRef,
-		gccCommand: CommandLine,
+		compileCommand: CommandLine,
 		filesToCopy: Array<FileRef>
 	): Void {
 		final content = BatBuilder.build(
 			outDir,
-			gccCommand.format(Cli.dos),
+			compileCommand.format(Cli.dos),
 			filesToCopy
 		);
 
