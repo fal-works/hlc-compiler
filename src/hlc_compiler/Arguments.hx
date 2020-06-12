@@ -65,7 +65,10 @@ abstract Arguments(Data) from Data {
 		final copyRuntimeFiles = options.exists("--copyRuntimeFiles");
 		final exFiles = options.oneOrMore("--exFile").or([]).map(toFile);
 		final exLibs = options.oneOrMore("--exLib").or([]).map(toFile);
-		final saveCmdPath = options.one("--saveCmd").map(toFilePath); // TODO: make optional
+		final saveCmdPath = options.zeroOrOne("--saveCmd").map(path -> switch path {
+			case Zero: FilePath.from("./compile_hlc");
+			case One(relPath): FilePath.from(relPath);
+		});
 		final relative = options.exists("--relative");
 		final verbose = options.exists("--verbose");
 

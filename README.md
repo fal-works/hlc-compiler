@@ -112,9 +112,9 @@ If you want the file to be automatically searched by `gcc`, use the original `-l
 
 #### `--saveCmd [path]`
 
-(For Windows)  
-File path where the `gcc` command should be saved as a Windows batch file (`.bat`).  
-Not set (= does not save `.bat`) at default.
+File path where `gcc` command line should be saved (as batch file on Windows, shell command file on Mac).  
+Not set (= does not save) at default.  
+If `--saveCmd` is given without argument value, the file path defaults to `./compile-hlc.bat` or `./compile-hlc.command` in the current directory.
 
 #### `--relative`
 
