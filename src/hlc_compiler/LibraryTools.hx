@@ -1,8 +1,10 @@
 package hlc_compiler;
 
+import haxe.Json;
+
 class LibraryTools {
 	/**
-		@return Library files required by `srcDir/hlc.json`.
+		@return Library files required by `hlcJsonFile`.
 	**/
 	public static function getRequiredLibraries(
 		hlcJsonFile: FileRef,
@@ -11,7 +13,7 @@ class LibraryTools {
 		final hlLibDirPath = hlLibDir.path;
 		final libs: Array<Library> = [];
 
-		final hlcJsonData: HlcJson = haxe.Json.parse(hlcJsonFile.getContent());
+		final hlcJsonData: HlcJsonData = Json.parse(hlcJsonFile.getContent());
 		final systemType = Environment.systemType;
 
 		for (lib in hlcJsonData.libs) {
@@ -74,6 +76,6 @@ class LibraryTools {
 /**
 	Content of `hlc.json`.
 **/
-typedef HlcJson = {
+typedef HlcJsonData = {
 	final libs: Array<String>;
 };

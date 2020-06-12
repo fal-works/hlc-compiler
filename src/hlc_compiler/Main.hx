@@ -79,9 +79,8 @@ class Main {
 		Prepares for `run()`.
 	**/
 	static function prepareRun(arguments: Arguments): PreparedData {
-		final hlcJsonFile = FileRef.from(arguments.srcDir + "hlc.json");
 		final requiredLibraries = LibraryTools.getRequiredLibraries(
-			hlcJsonFile,
+			arguments.hlcJsonFile,
 			arguments.hlLibDir
 		);
 

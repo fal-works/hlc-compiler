@@ -11,6 +11,7 @@ class CommandOptions {
 		"--version" => [],
 		"--srcDir" => [Space],
 		"--srcFile" => [Space],
+		"--hlcJsonFile" => [Space],
 		"--outDir" => [Space],
 		"--outFile" => [Space],
 		"-o" => [Space],

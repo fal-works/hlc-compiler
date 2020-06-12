@@ -34,10 +34,7 @@ hlc-compiler is inspired by [HLCC](https://github.com/Yanrishatum/HLCC). Differe
 
 First you have to output HashLink/C code, e.g. `haxe --main Main --hl out/c/main.c`.
 
-Then call `haxelib run hlc-compiler` with some options described below.
-
-File/directory paths can be either absolute or relative from the current working directory
-(internally all of them are converted to absolute).
+For compiling the C code into executable, call `haxelib run hlc-compiler` with some options described below.
 
 ### hlc-compiler Options
 
@@ -52,8 +49,16 @@ Defaults to `./` (current working directory).
 #### `--srcFile [path]`
 
 File path to the `*.c` file to be compiled.  
-If `--srcDir` is specified, `--srcFile` path should be either absolute or relative from `--srcDir` directory.  
+The path should be either absolute or relative from `--srcDir` directory.  
 Defaults to `main.c`.
+
+#### `--hlcJsonFile [path]`
+
+File path to the JSON file in your HashLink/C output.  
+This can be any JSON file that unifies `{ libs: Array<String> }` where `libs` is an array of required library names.
+
+The path should be either absolute or relative from `--srcDir` directory.
+Defaults to `hlc.json`.
 
 #### `--outDir [path]`
 
@@ -102,7 +107,7 @@ Can be multiple. Not copied even if `--copyRuntimeFiles` is set.
 Additional library file to be passed to `gcc`.  
 Can be multiple. Copied if `--copyRuntimeFiles` is set.
 
-As well as other options the path should be either absolute or relative from the current working directory.  
+The path should be either absolute or relative from the current working directory.  
 If you want the file to be automatically searched by `gcc`, use the original `-l` option instead (however files specified with `-l` will not be copied even if `--copyRuntimeFiles` is set).
 
 #### `--saveCmd [path]`

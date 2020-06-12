@@ -31,6 +31,7 @@ abstract Arguments(Data) from Data {
 
 		final srcDir = options.one("--srcDir").map(toDir).or(currentDirectory);
 		final srcFile = srcDir.findFile(options.one("--srcFile").or("main.c"));
+		final hlcJsonFile = srcDir.findFile(options.one("--hlcJsonFile").or("hlc.json"));
 
 		final outDirOption = options.one("--outDir");
 		final outFileOption = options.one("--outFile");
@@ -76,6 +77,7 @@ abstract Arguments(Data) from Data {
 		final arguments: Arguments = {
 			srcDir: srcDir,
 			srcFile: srcFile,
+			hlcJsonFile: hlcJsonFile,
 			outDir: outDir,
 			outFile: outFile,
 			hlLibDir: hlLibDir,
@@ -101,16 +103,17 @@ abstract Arguments(Data) from Data {
 	**/
 	public inline function format(indent = ""): String {
 		var s = "";
-		s += '${indent}srcDir:           ${this.srcDir}\n';
-		s += '${indent}srcFile:          ${this.srcFile}\n';
-		s += '${indent}outDir:           ${this.outDir}\n';
-		s += '${indent}outFile:          ${this.outFile}\n';
-		s += '${indent}hlLibDir:         ${this.hlLibDir}\n';
-		s += '${indent}hlIncludeDir:     ${this.hlIncludeDir}\n';
+		s += '${indent}srcDir:           ${this.srcDir.toString()}\n';
+		s += '${indent}srcFile:          ${this.srcFile.toString()}\n';
+		s += '${indent}hlcJsonFile:      ${this.hlcJsonFile.toString()}\n';
+		s += '${indent}outDir:           ${this.outDir.toString()}\n';
+		s += '${indent}outFile:          ${this.outFile.toString()}\n';
+		s += '${indent}hlLibDir:         ${this.hlLibDir.toString()}\n';
+		s += '${indent}hlIncludeDir:     ${this.hlIncludeDir.toString()}\n';
 		s += '${indent}copyRuntimeFiles: ${this.copyRuntimeFiles}\n';
-		s += '${indent}exFiles:          ${this.exFiles}\n';
-		s += '${indent}exLibs:           ${this.exLibs}\n';
-		s += '${indent}exOptions:        ${this.exOptions}\n';
+		s += '${indent}exFiles:          ${this.exFiles.toString()}\n';
+		s += '${indent}exLibs:           ${this.exLibs.toString()}\n';
+		s += '${indent}exOptions:        ${this.exOptions.toString()}\n';
 		s += '${indent}saveCmd:          ${this.saveCmdPath.toString()}';
 		return s;
 	}
@@ -132,6 +135,11 @@ private typedef Data = {
 		Source `*.c` file.
 	**/
 	final srcFile: FileRef;
+
+	/**
+		`hlc.json` in the HL/C source directory.
+	**/
+	final hlcJsonFile: FileRef;
 
 	/**
 		Output file path.
