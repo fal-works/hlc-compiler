@@ -1,6 +1,6 @@
 package hlc_compiler.save;
 
-class BatBuilder {
+class BatchBuilder {
 	/**
 		Builds content of a Windows batch (`.bat`) file.
 	**/

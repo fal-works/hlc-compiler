@@ -11,7 +11,7 @@ class SaveCommandTools {
 		filesToCopy: Array<FileRef>,
 		relative: Bool
 	): Void {
-		final content = BatBuilder.build(
+		final content = BatchBuilder.build(
 			outDir,
 			compileCommand.format(Cli.dos),
 			filesToCopy,
