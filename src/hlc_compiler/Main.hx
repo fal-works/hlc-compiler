@@ -5,6 +5,10 @@ class Main {
 		Entry point of `hlc_compiler` package.
 	**/
 	public static function main() {
+		parse(Sys.args());
+	}
+
+	public static function parse(args: Array<RawArgument>) {
 		final optionRules = OptionParseRules.from([
 			"--version" => [],
 			"--srcDir" => [Space],
@@ -18,7 +22,7 @@ class Main {
 			"--saveCmd" => [Space],
 			"--verbose" => [],
 		]);
-		final argList = Cli.current.parseArguments(optionRules);
+		final argList = Cli.current.parseArguments(args, optionRules);
 		final args = argList.summary([ "-o" => "--outFile"]);
 
 		if (showInstruction(argList, args)) return;
