@@ -90,7 +90,7 @@ abstract Arguments(Data) from Data {
 
 		if (verbose) {
 			Sys.println('Set $currentDirectory as current directory.\n');
-			Sys.println('Arguments:\n${arguments.format("  ")}\n');
+			Sys.println('Sanitized arguments:\n${arguments.format("  ")}\n');
 		}
 
 		return arguments;
