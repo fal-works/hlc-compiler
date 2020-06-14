@@ -72,7 +72,7 @@ class Main {
 		final saveCmdPath = arguments.saveCmdPath;
 		if (saveCmdPath.isSome()) {
 			final savePath = saveCmdPath.unwrap();
-			switch Environment.systemType {
+			final savedPath = switch Environment.systemType {
 				case Windows:
 					SaveCommandTools.saveCommandBat(
 						savePath,
@@ -90,7 +90,7 @@ class Main {
 						arguments.relative
 					);
 			}
-			Sys.println('Saved command: $savePath');
+			Sys.println('Saved command: $savedPath');
 		}
 	}
 

@@ -3,6 +3,7 @@ package hlc_compiler.save;
 class SaveCommandTools {
 	/**
 		Saves commands (including `gcc`) as a Windows batch file (`.bat`).
+		@return Path to the saved file (with extension).
 	**/
 	public static function saveCommandShell(
 		savePath: FilePath,
@@ -10,7 +11,7 @@ class SaveCommandTools {
 		compileCommand: CommandLine,
 		filesToCopy: Array<FileRef>,
 		relative: Bool
-	): Void {
+	): FilePath {
 		final content = ShellCommandBuilder.build(
 			outDir,
 			compileCommand.format(Cli.unix),
@@ -18,11 +19,12 @@ class SaveCommandTools {
 			relative
 		);
 
-		saveFile(savePath, content, "command");
+		return saveFile(savePath, content, "command");
 	}
 
 	/**
-		Saves commands (including `gcc`) as a Windows batch file (`.bat`).
+		Saves commands (including `gcc`) as a Windows batch file.
+		@return Path to the saved file (with extension).
 	**/
 	public static function saveCommandBat(
 		savePath: FilePath,
@@ -30,7 +32,7 @@ class SaveCommandTools {
 		compileCommand: CommandLine,
 		filesToCopy: Array<FileRef>,
 		relative: Bool
-	): Void {
+	): FilePath {
 		final content = BatchBuilder.build(
 			outDir,
 			compileCommand.format(Cli.dos),
@@ -38,20 +40,23 @@ class SaveCommandTools {
 			relative
 		);
 
-		saveFile(savePath, content, "bat");
+		return saveFile(savePath, content, "bat");
 	}
 
 	/**
 		Saves `content` in the file specified by `savePath`.
+		@return Path to the saved file (with extension).
 	**/
 	static function saveFile(
 		savePath: FilePath,
 		content: String,
 		defaultExtension: String
-	): Void {
+	): FilePath {
 		if (savePath.getExtension().isNone())
 			savePath = savePath.setExtension(defaultExtension);
 
 		savePath.saveContent(content);
+
+		return savePath;
 	}
 }
