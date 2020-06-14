@@ -2,7 +2,7 @@ package hlc_compiler.save;
 
 class SaveCommandTools {
 	/**
-		Saves commands (including `gcc`) as a Windows batch file (`.bat`).
+		Saves commands (including `gcc`) as a shell script.
 		@return Path to the saved file (with extension).
 	**/
 	public static function saveCommandShell(
