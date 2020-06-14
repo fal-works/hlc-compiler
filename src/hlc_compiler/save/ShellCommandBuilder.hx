@@ -48,5 +48,5 @@ class ShellCommandBuilder {
 		@return Shell command block for aborting on any error.
 	**/
 	static function exitIfError(message: String): String
-		return 'trap \'echo $message\' ERR)';
+		return 'trap \'echo $message\' ERR';
 }
