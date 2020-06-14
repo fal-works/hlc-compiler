@@ -24,7 +24,11 @@ class SaveCommandTools {
 			case "Mac": "command";
 			default: "sh";
 		};
-		return saveFile(savePath, content, defaultExtension);
+		final savedPath = saveFile(savePath, content, defaultExtension);
+
+		Sys.command("chmod", ["u+x", savedPath]);
+
+		return savedPath;
 	}
 
 	/**
