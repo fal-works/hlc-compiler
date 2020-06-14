@@ -53,11 +53,14 @@ class LibraryTools {
 					default:
 						final hdllPath = hlLibDirPath.makeFilePath('$lib.hdll');
 						// TODO: test
-						// final aPath = hlLibDirPath.makeFilePath('$lib.a').or(hlLibDirPath.makeFilePath('lib$lib.a'));
-						final dylibPath = hlLibDirPath.makeFilePath('$lib.dylib')
-							.or(hlLibDirPath.makeFilePath('lib$lib.dylib'));
-						libs.push(Static(Name(lib)));
-						libs.push(Shared(FileRef.from(hdllPath.or(dylibPath))));
+						if (hdllPath.exists())
+							libs.push(StaticShared(hdllPath.find(), null));
+						else {
+							// final aPath = hlLibDirPath.makeFilePath('$lib.a').or(hlLibDirPath.makeFilePath('lib$lib.a'));
+							final dylibPath = hlLibDirPath.makeFilePath('$lib.dylib')
+								.or(hlLibDirPath.makeFilePath('lib$lib.dylib'));
+							libs.push(StaticShared(FileRef.from(dylibPath), null));
+						}
 				};
 		}
 
