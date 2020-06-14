@@ -52,10 +52,10 @@ class GccCommandBuilder {
 			args.push(Parameter(filePath(file.path)));
 
 		for (lib in libs)
-			args.push(OptionParameter("-l", None, switch lib {
-				case Name(s): cli.quoteArgument(s);
-				case File(file): filePath(file.path);
-			}));
+			args.push(switch lib {
+				case Name(s): OptionParameter("-l", None, cli.quoteArgument(s));
+				case File(file): Parameter(filePath(file.path));
+			});
 
 		return new CommandLine("gcc", args);
 	}
