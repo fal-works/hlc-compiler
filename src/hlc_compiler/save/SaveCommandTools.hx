@@ -19,7 +19,12 @@ class SaveCommandTools {
 			relative
 		);
 
-		return saveFile(savePath, content, "command");
+		// TODO: use Environment after supporting Linux
+		final defaultExtension = switch Sys.systemName() {
+			case "Mac": "command";
+			default: "sh";
+		};
+		return saveFile(savePath, content, defaultExtension);
 	}
 
 	/**
