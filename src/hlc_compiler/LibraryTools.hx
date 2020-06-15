@@ -60,7 +60,7 @@ class LibraryTools {
 				for (lib in hlcJsonData.libs) switch lib {
 					case "std":
 						libs.push(Static(Name("hl")));
-					case "fmt" | "openal" | "mysql" | "steam":
+					case "fmt" | "openal" | "ui" | "mysql" | "steam":
 						libs.push(Static(File(findHdll(lib))));
 					case "sdl":
 						libs.push(Static(Name("sdl2")));
