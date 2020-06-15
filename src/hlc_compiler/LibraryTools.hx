@@ -11,6 +11,11 @@ class LibraryTools {
 		hlLibDir: DirectoryRef
 	): LibraryList {
 		final hlLibDirPath = hlLibDir.path;
+		inline function findHdll(libName: String)
+			return hlLibDir.findFile('$libName.hdll');
+		inline function getHdllPath(libName: String)
+			return hlLibDir.path.makeFilePath('$libName.hdll');
+
 		final libs: Array<Library> = [];
 
 		final hlcJsonData: HlcJsonData = Json.parse(hlcJsonFile.getContent());
@@ -24,15 +29,15 @@ class LibraryTools {
 						libs.push(Shared(hlLibDir.findFile("libhl.dll")));
 					case "openal":
 						libs.push(Static(Name("openal")));
-						libs.push(Shared(hlLibDir.findFile("openal.hdll")));
+						libs.push(Shared(findHdll("openal")));
 						libs.push(Shared(hlLibDir.findFile("OpenAL32.dll")));
 					case "sdl":
 						libs.push(Static(Name("sdl2")));
-						libs.push(Shared(hlLibDir.findFile("sdl.hdll")));
+						libs.push(Shared(findHdll("sdl")));
 						libs.push(Shared(hlLibDir.findFile("SDL2.dll")));
 					default:
-						final hdllPath = hlLibDirPath.makeFilePath('$lib.hdll');
 						// final libPath = hlLibDirPath.makeFilePath('$lib.lib'); // Don't know why but *.lib files don't work
+						final hdllPath = getHdllPath(lib);
 						final dllPath = hlLibDirPath.makeFilePath('$lib.dll');
 						final file = FileRef.from(hdllPath.or(dllPath));
 						libs.push(Static(File(file)));
@@ -43,20 +48,20 @@ class LibraryTools {
 					case "std":
 						libs.push(Static(Name("hl")));
 					case "openal" | "mysql" | "steam":
-						libs.push(Static(File(hlLibDir.findFile('$lib.hdll'))));
+						libs.push(Static(File(findHdll(lib))));
 					case "sdl":
 						libs.push(Static(Name("sdl2")));
-						libs.push(Static(File(hlLibDir.findFile('$lib.hdll'))));
+						libs.push(Static(File(findHdll(lib))));
 					case "uv":
 						libs.push(Static(Name(lib)));
-						libs.push(Static(File(hlLibDir.findFile('$lib.hdll'))));
+						libs.push(Static(File(findHdll(lib))));
 					case "sqlite":
-						final hdllPath = hlLibDirPath.makeFilePath('$lib.hdll');
+						final hdllPath = getHdllPath(lib);
 						if (!hdllPath.exists())
 							throw "File not found: sqlite.hdll\nSee also: https://github.com/HaxeFoundation/hashlink/pull/323";
 						libs.push(Static(File(hdllPath.find())));
 					default: // Unknown library
-						final hdllPath = hlLibDirPath.makeFilePath('$lib.hdll');
+						final hdllPath = getHdllPath(lib);
 						if (hdllPath.exists())
 							libs.push(Static(File(hdllPath.find())));
 						else
