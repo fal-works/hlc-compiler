@@ -41,26 +41,26 @@ class LibraryTools {
 			case Mac:
 				for (lib in hlcJsonData.libs) switch lib {
 					case "std":
-						libs.push(Static(Name("hl"))); // Seems dynamic link is not required. Just -lhl
-					case "openal":
-						// TODO: test
-						libs.push(Static(Name("openal")));
-						libs.push(Shared(hlLibDir.findFile("openal.hdll")));
+						libs.push(Static(Name("hl")));
+					case "openal" | "mysql" | "steam":
+						libs.push(Static(File(hlLibDir.findFile('$lib.hdll'))));
 					case "sdl":
-						// TODO: test
 						libs.push(Static(Name("sdl2")));
-						libs.push(Shared(hlLibDir.findFile("sdl.hdll")));
-					default:
+						libs.push(Static(File(hlLibDir.findFile('$lib.hdll'))));
+					case "uv":
+						libs.push(Static(Name(lib)));
+						libs.push(Static(File(hlLibDir.findFile('$lib.hdll'))));
+					case "sqlite":
 						final hdllPath = hlLibDirPath.makeFilePath('$lib.hdll');
-						// TODO: test
+						if (!hdllPath.exists())
+							throw "File not found: sqlite.hdll/nSee also: https://github.com/HaxeFoundation/hashlink/pull/323";
+						libs.push(Static(File(hdllPath.find())));
+					default: // Unknown library
+						final hdllPath = hlLibDirPath.makeFilePath('$lib.hdll');
 						if (hdllPath.exists())
-							libs.push(StaticShared(hdllPath.find(), null));
-						else {
-							// final aPath = hlLibDirPath.makeFilePath('$lib.a').or(hlLibDirPath.makeFilePath('lib$lib.a'));
-							final dylibPath = hlLibDirPath.makeFilePath('$lib.dylib')
-								.or(hlLibDirPath.makeFilePath('lib$lib.dylib'));
-							libs.push(StaticShared(FileRef.from(dylibPath), null));
-						}
+							libs.push(Static(File(hdllPath.find())));
+						else
+							libs.push(Static(Name(lib)));
 				};
 		}
 
