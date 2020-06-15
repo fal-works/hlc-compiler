@@ -63,8 +63,12 @@ Defaults to `hlc.json`.
 #### `--outDir [path]`
 
 Directory path of the output executable.  
+This will also the destination directory when copying files if `--copyRuntimeFiles` is specified.
+
 - If not specified and `--outFile` is specified, `--outDir` defaults to the parent directory of `--outFile`.  
 - If both not specified, defaults to the current working directory.
+
+*Note: hlc-compiler does not clean up old files/directories unless they are to be overwritten.*
 
 #### `--outFile [path]` / `-o [path]`
 
