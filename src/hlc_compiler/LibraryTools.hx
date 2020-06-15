@@ -38,7 +38,7 @@ class LibraryTools {
 						libs.push(Static(Name("sdl2")));
 						libs.push(Shared(findHdll("sdl")));
 						libs.push(Shared(findDll("SDL2")));
-					case "fmt" | "directx" | "ui" | "uv" | "ssl" | "mysql" | "sqlite" | "steam":
+					case "fmt" | "directx" | "ui" | "uv" | "ssl" | "mysql" | "sqlite":
 						libs.push(StaticShared(findHdll(lib), null));
 					default:
 						Sys.println('[WARNING] Unknown library: $lib');
@@ -60,7 +60,7 @@ class LibraryTools {
 				for (lib in hlcJsonData.libs) switch lib {
 					case "std":
 						libs.push(Static(Name("hl")));
-					case "fmt" | "openal" | "ui" | "mysql" | "steam":
+					case "fmt" | "openal" | "ui" | "mysql":
 						libs.push(Static(File(findHdll(lib))));
 					case "sdl":
 						libs.push(Static(Name("sdl2")));
