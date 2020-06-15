@@ -23,7 +23,6 @@ class LibraryTools {
 		final hlcJsonData: HlcJsonData = Json.parse(hlcJsonFile.getContent());
 		final systemType = Environment.systemType;
 
-		// TODO: test "steam"
 		switch systemType {
 			case Windows:
 				for (lib in hlcJsonData.libs) switch lib {
