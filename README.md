@@ -2,23 +2,19 @@
 
 Helps you compile HashLink/C code into executable using GCC.
 
-## Comparison with HLCC
+Inspired by [HLCC](https://github.com/Yanrishatum/HLCC), but hlc-compiler uses GCC while HLCC uses MS Visual Studio.
 
-hlc-compiler is inspired by [HLCC](https://github.com/Yanrishatum/HLCC). Differences (as of July 2020):
-
-||hlc-compiler|HLCC|
-|---|---|---|
-|C compiler|GCC (GNU Compiler Collection)|MS Visual Studio 2012 \| 2013 \| 2015|
-|Install|`haxelib install hlc-compiler`|Fork repository and build|
-|Preparation|-|Set several environment variables|
-|Config|Any additional GCC option can be passed|-|
-|Other|Can also save a Windows batch file for re-compile|-|
+## Install
+```
+haxelib install hlc-compiler
+```
 
 
 ## Prerequisites
 
 ### Required Tools
 
+- [Haxe](https://haxe.org/) + [Haxelib](https://lib.haxe.org/)
 - [HashLink](https://hashlink.haxe.org/)
 - [GCC](https://gcc.gnu.org/)
 
@@ -26,8 +22,9 @@ hlc-compiler is inspired by [HLCC](https://github.com/Yanrishatum/HLCC). Differe
 
 - Windows 10 64bit
 - Haxe 4.1.1
+- Haxelib 4.0.2
 - HashLink 1.11.0
-- GCC 8.1.0 (MinGW-W64, via [scoop](https://scoop.sh/))
+- GCC 9.3.0 (via [scoop](https://scoop.sh/))
 
 
 ## Usage
@@ -192,6 +189,11 @@ echo Completed.
 ```
 
 It depends on your `hlc.json` which library files are required.
+
+
+### See also
+
+https://github.com/fal-works/hlc-compiler-sample
 
 
 ## Library Dependencies
