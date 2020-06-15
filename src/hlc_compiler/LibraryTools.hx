@@ -26,6 +26,7 @@ class LibraryTools {
 		final hlcJsonData: HlcJsonData = Json.parse(hlcJsonFile.getContent());
 		final systemType = Environment.systemType;
 
+		// TODO: test "steam"
 		switch systemType {
 			case Windows:
 				for (lib in hlcJsonData.libs) switch lib {
@@ -40,7 +41,7 @@ class LibraryTools {
 						libs.push(Static(Name("sdl2")));
 						libs.push(Shared(findHdll("sdl")));
 						libs.push(Shared(findDll("SDL2")));
-					case "fmt" | "directx" | "ui" | "uv" | "ssl" | "mysql" | "sqlite":
+					case "fmt" | "directx" | "ui" | "uv" | "ssl" | "mysql" | "sqlite" | "steam":
 						libs.push(StaticShared(findHdll(lib), null));
 					default: // Unknown library
 						// final libPath = hlLibDirPath.makeFilePath('$lib.lib'); // Don't know why but *.lib files don't work
