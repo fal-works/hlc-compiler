@@ -53,7 +53,7 @@ class LibraryTools {
 					case "sqlite":
 						final hdllPath = hlLibDirPath.makeFilePath('$lib.hdll');
 						if (!hdllPath.exists())
-							throw "File not found: sqlite.hdll/nSee also: https://github.com/HaxeFoundation/hashlink/pull/323";
+							throw "File not found: sqlite.hdll\nSee also: https://github.com/HaxeFoundation/hashlink/pull/323";
 						libs.push(Static(File(hdllPath.find())));
 					default: // Unknown library
 						final hdllPath = hlLibDirPath.makeFilePath('$lib.hdll');
