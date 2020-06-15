@@ -12,6 +12,11 @@ haxelib install hlc-compiler
 
 ## Prerequisites
 
+### Supported OS
+
+- Windows
+- Mac
+
 ### Required Tools
 
 - [Haxe](https://haxe.org/) + [Haxelib](https://lib.haxe.org/)
