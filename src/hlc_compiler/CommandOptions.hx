@@ -19,7 +19,7 @@ class CommandOptions {
 		"--hlIncludeDir" => [Space],
 		"--copyRuntimeFiles" => [],
 		"--exFile" => [Space],
-		"--exLib" => [Space],
+		"--runtime" => [Space],
 		"--saveCmd" => [Space],
 		"--relative" => [],
 		"--verbose" => [],

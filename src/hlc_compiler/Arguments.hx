@@ -2,6 +2,7 @@ package hlc_compiler;
 
 import locator.FileRef.fromStringCallback as toFile;
 import locator.DirectoryRef.fromStringCallback as toDir;
+import locator.FileOrDirectoryRef.fromStringCallback as toFileOrDir;
 
 /**
 	Sanitized arguments for hlc-compiler, completed with default values.
@@ -55,7 +56,7 @@ abstract Arguments(Data) from Data {
 
 		final copyRuntimeFiles = options.exists("--copyRuntimeFiles");
 		final exFiles = options.oneOrMore("--exFile").or([]).map(toFile);
-		final exLibs = options.oneOrMore("--exLib").or([]).map(toFile);
+		final runtime = options.oneOrMore("--runtime").or([]).map(toFileOrDir);
 		final saveCmdPath = options.zeroOrOne("--saveCmd").map(path -> switch path {
 			case Zero: FilePath.from("./compile_hlc");
 			case One(relPath): FilePath.from(relPath);
@@ -79,7 +80,7 @@ abstract Arguments(Data) from Data {
 			hlIncludeDir: hlIncludeDir,
 			copyRuntimeFiles: copyRuntimeFiles,
 			exFiles: exFiles,
-			exLibs: exLibs,
+			runtime: runtime,
 			exOptions: exOptions,
 			saveCmdPath: saveCmdPath,
 			relative: relative,
@@ -108,7 +109,7 @@ abstract Arguments(Data) from Data {
 		s += '${indent}hlIncludeDir:     ${this.hlIncludeDir.toString()}\n';
 		s += '${indent}copyRuntimeFiles: ${this.copyRuntimeFiles}\n';
 		s += '${indent}exFiles:          ${this.exFiles.toString()}\n';
-		s += '${indent}exLibs:           ${this.exLibs.toString()}\n';
+		s += '${indent}runtime:          ${this.runtime.toString()}\n';
 		s += '${indent}exOptions:        ${this.exOptions.toString()}\n';
 		s += '${indent}saveCmd:          ${this.saveCmdPath.toString()}';
 		return s;
@@ -170,10 +171,10 @@ private typedef Data = {
 	final exFiles: Array<FileRef>;
 
 	/**
-		Additional files that should be passed to GCC.
-		Unlike `exFile`, these are also copied if `copyRuntimeFiles` is `true`.
+		Additional files that should be copied if `--copyRuntimeFiles` is specified.
+		No effect on compilation.
 	**/
-	final exLibs: Array<FileRef>;
+	final runtime: FileOrDirectoryList;
 
 	/**
 		Additional options that should be passed to GCC.

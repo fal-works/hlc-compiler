@@ -75,7 +75,7 @@ class Main {
 
 		final prepared = prepareRun(arguments);
 		final compileCommand = prepared.compileCommand;
-		final filesToCopy = prepared.filesToCopy;
+		final copyList = prepared.copyList;
 
 		final outDir = arguments.outDir.findOrCreate(); // Prepare dir before compiling
 
@@ -89,10 +89,10 @@ class Main {
 				throw 'Compilation command failed:\n${compileCommand.quote(Cli.current)}';
 		}
 
-		if (0 < filesToCopy.length) {
+		if (0 < copyList.length) {
 			Sys.println("Copying runtime files...");
-			if (verbose) Sys.println('${filesToCopy.fileNames()} => ${outDir.path}');
-			filesToCopy.copyTo(outDir.path);
+			if (verbose) Sys.println('${copyList.getNames()} => ${outDir.path}');
+			copyList.copyTo(outDir.path);
 		}
 
 		Sys.println("Completed.");
@@ -106,7 +106,7 @@ class Main {
 						savePath,
 						outDir,
 						compileCommand,
-						filesToCopy,
+						copyList,
 						arguments.relative
 					);
 				case Mac:
@@ -114,7 +114,7 @@ class Main {
 						savePath,
 						outDir,
 						compileCommand,
-						filesToCopy,
+						copyList,
 						arguments.relative
 					);
 			}
@@ -126,19 +126,20 @@ class Main {
 		Prepares for `run()`.
 	**/
 	static function prepareRun(arguments: Arguments): PreparedData {
-		final requiredLibraries = LibraryTools.getRequiredLibraries(
+		final hlLibs = LibraryTools.getRequiredLibraries(
 			arguments.hlcJsonFile,
 			arguments.hlLibDir
 		);
+		final hlLibsToCopy = hlLibs.filterShared().map(FileOrDirectoryRef.fromFileCallback);
 
 		return {
 			compileCommand: GccCommandBuilder.build(
 				arguments,
-				requiredLibraries.filterStatic(),
+				hlLibs.filterStatic(),
 				Cli.current
 			),
-			filesToCopy: if (!arguments.copyRuntimeFiles) [] else
-				arguments.exLibs.concat(requiredLibraries.filterShared())
+			copyList: if (!arguments.copyRuntimeFiles) [] else
+				arguments.runtime.concat(hlLibsToCopy)
 		}
 	}
 
@@ -166,5 +167,5 @@ class Main {
 
 private typedef PreparedData = {
 	final compileCommand: CommandLine;
-	final filesToCopy: FileList;
+	final copyList: FileOrDirectoryList;
 };

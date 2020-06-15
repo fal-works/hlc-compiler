@@ -20,7 +20,7 @@ class GccCommandBuilder {
 		final exOptions = arguments.exOptions;
 
 		final files = [srcFile].concat(arguments.exFiles);
-		final libs = arguments.exLibs.map(LibrarySpecifier.File).concat(basicLibraries);
+		final libs = basicLibraries;
 
 		final filePath = switch arguments.relative {
 			case false: (path: FilePath) -> path.validate(cli).toString();

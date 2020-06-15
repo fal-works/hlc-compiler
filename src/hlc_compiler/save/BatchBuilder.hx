@@ -7,7 +7,7 @@ class BatchBuilder {
 	public static function build(
 		outDir: DirectoryRef,
 		compileCommandBlock: String,
-		filesToCopy: FileList,
+		copyList: FileOrDirectoryList,
 		relative: Bool
 	): String {
 		final cli = Cli.dos;
@@ -26,16 +26,29 @@ class BatchBuilder {
 			exitIfError("Compilation command failed. Aborting.")
 		];
 
-		if (0 < filesToCopy.length) {
+		if (0 < copyList.length) {
 			contents.push("echo Copying runtime files...");
-			for (file in filesToCopy) {
-				final filePath = switch relative {
-					case false: file.path.quote(cli);
-					case true: cli.quoteArgument(file.path.toRelative());
+			final copyCatcher = exitIfError("Copy failed. Aborting.");
+
+			for (element in copyList) {
+				final srcAbsPath = element.toPath();
+				var srcPath = switch relative {
+					case false: srcAbsPath.toString();
+					case true: srcAbsPath.toRelative();
 				};
-				final copyCommand = 'copy /y $filePath $outDirStr > nul';
-				final catcher = exitIfError("Copy failed. Aborting.");
-				contents.push('$copyCommand\n$catcher');
+				if (srcPath.endsWith("\\"))
+					srcPath = srcPath.substr(0, srcPath.length - 1);
+				srcPath = cli.quoteArgument(srcPath);
+
+				final copyCommand = switch srcAbsPath.toEnum() {
+					case File(_):
+						'copy /y $srcPath $outDirStr > nul';
+					case Directory(path):
+						final destPath = outDirStr + path.getName() + "\\";
+						'xcopy /y /e $srcPath $destPath > nul';
+				};
+
+				contents.push('$copyCommand\n$copyCatcher');
 			}
 		}
 

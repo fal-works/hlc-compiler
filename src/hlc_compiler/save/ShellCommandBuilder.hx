@@ -7,7 +7,7 @@ class ShellCommandBuilder {
 	public static function build(
 		outDir: DirectoryRef,
 		compileCommandBlock: String,
-		filesToCopy: FileList,
+		copyList: FileOrDirectoryList,
 		relative: Bool
 	): String {
 		final cli = Cli.unix;
@@ -26,16 +26,23 @@ class ShellCommandBuilder {
 			exitIfError("Compilation command failed. Aborting.")
 		];
 
-		if (0 < filesToCopy.length) {
+		if (0 < copyList.length) {
 			contents.push("echo Copying runtime files...");
-			for (file in filesToCopy) {
-				final filePath = switch relative {
-					case false: file.path.quote(cli);
-					case true: cli.quoteArgument(file.path.toRelative());
+			final copyCatcher = exitIfError("Copy failed. Aborting.");
+
+			for (element in copyList) {
+				final srcAbsPath = element.toPath();
+				final srcPath = switch relative {
+					case false: srcAbsPath.quote(cli);
+					case true: cli.quoteArgument(srcAbsPath.toRelative());
 				};
-				final copyCommand = 'cp $filePath $outDirStr';
-				final catcher = exitIfError("Copy failed. Aborting.");
-				contents.push('$copyCommand\n$catcher');
+				final destPath = outDirStr + switch srcAbsPath.toEnum() {
+					case File(path): path.getName();
+					case Directory(path): path.getName() + "/";
+				};
+				final copyCommand = 'cp -r $srcPath $destPath';
+
+				contents.push('$copyCommand\n$copyCatcher');
 			}
 		}
 

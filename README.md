@@ -102,13 +102,14 @@ Not set at default.
 Additional file to be passed to `gcc` (for instance you might have to pass `dbghelp.dll`).  
 Can be multiple. Not copied even if `--copyRuntimeFiles` is set.
 
-#### `--exLib [path]`
+#### `--runtime [path]`
 
-Additional library file to be passed to `gcc`.  
-Can be multiple. Copied if `--copyRuntimeFiles` is set.
+Additional file or directory that should be copied if `--copyRuntimeFiles` is specified.
 
 The path should be either absolute or relative from the current working directory.  
-If you want the file to be automatically searched by `gcc`, use the original `-l` option instead (however files specified with `-l` will not be copied even if `--copyRuntimeFiles` is set).
+Can be multiple.
+
+No effect on compilation.
 
 #### `--saveCmd [path]`
 

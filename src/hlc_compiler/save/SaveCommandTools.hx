@@ -9,13 +9,13 @@ class SaveCommandTools {
 		savePath: FilePath,
 		outDir: DirectoryRef,
 		compileCommand: CommandLine,
-		filesToCopy: Array<FileRef>,
+		copyList: FileOrDirectoryList,
 		relative: Bool
 	): FilePath {
 		final content = ShellCommandBuilder.build(
 			outDir,
 			compileCommand.format(Cli.unix),
-			filesToCopy,
+			copyList,
 			relative
 		);
 
@@ -39,13 +39,13 @@ class SaveCommandTools {
 		savePath: FilePath,
 		outDir: DirectoryRef,
 		compileCommand: CommandLine,
-		filesToCopy: Array<FileRef>,
+		copyList: FileOrDirectoryList,
 		relative: Bool
 	): FilePath {
 		final content = BatchBuilder.build(
 			outDir,
 			compileCommand.format(Cli.dos),
-			filesToCopy,
+			copyList,
 			relative
 		);
 
