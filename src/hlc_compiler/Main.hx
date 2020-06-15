@@ -139,7 +139,7 @@ class Main {
 				Cli.current
 			),
 			copyList: if (!arguments.copyRuntimeFiles) [] else
-				arguments.runtime.concat(hlLibsToCopy)
+				hlLibsToCopy.concat(arguments.runtime)
 		}
 	}
 
