@@ -4,12 +4,41 @@ import hlc_compiler.save.SaveCommandTools;
 
 class Main {
 	/**
-		Entry point of this package.
-		Processes all the arguments passed to hlc-compiler.
+		Main function.
+		Not used if run with `haxelib run hlc-compiler`.
 	**/
-	public static function main(): Void {
+	public static function main(): Void
+		tryProcessArguments(Sys.args());
+
+	/**
+		Called when run with `haxelib run hlc-compiler`.
+		Uses the last argument as the current working directory.
+	**/
+	public static function mainHaxelib(): Void {
+		final args: Array<String> = Sys.args();
+
+		inline function error()
+			throw 'Cannot get current working directory. Passed arguments: ${Sys.args()}';
+
+		// The last value should be the location where haxelib was called
+		final lastArg = args.pop();
+		if (lastArg.isNone()) error();
+		final cwdPath = DirectoryPath.from(lastArg.unwrap());
+		if (!cwdPath.exists()) error();
+
+		cwdPath.find().setAsCurrent();
+
+		tryProcessArguments(args);
+	}
+
+	/**
+		Tries to process `args`.
+		If caught any exception, prints it with a hint info and exits the current process with return code `1`.
+		@param args Arguments passed to hlc-compiler in the command line.
+	**/
+	public static function tryProcessArguments(args: Array<String>): Void {
 		try {
-			processArguments(Sys.args());
+			processArguments(args);
 		} catch (e:Dynamic) {
 			Sys.println('Caught exception:\n$e');
 			Common.showHint(true, true);
@@ -19,7 +48,6 @@ class Main {
 
 	/**
 		Processes `args`, and runs compilation or shows instruction depending on `args`.
-		@param args Typically the result of `Sys.args()`.
 	**/
 	public static function processArguments(args: Array<RawArgument>): Void {
 		final argList = Cli.current.parseArguments(args, CommandOptions.rules);

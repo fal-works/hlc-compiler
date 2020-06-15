@@ -3,5 +3,5 @@
 **/
 class Run {
 	static function main()
-		hlc_compiler.Main.main();
+		hlc_compiler.Main.mainHaxelib();
 }

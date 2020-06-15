@@ -1,7 +1,6 @@
 package hlc_compiler;
 
 import locator.FileRef.fromStringCallback as toFile;
-import locator.FilePath.fromStringCallback as toFilePath;
 import locator.DirectoryRef.fromStringCallback as toDir;
 
 /**
@@ -15,16 +14,8 @@ abstract Arguments(Data) from Data {
 		@return Arguments in `Arguments` representation.
 	**/
 	public static function from(args: CommandArgumentSummary): Arguments {
-		final commandValues = args.commandValues.copy();
+		final currentDirectory = DirectoryRef.current();
 		final options = args.optionValuesMap;
-
-		final lastCommandValue = commandValues.pop();
-
-		// The last value should be the location where haxelib was called
-		if (lastCommandValue.isNone())
-			throw 'Cannot get current working directory. Provided arguments: ${Sys.args()}';
-		final currentDirectory = DirectoryRef.from(lastCommandValue.unwrap());
-		currentDirectory.setAsCurrent();
 
 		if (options.exists("--version"))
 			Common.showVersion(false, true);
