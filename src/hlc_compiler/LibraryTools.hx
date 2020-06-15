@@ -31,8 +31,7 @@ class LibraryTools {
 						libs.push(Static(Name("libhl"))); // "-lhl" seems to hit another file
 						libs.push(Shared(findDll("libhl")));
 					case "openal":
-						libs.push(Static(Name("openal")));
-						libs.push(Shared(findHdll("openal")));
+						libs.push(StaticShared(findHdll("openal"), null));
 						libs.push(Shared(findDll("OpenAL32")));
 					case "sdl":
 						libs.push(StaticShared(findHdll("sdl"), null));
