@@ -19,9 +19,6 @@ class LibraryTools {
 		inline function findDll(name: String): FileRef
 			return hlLibDir.findFile('$name.dll');
 
-		inline function getDllPath(name: String): FilePath
-			return hlLibDir.path.makeFilePath('$name.dll');
-
 		final libs: Array<Library> = [];
 		final hlcJsonData: HlcJsonData = Json.parse(hlcJsonFile.getContent());
 		final systemType = Environment.systemType;
@@ -43,13 +40,21 @@ class LibraryTools {
 						libs.push(Shared(findDll("SDL2")));
 					case "fmt" | "directx" | "ui" | "uv" | "ssl" | "mysql" | "sqlite" | "steam":
 						libs.push(StaticShared(findHdll(lib), null));
-					default: // Unknown library
-						// final libPath = hlLibDirPath.makeFilePath('$lib.lib'); // Don't know why but *.lib files don't work
+					default:
+						Sys.println('[WARNING] Unknown library: $lib');
 						final hdllPath = getHdllPath(lib);
-						final dllPath = getDllPath(lib);
-						final file = FileRef.from(hdllPath.or(dllPath));
-						libs.push(Static(File(file)));
-						libs.push(Shared(file));
+						if (hdllPath.exists()) {
+							libs.push(StaticShared(hdllPath.find(), null));
+						} else {
+							final libPath = hlLibDir.makeFilePath('$lib.lib')
+								.or(hlLibDir.makeFilePath('lib$lib.lib'));
+							final dllPath = hlLibDir.makeFilePath('$lib.dll')
+								.or(hlLibDir.makeFilePath('lib$lib.dll'));
+							if (libPath.or(dllPath).exists())
+								libs.push(Static(Name(lib)));
+							if (dllPath.exists())
+								libs.push(Shared(dllPath.find()));
+						}
 				};
 			case Mac:
 				for (lib in hlcJsonData.libs) switch lib {
@@ -68,12 +73,14 @@ class LibraryTools {
 						if (!hdllPath.exists())
 							throw "File not found: sqlite.hdll\nSee also: https://github.com/HaxeFoundation/hashlink/pull/323";
 						libs.push(Static(File(hdllPath.find())));
-					default: // Unknown library
+					default:
+						Sys.println('[WARNING] Unknown library: $lib');
 						final hdllPath = getHdllPath(lib);
-						if (hdllPath.exists())
+						if (hdllPath.exists()) {
 							libs.push(Static(File(hdllPath.find())));
-						else
+						} else {
 							libs.push(Static(Name(lib)));
+						}
 				};
 		}
 
