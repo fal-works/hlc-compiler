@@ -35,8 +35,7 @@ class LibraryTools {
 						libs.push(Shared(findHdll("openal")));
 						libs.push(Shared(findDll("OpenAL32")));
 					case "sdl":
-						libs.push(Static(Name("sdl2")));
-						libs.push(Shared(findHdll("sdl")));
+						libs.push(StaticShared(findHdll("sdl"), null));
 						libs.push(Shared(findDll("SDL2")));
 					case "fmt" | "directx" | "ui" | "uv" | "ssl" | "mysql" | "sqlite":
 						libs.push(StaticShared(findHdll(lib), null));
