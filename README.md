@@ -1,8 +1,11 @@
 # hlc-compiler
 
-Helps you compile HashLink/C code into executable using GCC.
+Helps you compile HashLink/C code into executable.
 
 Inspired by [HLCC](https://github.com/Yanrishatum/HLCC), but hlc-compiler uses GCC while HLCC uses MS Visual Studio.
+
+See also https://github.com/fal-works/hlc-compiler-sample for an example using Heaps.io.
+
 
 ## Install
 ```
@@ -25,11 +28,19 @@ haxelib install hlc-compiler
 
 ### Development Environment
 
+#### Windows
+
 - Windows 10 64bit
-- Haxe 4.1.1
-- Haxelib 4.0.2
+- Haxe 4.1.1 / Haxelib 4.0.2
 - HashLink 1.11.0
 - GCC 9.3.0 (via [scoop](https://scoop.sh/))
+
+#### Mac
+
+- macOS Catalina
+- Haxe 4.1.1 / Haxelib 4.0.2
+- HashLink 1.11.0 (via [homebrew](https://brew.sh/))
+- Gcc 10.0.1 (via [homebrew](https://brew.sh/))
 
 
 ## Usage
@@ -45,37 +56,45 @@ Basically there is no "mandatory" options, however sometimes you might have to s
 
 #### `--srcDir [path]`
 
-Directory where your HashLink/C code (including `main.c` and `hlc.json`) are located.  
+Directory where your HashLink/C code (including `main.c` and `hlc.json`) are located.
+
 Defaults to `./` (current working directory).
 
 #### `--srcFile [path]`
 
-File path to the `*.c` file to be compiled.  
-The path should be either absolute or relative from `--srcDir` directory.  
+File path to the `*.c` file to be compiled.
+
+The path should be either absolute or relative from `--srcDir` directory.
+
 Defaults to `main.c`.
 
 #### `--hlcJsonFile [path]`
 
-File path to the JSON file in your HashLink/C output.  
+File path to the JSON file in your HashLink/C output.
+
 This can be any JSON file that unifies `{ libs: Array<String> }` where `libs` is an array of required library names.
 
 The path should be either absolute or relative from `--srcDir` directory.
+
 Defaults to `hlc.json`.
 
 #### `--outDir [path]`
 
-Directory path of the output executable.  
+Directory path of the output executable.
+
 This will also the destination directory when copying files if `--copyRuntimeFiles` is specified.
 
-- If not specified and `--outFile` is specified, `--outDir` defaults to the parent directory of `--outFile`.  
+- If not specified and `--outFile` is specified, `--outDir` defaults to the parent directory of `--outFile`.
 - If both not specified, defaults to the current working directory.
 
 *Note: hlc-compiler does not clean up old files/directories unless they are to be overwritten.*
 
 #### `--outFile [path]` / `-o [path]`
 
-File path of the output executable.  
-If `--outDir` is sepcified as well, `--outFile` should be either absolute or relative from `--outDir` directory.  
+File path of the output executable.
+
+If `--outDir` is sepcified as well, `--outFile` should be either absolute or relative from `--outDir` directory.
+
 Defaults to `./main`.
 
 #### `--hlLibDir [path]`
@@ -90,7 +109,8 @@ If not specified:
 
 #### `--hlIncludeDir [path]`
 
-Directory that contains HashLink built-in files to be included (`.h`/`.c` files, such as `hlc.h`).  
+Directory that contains HashLink built-in files to be included (`.h`/`.c` files, such as `hlc.h`).
+
 This will be passed to `gcc` as an `-I` option.
 
 - On Windows: Defaults to directory named `include` in the `--hlLibDir` directory (because it should exist in the HashLink directory, to which `--hlLibDir` is typically set). `null` (will not be passed) if not found.
@@ -100,28 +120,31 @@ This will be passed to `gcc` as an `-I` option.
 
 #### `--copyRuntimeFiles`
 
-Copies files that are required at runtime (such as dynamic linked libraries) to output directory.  
+Copies files that are required at runtime (such as dynamic linked libraries) to output directory.
+
 Not set at default.
 
 #### `--exFile [path]`
 
-Additional file to be passed to `gcc` (for instance you might have to pass `dbghelp.dll`).  
-Can be multiple. Not copied even if `--copyRuntimeFiles` is set.
+Additional file to be passed to `gcc` (for instance you might have to pass `dbghelp.dll`).
+
+Can be specified multiple times. Not copied even if `--copyRuntimeFiles` is set.
 
 #### `--runtime [path]`
 
 Additional file or directory that should be copied if `--copyRuntimeFiles` is specified.
 
-The path should be either absolute or relative from the current working directory.  
-Can be multiple.
+The path should be either absolute or relative from the current working directory.
 
-No effect on compilation.
+Can be specified multiple times. No effect on compilation.
 
 #### `--saveCmd [path]`
 
-File path where `gcc` command line should be saved (as batch file on Windows, shell command file on Mac).  
-Not set (= does not save) at default.  
-If `--saveCmd` is given without argument value, the file path defaults to `./compile-hlc.bat` or `./compile-hlc.command` in the current directory.
+File path where `gcc` command line should be saved (as batch file on Windows, shell command file on Mac).
+
+Not set (= does not save) at default.
+
+If `--saveCmd` is given without any argument value, the file path defaults to `./compile-hlc.bat` or `./compile-hlc.command` in the current directory.
 
 #### `--relative`
 
@@ -194,11 +217,6 @@ echo Completed.
 ```
 
 It depends on your `hlc.json` which library files are required.
-
-
-### See also
-
-https://github.com/fal-works/hlc-compiler-sample
 
 
 ## Library Dependencies
