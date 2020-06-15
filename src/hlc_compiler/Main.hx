@@ -63,7 +63,7 @@ class Main {
 
 		if (0 < filesToCopy.length) {
 			Sys.println("Copying runtime files...");
-			if (verbose) Sys.println('${filesToCopy.toString()} => ${outDir.path}');
+			if (verbose) Sys.println('${filesToCopy.fileNames()} => ${outDir.path}');
 			filesToCopy.copyTo(outDir.path);
 		}
 
