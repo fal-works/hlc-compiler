@@ -10,14 +10,19 @@ class LibraryTools {
 		hlcJsonFile: FileRef,
 		hlLibDir: DirectoryRef
 	): LibraryList {
-		final hlLibDirPath = hlLibDir.path;
-		inline function findHdll(libName: String)
-			return hlLibDir.findFile('$libName.hdll');
-		inline function getHdllPath(libName: String)
-			return hlLibDir.path.makeFilePath('$libName.hdll');
+		inline function findHdll(name: String): FileRef
+			return hlLibDir.findFile('$name.hdll');
+
+		inline function getHdllPath(name: String): FilePath
+			return hlLibDir.path.makeFilePath('$name.hdll');
+
+		inline function findDll(name: String): FileRef
+			return hlLibDir.findFile('$name.dll');
+
+		inline function getDllPath(name: String): FilePath
+			return hlLibDir.path.makeFilePath('$name.dll');
 
 		final libs: Array<Library> = [];
-
 		final hlcJsonData: HlcJsonData = Json.parse(hlcJsonFile.getContent());
 		final systemType = Environment.systemType;
 
@@ -26,19 +31,21 @@ class LibraryTools {
 				for (lib in hlcJsonData.libs) switch lib {
 					case "std":
 						libs.push(Static(Name("libhl"))); // "-lhl" seems to hit another file
-						libs.push(Shared(hlLibDir.findFile("libhl.dll")));
+						libs.push(Shared(findDll("libhl")));
 					case "openal":
 						libs.push(Static(Name("openal")));
 						libs.push(Shared(findHdll("openal")));
-						libs.push(Shared(hlLibDir.findFile("OpenAL32.dll")));
+						libs.push(Shared(findDll("OpenAL32")));
 					case "sdl":
 						libs.push(Static(Name("sdl2")));
 						libs.push(Shared(findHdll("sdl")));
-						libs.push(Shared(hlLibDir.findFile("SDL2.dll")));
-					default:
+						libs.push(Shared(findDll("SDL2")));
+					case "fmt" | "directx" | "ui" | "uv" | "ssl" | "mysql" | "sqlite":
+						libs.push(StaticShared(findHdll(lib), null));
+					default: // Unknown library
 						// final libPath = hlLibDirPath.makeFilePath('$lib.lib'); // Don't know why but *.lib files don't work
 						final hdllPath = getHdllPath(lib);
-						final dllPath = hlLibDirPath.makeFilePath('$lib.dll');
+						final dllPath = getDllPath(lib);
 						final file = FileRef.from(hdllPath.or(dllPath));
 						libs.push(Static(File(file)));
 						libs.push(Shared(file));
@@ -47,7 +54,7 @@ class LibraryTools {
 				for (lib in hlcJsonData.libs) switch lib {
 					case "std":
 						libs.push(Static(Name("hl")));
-					case "openal" | "mysql" | "steam":
+					case "fmt" | "openal" | "mysql" | "steam":
 						libs.push(Static(File(findHdll(lib))));
 					case "sdl":
 						libs.push(Static(Name("sdl2")));
