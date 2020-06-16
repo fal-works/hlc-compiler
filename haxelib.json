@@ -2,11 +2,11 @@
 	"name": "hlc-compiler",
 	"url": "https://github.com/fal-works/hlc-compiler/",
 	"license": "MIT",
-	"tags": ["utility", "tool", "hashlink"],
+	"tags": ["utility", "tool", "hashlink", "native"],
 	"description": "Helps you compile HashLink/C code into executable using GCC.",
-	"version": "0.2.0-alpha",
+	"version": "0.2.0",
 	"classPath": "src/",
-	"releasenote": "",
+	"releasenote": "Mac support! And overall restructure & improvement.",
 	"contributors": [
 		"fal-works"
 	],
