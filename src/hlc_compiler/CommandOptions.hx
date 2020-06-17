@@ -14,7 +14,7 @@ class CommandOptions {
 		"--hlcJsonFile" => [Space],
 		"--outDir" => [Space],
 		"--outFile" => [Space],
-		"-o" => [Space],
+		"-o" => [Space, None],
 		"--hlLibDir" => [Space],
 		"--hlIncludeDir" => [Space],
 		"--copyRuntimeFiles" => [],
