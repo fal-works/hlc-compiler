@@ -63,6 +63,6 @@ class GccCommandBuilder {
 			default:
 		}
 
-		return new CommandLine("gcc", args);
+		return new CommandLine(arguments.compiler, args);
 	}
 }

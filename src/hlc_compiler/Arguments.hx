@@ -62,6 +62,12 @@ abstract Arguments(Data) from Data {
 			case One(relPath): FilePath.from(relPath);
 		});
 		final relative = options.exists("--relative");
+		final compiler = options.one("--compiler")
+			.map(validateCompiler)
+			.orElse(() -> switch Environment.systemType {
+				case Windows: Gcc;
+				case Mac: Clang;
+			});
 		final verbose = options.exists("--verbose");
 
 		final exOptions: Array<String> = [];
@@ -84,6 +90,7 @@ abstract Arguments(Data) from Data {
 			exOptions: exOptions,
 			saveCmdPath: saveCmdPath,
 			relative: relative,
+			compiler: compiler,
 			verbose: verbose
 		};
 
@@ -93,6 +100,14 @@ abstract Arguments(Data) from Data {
 		}
 
 		return arguments;
+	}
+
+	static function validateCompiler(compilerStr: String): CCompiler {
+		return switch compilerStr.toLowerCase() {
+			case "gcc": Gcc;
+			case "clang": Clang;
+			default: throw 'C compiler should be either gcc or clang. Specified unknown compiler: $compilerStr';
+		}
 	}
 
 	/**
@@ -193,7 +208,17 @@ private typedef Data = {
 	final relative: Bool;
 
 	/**
+		C compiler to use. Either `gcc` or `clang`.
+	**/
+	final compiler: CCompiler;
+
+	/**
 		`true` if verbose logging should be enabled.
 	**/
 	final verbose: Bool;
 };
+
+enum abstract CCompiler(String) to String {
+	final Gcc = "gcc";
+	final Clang = "clang";
+}

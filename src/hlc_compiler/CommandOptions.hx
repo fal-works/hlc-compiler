@@ -22,6 +22,7 @@ class CommandOptions {
 		"--runtime" => [Space],
 		"--saveCmd" => [Space],
 		"--relative" => [],
+		"--compiler" => [Space],
 		"--verbose" => [],
 		"-std" => [Equal]
 	]);

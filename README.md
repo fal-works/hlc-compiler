@@ -2,7 +2,7 @@
 
 Helps you compile HashLink/C code into executable.
 
-Inspired by [HLCC](https://github.com/Yanrishatum/HLCC), but hlc-compiler uses GCC while HLCC uses MS Visual Studio.
+Inspired by [HLCC](https://github.com/Yanrishatum/HLCC), but hlc-compiler uses GCC/Clang while HLCC uses MS Visual Studio.
 
 See also https://github.com/fal-works/hlc-compiler-sample for an example using Heaps.io.
 
@@ -24,23 +24,23 @@ haxelib install hlc-compiler
 
 - [Haxe](https://haxe.org/) + [Haxelib](https://lib.haxe.org/)
 - [HashLink](https://hashlink.haxe.org/)
-- [GCC](https://gcc.gnu.org/)
+- [GCC](https://gcc.gnu.org/) / [Clang](https://clang.llvm.org/) (on Windows, GCC is recommended)
 
 ### Development Environment
 
 #### Windows
 
 - Windows 10 64bit
-- Haxe 4.1.1 / Haxelib 4.0.2
+- Haxe 4.1.1 + Haxelib 4.0.2
 - HashLink 1.11.0
 - GCC 9.3.0 (via [scoop](https://scoop.sh/))
 
 #### Mac
 
 - macOS Catalina
-- Haxe 4.1.1 / Haxelib 4.0.2
+- Haxe 4.1.1 + Haxelib 4.0.2
 - HashLink 1.11.0 (via [homebrew](https://brew.sh/))
-- Gcc 10.0.1 (via [homebrew](https://brew.sh/))
+- Clang 10.0.1 / GCC 10.0.1
 
 
 ## Usage
@@ -149,6 +149,14 @@ If `--saveCmd` is given without any argument value, the file path defaults to `.
 #### `--relative`
 
 Tries to convert all file/directory paths to relative paths from the current working directory when building command lines.
+
+#### `--compiler`
+
+Allowed values: `gcc`, `clang`
+
+The C compiler to use.
+
+Defaults to `gcc` if Windows, `clang` if Mac.
 
 #### `--verbose`
 
