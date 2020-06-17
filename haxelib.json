@@ -4,9 +4,9 @@
 	"license": "MIT",
 	"tags": ["utility", "tool", "hashlink", "native"],
 	"description": "Helps you compile HashLink/C code into executable using GCC.",
-	"version": "0.2.0",
+	"version": "0.3.0-alpha",
 	"classPath": "src/",
-	"releasenote": "Mac support! And overall restructure & improvement.",
+	"releasenote": "Enable to select GCC/Clang.",
 	"contributors": [
 		"fal-works"
 	],
