@@ -23,6 +23,7 @@ class CommandOptions {
 		"--saveCmd" => [Space],
 		"--relative" => [],
 		"--verbose" => [],
+		"-std" => [Equal]
 	]);
 
 	/**
