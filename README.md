@@ -4,11 +4,12 @@ Helps you compile HashLink/C code into executable.
 
 Inspired by [HLCC](https://github.com/Yanrishatum/HLCC), but hlc-compiler uses GCC/Clang while HLCC uses MS Visual Studio.
 
-See also https://github.com/fal-works/hlc-compiler-sample for an example using Heaps.io.
+See also <https://github.com/fal-works/hlc-compiler-sample> for an example using Heaps.io.
 
 
 ## Install
-```
+
+```console
 haxelib install hlc-compiler
 ```
 
@@ -187,7 +188,7 @@ Assuming that you:
 
 Then an example would be:
 
-```
+```console
 haxelib run hlc-compiler --srcDir out\c --outFile bin\main --hlLibDir c:\hashlink\1.11.0\ --copyRuntimeFiles --exFile c:\Windows\System32\dbghelp.dll --saveCmd out\c\run_gcc.bat -w
 ```
 
