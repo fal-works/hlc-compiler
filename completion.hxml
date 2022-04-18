@@ -1,4 +1,5 @@
 --class-path src
+--class-path test
 --library sinker
 --library greeter
 --library locator
