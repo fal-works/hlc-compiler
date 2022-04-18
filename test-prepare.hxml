@@ -1,0 +1,5 @@
+# Prepares test/src-c/
+
+--class-path test
+--main TestProject
+--hl test/src-c/main.c
