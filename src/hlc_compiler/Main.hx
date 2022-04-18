@@ -4,23 +4,16 @@ import hlc_compiler.save.SaveCommandTools;
 
 class Main {
 	/**
-		Main function.
-		Not used if run with `haxelib run hlc-compiler`.
-	**/
-	public static function main(): Void
-		tryProcessArguments(Sys.args());
+		Entry point to be called from `haxelib run hlc-compiler`.
 
-	/**
-		Called when run with `haxelib run hlc-compiler`.
-		Uses the last argument as the current working directory.
+		The last argument should be the current working directory.
 	**/
-	public static function mainHaxelib(): Void {
+	public static function main(): Void {
 		final args: Array<String> = Sys.args();
 
 		inline function error()
 			throw 'Cannot get current working directory. Passed arguments: ${Sys.args()}';
 
-		// The last value should be the location where haxelib was called
 		final lastArg = args.pop();
 		if (lastArg.isNone()) error();
 		final cwdPath = DirectoryPath.from(lastArg.unwrap());
