@@ -1,0 +1,8 @@
+--class-path src
+--library sinker
+--library greeter
+--library locator
+
+--main hlc_compiler.Main
+
+--neko Run.n
