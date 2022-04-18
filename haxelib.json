@@ -1,12 +1,12 @@
 {
 	"name": "hlc-compiler",
 	"url": "https://github.com/fal-works/hlc-compiler/",
-	"license": "MIT",
+	"license": "Apache",
 	"tags": ["utility", "tool", "hashlink", "native"],
 	"description": "Helps you compile HashLink/C code into executable using GCC.",
 	"version": "0.3.0-alpha",
 	"classPath": "src/",
-	"releasenote": "Enable to select GCC/Clang.",
+	"releasenote": "Enable to select GCC/Clang. Include neko bytecode. Change license to Apache 2.0.",
 	"contributors": [
 		"fal-works"
 	],
