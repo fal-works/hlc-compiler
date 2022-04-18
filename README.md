@@ -230,8 +230,9 @@ It depends on your `hlc.json` which library files are required.
 
 ## Library Dependencies
 
-- [sinker](https://github.com/fal-works/sinker) v0.3.0 or compatible
-- [locator](https://github.com/fal-works/banker) v0.4.0 or compatible
+- [sinker](https://github.com/fal-works/sinker) v0.6.0 or compatible
+- [greeter](https://github.com/fal-works/greeter) v0.1.0 or compatible
+- [locator](https://github.com/fal-works/banker) v0.5.0 or compatible
 
 See also:
 [FAL Haxe libraries](https://github.com/fal-works/fal-haxe-libraries)
