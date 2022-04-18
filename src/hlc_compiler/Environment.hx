@@ -13,7 +13,7 @@ class Environment {
 				Sys.println('[WARNING] $name system is not yet supported.');
 				Sys.println('[WARNING] Running in Mac mode, but this is not tested on $name.');
 				Mac;
-			};
+		};
 	}
 }
 

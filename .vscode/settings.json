@@ -1,13 +1,45 @@
 {
+  // ---------------------------------------------------------------------------
+  // Project-specific settings
+  "terminal.integrated.env.windows": {
+    "PATH": "${env:PATH};${workspaceRoot}",
+  },
+  "haxe.configurations": [],
+  // ---------------------------------------------------------------------------
+  // Haxe settings
+  "[haxe]": {
+    "editor.insertSpaces": false,
+    "editor.codeActionsOnSave": {
+      "source.sortImports": true
+    },
+  },
+  // ---------------------------------------------------------------------------
+  // Common settings
   "editor.tabSize": 2,
-  "editor.insertSpaces": false,
+  "files.eol": "\n",
   "files.trimTrailingWhitespace": true,
   "files.trimFinalNewlines": true,
   "files.insertFinalNewline": true,
-  "codedox": {
-    "commentbegin": "/**",
-    "commentprefix": "\t",
-    "commentend": "**/",
-    "autoPrefixOnEnter": false
+  "files.associations": {
+    "LICENSE": "plaintext",
+    "COPYRIGHT": "plaintext",
+  },
+  "[plaintext]": {
+    "files.trimTrailingWhitespace": false,
+    "files.trimFinalNewlines": false,
+    "files.insertFinalNewline": false,
+  },
+  "[markdown]": {
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.wordWrap": "on",
+    "editor.renderWhitespace": "boundary",
+    "files.trimTrailingWhitespace": false,
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
   }
 }
