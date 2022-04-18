@@ -32,9 +32,9 @@ haxelib install hlc-compiler
 #### Windows
 
 - Windows 10 64bit
-- Haxe 4.1.1 + Haxelib 4.0.2
+- Haxe 4.2.5 + Haxelib 4.0.2
 - HashLink 1.11.0
-- GCC 9.3.0 (via [scoop](https://scoop.sh/))
+- GCC 11.2.0-9.0.0-r3 (via [scoop](https://scoop.sh/))
 
 #### Mac
 
