@@ -1,4 +1,7 @@
+import sys.FileSystem;
 import greeter.Cli;
+
+using Lambda;
 
 function getArguments(): Array<String> {
 	var args = [];
@@ -15,10 +18,25 @@ function getArguments(): Array<String> {
 	return args.join(" ").split(" ");
 }
 
+function clearOutput() {
+	deleteRecursive("out/bin");
+}
+
 function runOutput() {
 	Sys.println("Run the compiled executable...");
 	switch Cli.current.type {
 		case Unix: Sys.command("open", ["out/bin/main"]);
 		case Dos: Sys.command("call", ["out\\bin\\main"]);
 	}
+}
+
+private function deleteRecursive(path: String) {
+	if (!FileSystem.exists(path)) return;
+	if (!FileSystem.isDirectory(path)) {
+		FileSystem.deleteFile(path);
+		return;
+	}
+
+	FileSystem.readDirectory(path).map(x -> '$path/$x').iter(deleteRecursive);
+	FileSystem.deleteDirectory(path);
 }
