@@ -165,7 +165,8 @@ Prints verbose logs of hlc-compiler.
 
 #### `(other)`
 
-You can pass any [gcc option](https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html).
+If using GCC, you can pass any [gcc option](https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html).  
+(If Clang, most options should be the same but I'm not sure)
 
 If no `-std` option is provided, `-std=c11` is automatically added.
 
@@ -206,7 +207,7 @@ The batch file looks like:
 if not exist c:\yourDir\bin\ ^
 mkdir c:\yourDir\bin\
 
-echo Running GCC command...
+echo Compiling...
 
 gcc ^
 -o c:\yourDir\bin\main ^
