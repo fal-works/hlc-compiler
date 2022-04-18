@@ -1,0 +1,4 @@
+# @install: lix --silent download "haxelib:/sinker#0.6.0" into sinker/0.6.0/haxelib
+-cp ${HAXE_LIBCACHE}/sinker/0.6.0/haxelib/src/
+-D sinker=0.6.0
+--macro sinker.internal.Initialization.run()

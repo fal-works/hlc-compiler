@@ -1,0 +1,5 @@
+# @install: lix --silent download "haxelib:/locator#0.5.0" into locator/0.5.0/haxelib
+-lib greeter
+-lib sinker
+-cp ${HAXE_LIBCACHE}/locator/0.5.0/haxelib/src/
+-D locator=0.5.0

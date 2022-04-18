@@ -1,0 +1,5 @@
+# @install: lix --silent download "haxelib:/greeter#0.1.0" into greeter/0.1.0/haxelib
+-lib sinker
+-cp ${HAXE_LIBCACHE}/greeter/0.1.0/haxelib/src/
+-D greeter=0.1.0
+--library sinker
