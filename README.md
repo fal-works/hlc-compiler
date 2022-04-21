@@ -25,14 +25,14 @@ haxelib install hlc-compiler
 
 - [Haxe](https://haxe.org/) + [Haxelib](https://lib.haxe.org/)
 - [HashLink](https://hashlink.haxe.org/)
-- [GCC](https://gcc.gnu.org/) / [Clang](https://clang.llvm.org/) (on Windows, GCC is recommended)
+- Either [GCC](https://gcc.gnu.org/) or [Clang](https://clang.llvm.org/) (see the `--compiler` option described below)
 
 ### Development Environment
 
 #### Windows
 
 - Windows 10 64bit
-- Haxe 4.2.5 + Haxelib 4.0.2
+- Haxe 4.2.3 + Haxelib 4.0.2
 - HashLink 1.11.0
 - GCC 11.2.0-9.0.0-r3 (via [scoop](https://scoop.sh/))
 
@@ -52,7 +52,7 @@ For compiling the C code into executable, call `haxelib run hlc-compiler` with s
 
 ### hlc-compiler Options
 
-Basically there is no "mandatory" options, however sometimes you might have to specify some options explicitly depending
+Basically there is no "mandatory" option, however sometimes you might have to specify some options explicitly depending
  on your environment.
 
 #### `--srcDir [path]`
@@ -112,11 +112,11 @@ If not specified:
 
 Directory that contains HashLink built-in files to be included (`.h`/`.c` files, such as `hlc.h`).
 
-This will be passed to `gcc` as an `-I` option.
+This will be passed to the C compiler (`gcc`/`clang`) as an `-I` option.
 
 - On Windows: Defaults to directory named `include` in the `--hlLibDir` directory (because it should exist in the HashLink directory, to which `--hlLibDir` is typically set). `null` (will not be passed) if not found.
-- On Mac: Defaults to `null`, as the files in question are typically located in `/usr/local/include/`, which is automaticaly searched by `gcc` at default.
-- Alternatively you can set an environment variable `C_INCLUDE_PATH` to the path of this `include` directory so that it is automatically searched by `gcc` as well.
+- On Mac: Defaults to `null`, as the files in question are typically located in `/usr/local/include/`, which is automaticaly searched by the C compiler at default.
+- Alternatively you can set an environment variable `C_INCLUDE_PATH` to the path of this `include` directory so that it is automatically searched by the C compiler as well.
 - If something goes wrong, try passing `-v` option and see which directories are searched by `gcc`.
 
 #### `--copyRuntimeFiles`
@@ -127,7 +127,7 @@ Not set at default.
 
 #### `--exFile [path]`
 
-Additional file to be passed to `gcc` (for instance you might have to pass `dbghelp.dll`).
+Additional file to be passed to the C compiler (for instance you might have to pass `dbghelp.dll`).
 
 Can be specified multiple times. Not copied even if `--copyRuntimeFiles` is set.
 
@@ -141,7 +141,7 @@ Can be specified multiple times. No effect on compilation.
 
 #### `--saveCmd [path]`
 
-File path where `gcc` command line should be saved (as batch file on Windows, shell command file on Mac).
+File path where command-lines should be saved (as batch file on Windows, shell command file on Mac).
 
 Not set (= does not save) at default.
 
@@ -153,15 +153,15 @@ Tries to convert all file/directory paths to relative paths from the current wor
 
 #### `--compiler`
 
-Allowed values: `gcc`, `clang`
-
 The C compiler to use.
+
+Allowed values: `gcc`, `clang`
 
 Defaults to `gcc` if Windows, `clang` if Mac.
 
 #### `--verbose`
 
-Prints verbose logs of hlc-compiler.
+Prints verbose log of hlc-compiler.
 
 #### `(other)`
 
@@ -174,7 +174,7 @@ Other examples:
 
 - `-O3` for highest optimization
 - `-w` to suppress warnings
-- `-v` to see more detailed logs of `gcc`
+- `-v` to see more detailed log of `gcc`
 - `-mwindows` for making a Windows GUI app
 
 
@@ -190,14 +190,15 @@ Assuming that you:
 Then an example would be:
 
 ```console
-haxelib run hlc-compiler --srcDir out\c --outFile bin\main --hlLibDir c:\hashlink\1.11.0\ --copyRuntimeFiles --exFile c:\Windows\System32\dbghelp.dll --saveCmd out\c\run_gcc.bat -w
+haxelib run hlc-compiler --srcDir out\c --outFile bin\main --hlLibDir c:\hashlink\1.11.0\ --copyRuntimeFiles --exFile c:\Windows\System32\dbghelp.dll --saveCmd out\run_gcc.bat -w
 ```
 
 This will:
 
 - run `gcc` command so that your code is compiled into `bin\main.exe`
-- copy files that are required at runtime into `bin\`.
-- save commands as `out\c\run_gcc.bat`.
+    - GCC warnings are suppressed (by `-w`)
+- copy files that are required at runtime into `bin\`
+- save command lines as `out\run_gcc.bat`
 
 The batch file looks like:
 
