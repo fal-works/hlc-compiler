@@ -1,6 +1,7 @@
 package hlc_compiler;
 
 import haxe.Json;
+import sinker.globals.Globals.maybe;
 
 class LibraryTools {
 	/**
@@ -20,7 +21,7 @@ class LibraryTools {
 			return hlLibDir.findFile('$name.dll');
 
 		final libs: Array<Library> = [];
-		final hlcJsonData: HlcJsonData = Json.parse(hlcJsonFile.getContent());
+		final hlcJsonData = parseHlJson(hlcJsonFile);
 		final systemType = Environment.systemType;
 
 		switch systemType {
@@ -82,6 +83,36 @@ class LibraryTools {
 		}
 
 		return libs;
+	}
+
+	static function parseHlJson(file: FileRef): HlcJsonData {
+		final obj = try {
+			Json.parse(file.getContent());
+		} catch (e) {
+			final msg = 'Failed to parse JSON: ${file.path}\n$e';
+			throw new HlcCompilerError(msg);
+		}
+
+		final libs = maybe(Reflect.field(obj, "libs")).map(x -> {
+			if (!Std.isOfType(x, std.Array)) {
+				final msg = 'Failed to parse: ${file.path}\nlibs must be an array of String.';
+				throw new HlcCompilerError(msg);
+			}
+			return (x : Array<Any>);
+		}).orElse(() -> {
+			Sys.println('[WARNING] Field libs not found in: ${file.path}');
+			return [];
+		});
+
+		return {
+			libs: libs.map(x -> {
+				if (!Std.isOfType(x, String)) {
+					final msg = 'Failed to parse: ${file.path}\nlibs must be an array of String.';
+					throw new HlcCompilerError(msg);
+				}
+				return (x : String);
+			})
+		};
 	}
 }
 
