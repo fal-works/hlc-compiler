@@ -5,6 +5,46 @@ import hlc_compiler.types.Library;
 import hlc_compiler.types.LibraryList;
 
 /**
+	List of environment variable names for searching HashLink installation directory.
+**/
+final hlPathEnvVarCandidates = [
+	"HASHLINKPATH",
+	"HASHLINK",
+	"HASHLINK_BIN"
+];
+
+/**
+	@return Default direcotry path of HashLink-bundled libraries (`*.hdll` etc).
+**/
+function suggestHashLinkLibraryDirectory(): Maybe<DirectoryRef> {
+	return switch Environment.systemType {
+		case Windows: searchHashLinkDirectory();
+		case Mac: Maybe.from(DirectoryRef.from("/usr/local/lib/"));
+	}
+}
+
+/**
+	@return Default directory path of HashLink files to be included (`*.h`/`*.c`).
+**/
+function suggestHashLinkIncludeDirectory(hlLibDir: DirectoryRef): Maybe<DirectoryRef> {
+	return switch Environment.systemType {
+		case Windows: hlLibDir.tryFindDirectory("./include");
+		case Mac: Maybe.none();
+	}
+}
+
+/**
+	Tries to find HashLink installation directory from environment variables.
+**/
+function searchHashLinkDirectory(): Maybe<DirectoryRef> {
+	return hlPathEnvVarCandidates.mapFirst(varName -> {
+		final envVarValue = Maybe.from(Sys.getEnv(varName));
+		if (envVarValue.isNone()) return Maybe.none();
+		return DirectoryPath.from(envVarValue.unwrap()).tryFind();
+	});
+}
+
+/**
 	@return Library files required by `hlcJsonFile`.
 **/
 function getRequiredLibraries(
