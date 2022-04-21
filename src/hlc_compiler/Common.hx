@@ -57,7 +57,7 @@ class Common {
 		try {
 			proc();
 		} catch (e) {
-			Sys.println('Caught exception:\n$e');
+			printError(e);
 			Common.showHint(true, true);
 			Sys.exit(1);
 		}

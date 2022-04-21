@@ -2,7 +2,7 @@ package hlc_compiler;
 
 import greeter.*;
 import hlc_compiler.HlcCompilerError.error;
-import hlc_compiler.HlcCompilerWarning.warn;
+import hlc_compiler.Printer;
 import locator.*;
 import sinker.*;
 
