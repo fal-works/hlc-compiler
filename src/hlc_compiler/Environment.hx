@@ -1,20 +1,18 @@
 package hlc_compiler;
 
-class Environment {
-	/**
-		The system on which the program is running.
-	**/
-	public static final systemType = {
-		final name = Sys.systemName();
-		switch name {
-			case "Windows": Windows;
-			case "Mac": Mac;
-			default:
-				warn('Unknown system: $name');
-				warn('Continue running in Mac mode, but this is not tested on $name.');
-				Mac;
-		};
-	}
+/**
+	The system on which the program is running.
+**/
+final systemType = {
+	final name = Sys.systemName();
+	switch name {
+		case "Windows": Windows;
+		case "Mac": Mac;
+		default:
+			warn('Unknown system: $name');
+			warn('Continue running in Mac mode, but this is not tested on $name.');
+			Mac;
+	};
 }
 
 /**

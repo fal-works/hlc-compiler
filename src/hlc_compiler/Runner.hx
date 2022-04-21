@@ -1,5 +1,6 @@
 package hlc_compiler;
 
+import hlc_compiler.CompilerCommandBuilder.buildCompilerCommand;
 import hlc_compiler.save.SaveCommandTools;
 import hlc_compiler.types.Arguments;
 
@@ -72,7 +73,7 @@ function prepareRun(arguments: Arguments): PreparedData {
 		arguments.hlLibDir
 	);
 
-	final compileCommand = GccCommandBuilder.build(
+	final compileCommand = buildCompilerCommand(
 		arguments,
 		hlLibs.filterStatic(),
 		Cli.current
