@@ -1,4 +1,4 @@
-package hlc_compiler;
+package hlc_compiler.types;
 
 import haxe.Json;
 import sinker.globals.Globals.maybe;

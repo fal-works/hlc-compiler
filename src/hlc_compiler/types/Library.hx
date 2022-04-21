@@ -1,4 +1,4 @@
-package hlc_compiler;
+package hlc_compiler.types;
 
 /**
 	Library to be linked with executable.

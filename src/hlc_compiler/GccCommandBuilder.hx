@@ -1,5 +1,8 @@
 package hlc_compiler;
 
+import hlc_compiler.types.Arguments;
+import hlc_compiler.types.LibrarySpecifier;
+
 /**
 	Static functions for creating/formatting gcc arguments.
 **/

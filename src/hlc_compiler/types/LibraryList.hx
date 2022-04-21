@@ -1,4 +1,4 @@
-package hlc_compiler;
+package hlc_compiler.types;
 
 /**
 	List of libraries to be linked.

@@ -1,8 +1,8 @@
-package hlc_compiler;
+package hlc_compiler.types;
 
-import locator.FileRef.fromStringCallback as toFile;
 import locator.DirectoryRef.fromStringCallback as toDir;
 import locator.FileOrDirectoryRef.fromStringCallback as toFileOrDir;
+import locator.FileRef.fromStringCallback as toFile;
 
 /**
 	Sanitized arguments for hlc-compiler, completed with default values.

@@ -1,6 +1,7 @@
 package hlc_compiler;
 
 import hlc_compiler.save.SaveCommandTools;
+import hlc_compiler.types.Arguments;
 
 class Main {
 	/**

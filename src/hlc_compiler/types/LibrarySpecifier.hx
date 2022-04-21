@@ -1,9 +1,9 @@
-package hlc_compiler;
+package hlc_compiler.types;
 
 /**
 	Either name or file of a library.
 **/
-@:using(hlc_compiler.LibrarySpecifier.LibrarySpecifierExtension)
+@:using(LibrarySpecifier.LibrarySpecifierExtension)
 enum LibrarySpecifier {
 	/**
 		Library specified by a name and can be linked by `-l` option of `gcc`.

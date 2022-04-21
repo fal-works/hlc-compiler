@@ -1,5 +1,9 @@
 package hlc_compiler;
 
+import hlc_compiler.types.HlcJson;
+import hlc_compiler.types.Library;
+import hlc_compiler.types.LibraryList;
+
 class LibraryTools {
 	/**
 		@return Library files required by `hlcJsonFile`.
