@@ -40,7 +40,7 @@ class LibraryTools {
 					case "fmt" | "directx" | "ui" | "uv" | "ssl" | "mysql" | "sqlite":
 						libs.push(StaticShared(findHdll(lib), null));
 					default:
-						Sys.println('[WARNING] Unknown library: $lib');
+						warn('Unknown library: $lib');
 						final hdllPath = getHdllPath(lib);
 						if (hdllPath.exists()) {
 							libs.push(StaticShared(hdllPath.find(), null));
@@ -73,7 +73,7 @@ class LibraryTools {
 							throw "File not found: sqlite.hdll\nSee also: https://github.com/HaxeFoundation/hashlink/pull/323";
 						libs.push(Static(File(hdllPath.find())));
 					default:
-						Sys.println('[WARNING] Unknown library: $lib');
+						warn('Unknown library: $lib');
 						final hdllPath = getHdllPath(lib);
 						if (hdllPath.exists()) {
 							libs.push(Static(File(hdllPath.find())));

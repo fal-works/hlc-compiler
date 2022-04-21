@@ -23,7 +23,7 @@ class HlcJson {
 			}
 			return (x : Array<Any>);
 		}).orElse(() -> {
-			Sys.println('[WARNING] Field libs not found in: ${file.path}');
+			warn('Field libs not found in: ${file.path}');
 			return [];
 		});
 

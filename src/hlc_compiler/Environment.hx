@@ -10,8 +10,8 @@ class Environment {
 			case "Windows": Windows;
 			case "Mac": Mac;
 			default:
-				Sys.println('[WARNING] $name system is not yet supported.');
-				Sys.println('[WARNING] Running in Mac mode, but this is not tested on $name.');
+				warn('Unknown system: $name');
+				warn('Continue running in Mac mode, but this is not tested on $name.');
 				Mac;
 		};
 	}
