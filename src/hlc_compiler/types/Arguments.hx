@@ -38,7 +38,7 @@ class Arguments {
 
 	/**
 		Directory containing HL files to be included (such as `hlc.h`).
-		Is not mandatory because the directory may be automatically searched by `gcc` (especially if not Windows).
+		Is not mandatory because the directory may be automatically searched by the C compiler (especially if not Windows).
 	**/
 	public final hlIncludeDir: Maybe<DirectoryRef>;
 
@@ -48,7 +48,7 @@ class Arguments {
 	public final copyRuntimeFiles: Bool;
 
 	/**
-		Additional files that should be passed to GCC.
+		Additional files that should be passed to the C compiler.
 		These are not copied to the destination directory.
 	**/
 	public final exFiles: Array<FileRef>;
@@ -60,7 +60,7 @@ class Arguments {
 	public final runtime: FileOrDirectoryList;
 
 	/**
-		Additional options that should be passed to GCC.
+		Additional options that should be passed to the C compiler.
 	**/
 	public final exOptions: Array<String>;
 
