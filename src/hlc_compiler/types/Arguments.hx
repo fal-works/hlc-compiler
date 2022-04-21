@@ -116,6 +116,9 @@ class Arguments {
 		return format();
 }
 
+/**
+	Type of the C compiler, either GCC or Clang.
+**/
 enum abstract CCompiler(String) to String {
 	final Gcc = "gcc";
 	final Clang = "clang";
