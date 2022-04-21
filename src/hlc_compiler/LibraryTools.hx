@@ -69,8 +69,11 @@ class LibraryTools {
 						libs.push(Static(File(findHdll(lib))));
 					case "sqlite":
 						final hdllPath = getHdllPath(lib);
-						if (!hdllPath.exists())
-							throw "File not found: sqlite.hdll\nSee also: https://github.com/HaxeFoundation/hashlink/pull/323";
+						if (!hdllPath.exists()) {
+							var msg = "File not found: sqlite.hdll";
+							msg += "\n  See also: https://github.com/HaxeFoundation/hashlink/pull/323";
+							throw error(msg);
+						}
 						libs.push(Static(File(hdllPath.find())));
 					default:
 						warn('Unknown library: $lib');

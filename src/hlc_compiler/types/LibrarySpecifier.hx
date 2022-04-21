@@ -25,7 +25,13 @@ class LibrarySpecifierExtension {
 	public static function validatePathString(_this: LibrarySpecifier, cli: Cli): String {
 		return switch _this {
 			case Name(s): s;
-			case File(file): file.path.validate(cli).toString();
+			case File(file):
+				try {
+					file.path.validate(cli);
+				} catch (e) {
+					final msg = 'Invalid library path: ${file.path}';
+					throw error(msg);
+				}
 		}
 	}
 

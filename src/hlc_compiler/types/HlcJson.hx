@@ -13,13 +13,13 @@ class HlcJson {
 			Json.parse(file.getContent());
 		} catch (e) {
 			final msg = 'Failed to parse JSON: ${file.path}\n$e';
-			throw new HlcCompilerError(msg);
+			throw error(msg);
 		}
 
 		final libs = maybe(Reflect.field(obj, "libs")).map(x -> {
 			if (!Std.isOfType(x, std.Array)) {
-				final msg = 'Failed to parse: ${file.path}\nlibs must be an array of String.';
-				throw new HlcCompilerError(msg);
+				final msg = 'Failed to parse: ${file.path}\n  libs must be Array<String>.';
+				throw error(msg);
 			}
 			return (x : Array<Any>);
 		}).orElse(() -> {
@@ -30,8 +30,8 @@ class HlcJson {
 		return {
 			libs: libs.map(x -> {
 				if (!Std.isOfType(x, String)) {
-					final msg = 'Failed to parse: ${file.path}\nlibs must be an array of String.';
-					throw new HlcCompilerError(msg);
+					final msg = 'Failed to parse: ${file.path}\n  libs must be Array<String>.';
+					throw error(msg);
 				}
 				return (x : String);
 			})

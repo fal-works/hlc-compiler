@@ -12,13 +12,17 @@ class Main {
 	public static function main(): Void {
 		final args: Array<String> = Sys.args();
 
-		inline function error()
-			throw 'Cannot get current working directory. Passed arguments: ${Sys.args()}';
+		inline function cwdError() {
+			var msg = 'Cannot get current working directory.';
+			msg += '\n  Passed command arguments (the last should be the cwd):';
+			msg += '\n  ${Sys.args().join(" ")}';
+			throw error(msg);
+		}
 
 		final lastArg = args.pop();
-		if (lastArg.isNone()) error();
+		if (lastArg.isNone()) cwdError();
 		final cwdPath = DirectoryPath.from(lastArg.unwrap());
-		if (!cwdPath.exists()) error();
+		if (!cwdPath.exists()) cwdError();
 
 		cwdPath.find().setAsCurrent();
 
@@ -77,10 +81,12 @@ class Main {
 		final errorLevel = compileCommand.run(verbose);
 
 		if (errorLevel != 0) {
-			if (verbose)
-				throw "Compilation command failed."; // Command already printed if verbose
-			else
-				throw 'Compilation command failed:\n${compileCommand.quote(Cli.current)}';
+			final msg = if (verbose) {
+				"Compilation command failed."; // Command already printed if verbose
+			} else {
+				'Compilation command failed:\n${compileCommand.quote(Cli.current)}';
+			}
+			throw error(msg);
 		}
 
 		if (0 < copyList.length) {

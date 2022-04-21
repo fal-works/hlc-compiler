@@ -106,7 +106,9 @@ class Arguments {
 		return switch compilerStr.toLowerCase() {
 			case "gcc": Gcc;
 			case "clang": Clang;
-			default: throw 'C compiler should be either gcc or clang. Specified unknown compiler: $compilerStr';
+			default:
+				final msg = 'Unknown compiler: $compilerStr\n  This should be either gcc or clang.';
+				throw error(msg);
 		}
 	}
 
@@ -212,7 +214,7 @@ class Arguments {
 	/**
 		@return `this` as a formatted `String`.
 	**/
-	public function toString():String
+	public function toString(): String
 		return format();
 }
 
