@@ -14,5 +14,5 @@ function main(): Void {
 	Parses the given arguments and then runs the main process of `hlc-compiler`.
 **/
 function parseRun(args: Array<RawArgument>): Void {
-	parseOptions(args).may(Runner.run);
+	parseOptions(args).may(HlcCompiler.run);
 }
