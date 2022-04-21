@@ -1,7 +1,6 @@
 package hlc_compiler.types;
 
 import haxe.Json;
-import sinker.globals.Globals.maybe;
 
 /**
 	Content of `hlc.json`.
@@ -16,7 +15,7 @@ class HlcJson {
 			throw error(msg);
 		}
 
-		final libs = maybe(Reflect.field(obj, "libs")).map(x -> {
+		final libs = Maybe.from(Reflect.field(obj, "libs")).map(x -> {
 			if (!Std.isOfType(x, std.Array)) {
 				final msg = 'Failed to parse: ${file.path}\n  libs must be Array<String>.';
 				throw error(msg);
