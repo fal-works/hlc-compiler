@@ -1,5 +1,7 @@
 package hlc_compiler;
 
+import hlc_compiler.Macros.getVersion;
+
 /**
 	Common static fields.
 **/
@@ -12,8 +14,7 @@ class Common {
 	/**
 		The version of this library.
 	**/
-	@:nullSafety(Off)
-	public static inline final version = haxe.macro.Compiler.getDefine("hlc-compiler");
+	public static inline final version:String = getVersion();
 
 	/**
 		The URL of the repository.
