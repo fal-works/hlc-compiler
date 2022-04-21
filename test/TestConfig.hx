@@ -3,7 +3,7 @@ import sys.FileSystem;
 
 using Lambda;
 
-function getArguments(): Array<String> {
+function getTestArguments(): Array<String> {
 	var args = [];
 	args.push('--srcDir test/src-c');
 	args.push('--outDir out/bin');
