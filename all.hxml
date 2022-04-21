@@ -1,9 +1,11 @@
 --class-path src
 --class-path test
+--class-path scripts
 --library sinker
 --library greeter
 --library locator
 --main hlc_compiler.Main
 --macro nullSafety("hlc_compiler", Strict)
 
---interp
+--neko _.n
+--no-output

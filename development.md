@@ -14,8 +14,8 @@ This project uses `lix` for managing Haxe library dependencies.
 
 Run the following in the terminal:
 
-1. `haxe test-prepare.hxml` to generate a HL/C code sample (which is a simple Hello World).
-2. `haxe test.hxml` to test compiling the HL/C code generated above.
+1. `lix PrepareTest` to generate a HL/C code sample (which is a simple Hello World).
+2. `lix Test` to test compiling the HL/C code generated above.
 
 
 ## Submission to [Haxelib](https://lib.haxe.org/)
@@ -23,5 +23,6 @@ Run the following in the terminal:
 Before submitting, check if [hlc-compiler-sample](https://github.com/fal-works/hlc-compiler-sample) still works.
 
 1. Update `haxelib.json`.
-2. Pack the library by executing `lix Pack`, which generates `lib.zip`.
-3. Submit the library by executing `haxelib submit lib.zip`.
+2. Build the neko bytecode by `lix Build`.
+3. Pack the library by executing `lix Pack`, which generates `lib.zip`.
+4. Submit the library by executing `haxelib submit lib.zip`.
