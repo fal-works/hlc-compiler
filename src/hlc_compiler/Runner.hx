@@ -67,7 +67,7 @@ function run(arguments: Arguments): Void {
 /**
 	Prepares for `run()`.
 **/
-function prepareRun(arguments: Arguments): PreparedData {
+private function prepareRun(arguments: Arguments): PreparedData {
 	final hlLibs = LibrarySearcher.getRequiredLibraries(
 		arguments.hlcJsonFile,
 		arguments.hlLibDir
