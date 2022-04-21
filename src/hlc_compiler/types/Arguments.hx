@@ -8,8 +8,8 @@ import locator.FileRef.fromStringCallback as toFile;
 	Sanitized arguments for hlc-compiler, completed with default values.
 	Converted from command line arguments.
 **/
-@:notNull @:forward
-abstract Arguments(Data) from Data {
+@:structInit
+class Arguments {
 	/**
 		Validates file/directory paths and completes them with default values.
 		@return Arguments in `Arguments` representation.
@@ -111,6 +111,85 @@ abstract Arguments(Data) from Data {
 	}
 
 	/**
+		Directory containing `main.c` and `hlc.json`.
+	**/
+	public final srcDir: DirectoryRef;
+
+	/**
+		Source `*.c` file.
+	**/
+	public final srcFile: FileRef;
+
+	/**
+		`hlc.json` in the HL/C source directory.
+	**/
+	public final hlcJsonFile: FileRef;
+
+	/**
+		Output file path.
+	**/
+	public final outFile: FilePath;
+
+	/**
+		Output directory path.
+	**/
+	public final outDir: DirectoryPath;
+
+	/**
+		Directory containing `*.hdll` and other library files bundled with HashLink.
+	**/
+	public final hlLibDir: DirectoryRef;
+
+	/**
+		Directory containing HL files to be included (such as `hlc.h`).
+		Is not mandatory because the directory may be automatically searched by `gcc` (especially if not Windows).
+	**/
+	public final hlIncludeDir: Maybe<DirectoryRef>;
+
+	/**
+		`true` if files that are required at runtime should be copied to the output directory.
+	**/
+	public final copyRuntimeFiles: Bool;
+
+	/**
+		Additional files that should be passed to GCC.
+		These are not copied to the destination directory.
+	**/
+	public final exFiles: Array<FileRef>;
+
+	/**
+		Additional files that should be copied if `--copyRuntimeFiles` is specified.
+		No effect on compilation.
+	**/
+	public final runtime: FileOrDirectoryList;
+
+	/**
+		Additional options that should be passed to GCC.
+	**/
+	public final exOptions: Array<String>;
+
+	/**
+		The file path where the command should be saved.
+		Does not emit file if `null`.
+	**/
+	public final saveCmdPath: Maybe<FilePath>;
+
+	/**
+		`true` if file/directory paths should be converted to relative paths when creating commands lines.
+	**/
+	public final relative: Bool;
+
+	/**
+		C compiler to use. Either `gcc` or `clang`.
+	**/
+	public final compiler: CCompiler;
+
+	/**
+		`true` if verbose logging should be enabled.
+	**/
+	public final verbose: Bool;
+
+	/**
 		Formats `this`.
 	**/
 	public inline function format(indent = ""): String {
@@ -133,90 +212,9 @@ abstract Arguments(Data) from Data {
 	/**
 		@return `this` as a formatted `String`.
 	**/
-	public function toString()
+	public function toString():String
 		return format();
 }
-
-private typedef Data = {
-	/**
-		Directory containing `main.c` and `hlc.json`.
-	**/
-	final srcDir: DirectoryRef;
-
-	/**
-		Source `*.c` file.
-	**/
-	final srcFile: FileRef;
-
-	/**
-		`hlc.json` in the HL/C source directory.
-	**/
-	final hlcJsonFile: FileRef;
-
-	/**
-		Output file path.
-	**/
-	final outFile: FilePath;
-
-	/**
-		Output directory path.
-	**/
-	final outDir: DirectoryPath;
-
-	/**
-		Directory containing `*.hdll` and other library files bundled with HashLink.
-	**/
-	final hlLibDir: DirectoryRef;
-
-	/**
-		Directory containing HL files to be included (such as `hlc.h`).
-		Is not mandatory because the directory may be automatically searched by `gcc` (especially if not Windows).
-	**/
-	final hlIncludeDir: Maybe<DirectoryRef>;
-
-	/**
-		`true` if files that are required at runtime should be copied to the output directory.
-	**/
-	final copyRuntimeFiles: Bool;
-
-	/**
-		Additional files that should be passed to GCC.
-		These are not copied to the destination directory.
-	**/
-	final exFiles: Array<FileRef>;
-
-	/**
-		Additional files that should be copied if `--copyRuntimeFiles` is specified.
-		No effect on compilation.
-	**/
-	final runtime: FileOrDirectoryList;
-
-	/**
-		Additional options that should be passed to GCC.
-	**/
-	final exOptions: Array<String>;
-
-	/**
-		The file path where the command should be saved.
-		Does not emit file if `null`.
-	**/
-	final saveCmdPath: Maybe<FilePath>;
-
-	/**
-		`true` if file/directory paths should be converted to relative paths when creating commands lines.
-	**/
-	final relative: Bool;
-
-	/**
-		C compiler to use. Either `gcc` or `clang`.
-	**/
-	final compiler: CCompiler;
-
-	/**
-		`true` if verbose logging should be enabled.
-	**/
-	final verbose: Bool;
-};
 
 enum abstract CCompiler(String) to String {
 	final Gcc = "gcc";
