@@ -8,6 +8,7 @@ function getArguments(): Array<String> {
 	args.push('--srcDir test/src-c');
 	args.push('--outDir out/bin');
 	args.push('--copyRuntimeFiles');
+	args.push('--saveCmd out/compile');
 	args.push('-w');
 	switch Cli.current.type {
 		case Unix:
