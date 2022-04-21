@@ -1,3 +1,4 @@
 /out/
 /test/src-c/
 .DS_Store
+*.zip
