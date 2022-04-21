@@ -90,7 +90,7 @@ class Arguments {
 	/**
 		Formats `this`.
 	**/
-	public inline function format(indent = ""): String {
+	public function format(indent = ""): String {
 		var s = "";
 		s += '${indent}srcDir:           ${this.srcDir.toString()}\n';
 		s += '${indent}srcFile:          ${this.srcFile.toString()}\n';
