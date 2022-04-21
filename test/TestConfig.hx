@@ -1,5 +1,5 @@
-import sys.FileSystem;
 import greeter.Cli;
+import sys.FileSystem;
 
 using Lambda;
 
@@ -8,6 +8,7 @@ function getArguments(): Array<String> {
 	args.push('--srcDir test/src-c');
 	args.push('--outDir out/bin');
 	args.push('--copyRuntimeFiles');
+	args.push('-w');
 	switch Cli.current.type {
 		case Unix:
 		case Dos:
