@@ -1,5 +1,6 @@
 package hlc_compiler;
 
+import hlc_compiler.OptionsParser.parseOptions;
 import hlc_compiler.save.SaveCommandTools;
 import hlc_compiler.types.Arguments;
 
@@ -10,6 +11,15 @@ class Main {
 		The last argument should be the current working directory.
 	**/
 	public static function main(): Void {
+		tryProcessArguments(processHaxelibArguments());
+	}
+
+	/**
+		Reads arguments via `Sys.args()`,
+		consumes the last one as the current working directory
+		and returns the rest.
+	**/
+	static function processHaxelibArguments():Array<RawArgument> {
 		final args: Array<String> = Sys.args();
 
 		inline function cwdError() {
@@ -26,18 +36,18 @@ class Main {
 
 		cwdPath.find().setAsCurrent();
 
-		tryProcessArguments(args);
+		return args;
 	}
 
 	/**
 		Tries to process `args`.
 		If caught any exception, prints it with a hint info and exits the current process with return code `1`.
-		@param args Arguments passed to hlc-compiler in the command line.
+		@param args Arguments passed to hlc-compiler.
 	**/
-	public static function tryProcessArguments(args: Array<String>): Void {
+	public static function tryProcessArguments(args: Array<RawArgument>): Void {
 		try {
-			processArguments(args);
-		} catch (e:Dynamic) {
+			parseOptions(args).may(run);
+		} catch (e) {
 			Sys.println('Caught exception:\n$e');
 			Common.showHint(true, true);
 			Sys.exit(1);
@@ -45,28 +55,10 @@ class Main {
 	}
 
 	/**
-		Processes `args`, and runs compilation or shows instruction depending on `args`.
-	**/
-	public static function processArguments(args: Array<RawArgument>): Void {
-		final argList = Cli.current.parseArguments(args, CommandOptions.rules);
-		final argSummary = argList.summary(CommandOptions.aliases);
-
-		if (argSummary.optionValuesMap.exists("--verbose")) {
-			Sys.println("Passed options:");
-			Sys.println(argSummary.formatOptions("  "));
-		}
-
-		if (showInstruction(argList, argSummary)) return;
-
-		final sanitizedArguments = Arguments.from(argSummary);
-		run(sanitizedArguments);
-	}
-
-	/**
 		Runs the main process of hlc-compiler according to `arguments`.
 		- Compiles HL/C into executable.
 		- (If specified) Copies runtime files.
-		- (If specified) Saves the command.
+		- (If specified) Saves command lines.
 	**/
 	public static function run(arguments: Arguments): Void {
 		final verbose = arguments.verbose;
@@ -140,27 +132,6 @@ class Main {
 			),
 			copyList: if (!arguments.copyRuntimeFiles) [] else
 				hlLibsToCopy.concat(arguments.runtime)
-		}
-	}
-
-	/**
-		Shows instruction info under some conditions.
-		@return `true` if anything is shown.
-	**/
-	static function showInstruction(
-		argList: CommandArgumentList,
-		argsSummary: CommandArgumentSummary
-	): Bool {
-		switch argList.length {
-			case 0 | 1:
-				Common.showVersion(true, true);
-				Common.showHint(false, true);
-				return true;
-			case 2 if (argsSummary.optionValuesMap.exists("--version")):
-				Common.showVersion(true, true);
-				return true;
-			default:
-				return false;
 		}
 	}
 }
