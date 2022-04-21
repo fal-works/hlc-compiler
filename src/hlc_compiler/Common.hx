@@ -14,7 +14,7 @@ class Common {
 	/**
 		The version of this library.
 	**/
-	public static inline final version:String = getVersion();
+	public static inline final version: String = getVersion();
 
 	/**
 		The URL of the repository.
@@ -46,6 +46,21 @@ class Common {
 			emptyLineBefore,
 			emptyLineAfter
 		);
+	}
+
+	/**
+		Wraps `proc` with a `try`-`catch` block.
+
+		If caught any exception, prints it with a hint info and exits the current process with code `1`.
+	**/
+	public static inline function tryDo(proc: () -> Void): Void {
+		try {
+			proc();
+		} catch (e) {
+			Sys.println('Caught exception:\n$e');
+			Common.showHint(true, true);
+			Sys.exit(1);
+		}
 	}
 
 	/**

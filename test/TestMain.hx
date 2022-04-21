@@ -1,10 +1,12 @@
-using StringTools;
+import hlc_compiler.Main.parseRun;
+
 using Lambda;
+using StringTools;
 
 function main() {
-	heading("testTryProcessArguments()");
+	heading("test parseRun()");
 	TestConfig.clearOutput();
-	hlc_compiler.Main.tryProcessArguments(TestConfig.getArguments());
+	parseRun(TestConfig.getArguments());
 	TestConfig.runOutput();
 
 	heading("test Run.n");
@@ -18,4 +20,4 @@ function main() {
 }
 
 function heading(s: String)
-	Sys.println('---- $s'.rpad("-", 80));
+	Sys.println('---- $s '.rpad("-", 80));
