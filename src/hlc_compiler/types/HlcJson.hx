@@ -6,9 +6,9 @@ import sinker.globals.Globals.maybe;
 /**
 	Content of `hlc.json`.
 **/
-@:structInit @:publicFields
+@:structInit
 class HlcJson {
-	static function parse(file: FileRef): HlcJson {
+	public static function parse(file: FileRef): HlcJson {
 		final obj = try {
 			Json.parse(file.getContent());
 		} catch (e) {
@@ -38,5 +38,5 @@ class HlcJson {
 		};
 	}
 
-	final libs: Array<String>;
+	public final libs: Array<String>;
 }
