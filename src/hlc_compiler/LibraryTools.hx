@@ -1,8 +1,5 @@
 package hlc_compiler;
 
-import haxe.Json;
-import sinker.globals.Globals.maybe;
-
 class LibraryTools {
 	/**
 		@return Library files required by `hlcJsonFile`.
@@ -21,12 +18,12 @@ class LibraryTools {
 			return hlLibDir.findFile('$name.dll');
 
 		final libs: Array<Library> = [];
-		final hlcJsonData = parseHlJson(hlcJsonFile);
+		final hlcJson = HlcJson.parse(hlcJsonFile);
 		final systemType = Environment.systemType;
 
 		switch systemType {
 			case Windows:
-				for (lib in hlcJsonData.libs) switch lib {
+				for (lib in hlcJson.libs) switch lib {
 					case "std":
 						libs.push(Static(Name("libhl"))); // "-lhl" seems to hit another file
 						libs.push(Shared(findDll("libhl")));
@@ -55,7 +52,7 @@ class LibraryTools {
 						}
 				};
 			case Mac:
-				for (lib in hlcJsonData.libs) switch lib {
+				for (lib in hlcJson.libs) switch lib {
 					case "std":
 						libs.push(Static(Name("hl")));
 					case "fmt" | "openal" | "ui" | "mysql" | "ssl":
@@ -84,41 +81,4 @@ class LibraryTools {
 
 		return libs;
 	}
-
-	static function parseHlJson(file: FileRef): HlcJsonData {
-		final obj = try {
-			Json.parse(file.getContent());
-		} catch (e) {
-			final msg = 'Failed to parse JSON: ${file.path}\n$e';
-			throw new HlcCompilerError(msg);
-		}
-
-		final libs = maybe(Reflect.field(obj, "libs")).map(x -> {
-			if (!Std.isOfType(x, std.Array)) {
-				final msg = 'Failed to parse: ${file.path}\nlibs must be an array of String.';
-				throw new HlcCompilerError(msg);
-			}
-			return (x : Array<Any>);
-		}).orElse(() -> {
-			Sys.println('[WARNING] Field libs not found in: ${file.path}');
-			return [];
-		});
-
-		return {
-			libs: libs.map(x -> {
-				if (!Std.isOfType(x, String)) {
-					final msg = 'Failed to parse: ${file.path}\nlibs must be an array of String.';
-					throw new HlcCompilerError(msg);
-				}
-				return (x : String);
-			})
-		};
-	}
 }
-
-/**
-	Content of `hlc.json`.
-**/
-typedef HlcJsonData = {
-	final libs: Array<String>;
-};
