@@ -1,5 +1,7 @@
 package hlc_compiler.types;
 
+// TODO: optional constructor args
+
 /**
 	Sanitized arguments for hlc-compiler, completed with default values.
 	Converted from command line arguments.
@@ -101,6 +103,8 @@ class Arguments {
 		s += '${indent}exFiles:          ${this.exFiles.toString()}\n';
 		s += '${indent}runtime:          ${this.runtime.toString()}\n';
 		s += '${indent}exOptions:        ${this.exOptions.toString()}\n';
+		s += '${indent}relative:         ${this.relative}\n';
+		s += '${indent}compiler:         ${this.compiler}\n';
 		s += '${indent}saveCmd:          ${this.saveCmdPath.toString()}';
 		return s;
 	}
