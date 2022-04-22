@@ -26,7 +26,7 @@ function clearOutput() {
 function runOutput() {
 	Sys.println("Run the compiled executable...");
 	switch Cli.current.type {
-		case Unix: Sys.command("open", ["out/bin/main"]);
+		case Unix: Sys.command("out/bin/main");
 		case Dos: Sys.command("call", ["out\\bin\\main"]);
 	}
 }
