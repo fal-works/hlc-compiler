@@ -117,7 +117,7 @@ This will be passed to the C compiler (`gcc`/`clang`) as an `-I` option.
 - On Windows: Defaults to directory named `include` in the `--hlLibDir` directory (because it should exist in the HashLink directory, to which `--hlLibDir` is typically set). `null` (will not be passed) if not found.
 - On Mac: Defaults to `null`, as the files in question are typically located in `/usr/local/include/`, which is automaticaly searched by the C compiler at default.
 - Alternatively you can set an environment variable `C_INCLUDE_PATH` to the path of this `include` directory so that it is automatically searched by the C compiler as well.
-- If something goes wrong, try passing `-v` option and see which directories are searched by `gcc`.
+- If something goes wrong, try passing `-v` option and see which directories are searched by the C compiler.
 
 #### `--copyRuntimeFiles`
 
@@ -174,7 +174,7 @@ Other examples:
 
 - `-O3` for highest optimization
 - `-w` to suppress warnings
-- `-v` to see more detailed log of `gcc`
+- `-v` to see more detailed log of the C compiler
 - `-mwindows` for making a Windows GUI app
 
 
