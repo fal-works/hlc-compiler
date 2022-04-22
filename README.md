@@ -32,16 +32,16 @@ haxelib install hlc-compiler
 #### Windows
 
 - Windows 10 64bit
-- Haxe 4.2.3 + Haxelib 4.0.2
-- HashLink 1.11.0
+- Haxe 4.2.3 + Haxelib 4.0.2 (via [lix](https://github.com/lix-pm/lix.client))
+- HashLink 1.11.0 (via [scoop](https://scoop.sh/))
 - GCC 11.2.0-9.0.0-r3 (via [scoop](https://scoop.sh/))
 
 #### Mac
 
-- macOS Catalina
-- Haxe 4.1.1 + Haxelib 4.0.2
+- macOS Monterey
+- Haxe 4.2.3 + Haxelib 4.0.2 (via [lix](https://github.com/lix-pm/lix.client))
 - HashLink 1.11.0 (via [homebrew](https://brew.sh/))
-- Clang 10.0.1 / GCC 10.0.1
+- Clang 13.1.6 (bundled with Xcode)
 
 
 ## Usage
