@@ -3,6 +3,6 @@
 --library greeter
 --library locator
 
---main hlc_compiler.Main
+--main hlc_compiler.MainHaxelib
 
 --neko Run.n
