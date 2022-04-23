@@ -1,6 +1,5 @@
 package hlc_compiler.internal;
 
-
 /**
 	The name of this library.
 **/
