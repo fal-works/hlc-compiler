@@ -4,7 +4,7 @@
 	"license": "Apache",
 	"tags": ["utility", "tool", "hashlink", "native"],
 	"description": "Helps you compile HashLink/C code into executable using GCC or Clang.",
-	"version": "0.3.0-alpha",
+	"version": "0.3.0",
 	"classPath": "src/",
 	"releasenote": "Enable to select GCC/Clang. Include neko bytecode. Refactor overall. Change license to Apache 2.0.",
 	"contributors": [
