@@ -1,0 +1,6 @@
+# Invoke hlc_compiler.Main.main()
+
+hxml/deps.hxml
+--class-path src
+
+--run hlc_compiler.Main
