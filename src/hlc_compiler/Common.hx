@@ -1,33 +1,13 @@
 package hlc_compiler;
 
-import hlc_compiler.Macros.getVersion;
-
-/**
-	The name of this library.
-**/
-inline final libName = "hlc-compiler";
-
-/**
-	The version of this library.
-**/
-inline final version: String = getVersion();
-
-/**
-	The URL of the repository.
-**/
-inline final repositoryUrl = 'https://github.com/fal-works/$libName';
-
-/**
-	The URL of haxelib page.
-**/
-inline final haxelibUrl = 'https://lib.haxe.org/p/$libName';
+import hlc_compiler.internal.Constants;
 
 /**
 	Prints version info of this library.
 **/
 function showVersion(emptyLineBefore: Bool, emptyLineAfter: Bool): Void {
 	showText(
-		'$libName $version\n  $haxelibUrl',
+		'$libName v$version\n  $haxelibUrl',
 		emptyLineBefore,
 		emptyLineAfter
 	);
