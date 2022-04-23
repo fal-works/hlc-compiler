@@ -4,4 +4,3 @@ LICENSE
 README.md
 COPYRIGHT
 run.n
-all.hxml
