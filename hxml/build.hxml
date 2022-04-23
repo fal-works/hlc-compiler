@@ -1,7 +1,7 @@
+# Build neko bytecode for 'haxelib run hlc-compiler'
+
+hxml/deps.hxml
 --class-path src
---library sinker
---library greeter
---library locator
 
 --main hlc_compiler.MainHaxelib
 

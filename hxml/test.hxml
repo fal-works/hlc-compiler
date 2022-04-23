@@ -1,9 +1,7 @@
 # Prerequisites: HL/C code should be located in ./test/src-c/
 
+hxml/deps.hxml
 --class-path src
 --class-path test
---library sinker
---library greeter
---library locator
 
 --run TestMain
