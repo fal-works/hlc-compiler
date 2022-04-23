@@ -5,4 +5,7 @@
 
 --main hlc_compiler.MainHaxelib
 
+--dce full
+--define analyzer-optimize
+
 --neko Run.n
