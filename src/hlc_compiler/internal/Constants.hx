@@ -9,7 +9,7 @@ inline final libName = "hlc-compiler";
 /**
 	The version of this library.
 **/
-inline final version = "0.3.1-alpha";
+inline final version = "0.3.0-alpha";
 
 /**
 	The URL of the repository.
