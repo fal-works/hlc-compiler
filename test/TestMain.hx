@@ -9,6 +9,7 @@ function main() {
 	if (args.has("all")) testAll();
 	else if (args.has("main")) testMain();
 	else if (args.has("neko")) testNeko();
+	else if (args.has("no-args")) testNoArgs();
 	else testParseRun();
 }
 
@@ -16,6 +17,7 @@ function testAll() {
 	testParseRun();
 	testMain();
 	testNeko();
+	testNoArgs();
 }
 
 function testParseRun() {
@@ -45,6 +47,11 @@ function testNeko() {
 		[Sys.getCwd()]
 	].flatten());
 	TestConfig.runOutput();
+}
+
+function testNoArgs() {
+	heading("test parseRun() without arguments");
+	parseRun([]);
 }
 
 function heading(s: String)

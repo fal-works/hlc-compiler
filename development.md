@@ -20,6 +20,7 @@ Run the following in the terminal:
     - Additional arguments:
         - `main` for testing the `main()` function
         - `neko` for testing the neko bytecode
+        - `no-args` for testing without arguments
         - `all` for all of the above
 
 
