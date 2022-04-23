@@ -1,6 +1,6 @@
+.DS_Store
 /out/
 /dump/
 /test/src-c/
-.DS_Store
-*.zip
-*.n
+/lib.zip
+/run.n
