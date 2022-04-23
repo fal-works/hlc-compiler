@@ -230,6 +230,12 @@ echo Completed.
 It depends on your `hlc.json` which library files are required.
 
 
+## What comes next
+
+- File format (something similar to `*.hxml`) for describing options
+- Haxe API (which is type-safer)
+
+
 ## Library Dependencies
 
 - [sinker](https://github.com/fal-works/sinker) v0.6.0 or compatible
