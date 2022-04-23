@@ -1,11 +1,5 @@
 {
   // ---------------------------------------------------------------------------
-  // Project-specific settings
-  "terminal.integrated.env.windows": {
-    "PATH": "${env:PATH};${workspaceRoot}",
-  },
-  "haxe.configurations": [],
-  // ---------------------------------------------------------------------------
   // Haxe settings
   "[haxe]": {
     "editor.insertSpaces": false,
