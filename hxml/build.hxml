@@ -8,4 +8,4 @@ hxml/deps.hxml
 --dce full
 --define analyzer-optimize
 
---neko Run.n
+--neko run.n

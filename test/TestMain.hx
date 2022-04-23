@@ -36,11 +36,11 @@ function testMain() {
 }
 
 function testNeko() {
-	heading("test Run.n");
+	heading("test neko run.n");
 	TestConfig.clearOutput();
 	// Emulating call by haxelib
 	Sys.command("neko", [
-		["Run.n"],
+		["run.n"],
 		TestConfig.getTestArguments(),
 		[Sys.getCwd()]
 	].flatten());

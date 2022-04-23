@@ -3,5 +3,5 @@ haxelib.json
 LICENSE
 README.md
 COPYRIGHT
-Run.n
+run.n
 all.hxml
