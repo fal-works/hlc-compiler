@@ -1,6 +1,7 @@
 package hlc_compiler;
 
 import hlc_compiler.LibrarySearcher;
+import hlc_compiler.internal.Common;
 import hlc_compiler.types.Arguments;
 import locator.DirectoryRef.fromStringCallback as toDir;
 import locator.FileOrDirectoryRef.fromStringCallback as toFileOrDir;
@@ -26,8 +27,8 @@ function parseOptions(rawArguments: Array<String>): Maybe<Arguments> {
 
 	return switch argList.length {
 		case 0 | 1:
-			Common.showVersion(true, true);
-			Common.showHint(false, true);
+			showVersion(true, true);
+			showHint(false, true);
 			Maybe.none();
 
 		default:
@@ -44,7 +45,7 @@ function validateArguments(args: CommandArgumentSummary): Arguments {
 	final options = args.optionValuesMap;
 
 	if (options.exists("--version"))
-		Common.showVersion(false, true);
+		showVersion(false, true);
 
 	final srcDir = options.one("--srcDir").map(toDir).or(currentDirectory);
 	final srcFile = srcDir.findFile(options.one("--srcFile").or("main.c"));

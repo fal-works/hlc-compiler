@@ -1,4 +1,4 @@
-package hlc_compiler;
+package hlc_compiler.internal;
 
 /**
 	Prints `message` in yellow with a warning prefix.

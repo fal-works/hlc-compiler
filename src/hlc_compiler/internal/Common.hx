@@ -1,4 +1,4 @@
-package hlc_compiler;
+package hlc_compiler.internal;
 
 import hlc_compiler.internal.Constants;
 

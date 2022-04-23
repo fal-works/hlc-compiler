@@ -1,13 +1,14 @@
 package hlc_compiler;
 
 import hlc_compiler.OptionsParser.parseOptions;
+import hlc_compiler.internal.Common;
 
 /**
 	Entry point to be called directly.
 	Not used if called from `haxelib`.
 **/
 function main(): Void {
-	Common.tryDo(() -> parseRun(Sys.args()));
+	tryDo(() -> parseRun(Sys.args()));
 }
 
 /**

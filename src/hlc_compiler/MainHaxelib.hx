@@ -1,12 +1,14 @@
 package hlc_compiler;
 
+import hlc_compiler.internal.Common;
+
 /**
 	Entry point to be called from `haxelib run hlc-compiler`.
 
 	The last argument should be the current working directory.
 **/
 function main(): Void {
-	Common.tryDo(() -> Main.parseRun(processHaxelibArguments()));
+	tryDo(() -> Main.parseRun(processHaxelibArguments()));
 }
 
 /**
